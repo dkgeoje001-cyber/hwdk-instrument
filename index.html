@@ -55,9 +55,10 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .people-add{display:grid;grid-template-columns:minmax(0,1fr) 72px;gap:6px}
 .people-field .people-add input{margin:0}
 .people-add button{padding:0;background:#fff;border:1px solid #7d93a8;color:#16324f;font-size:14px}
-.people-picks{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;max-height:122px;overflow-y:auto}
-.people-picks:empty{display:none}
-.people-pick{width:auto;padding:7px 11px;border-radius:999px;border:1px solid #cbd5e1;background:#fff;color:#334155;font-size:13px;font-weight:700}
+.people-suggest{margin-top:6px;border:1px solid #b9c7d6;border-radius:9px;background:#fff;overflow:hidden}
+.people-suggest-title{padding:6px 12px;background:#f1f5f9;color:#64748b;font-size:12px;font-weight:700}
+.people-suggest-row{-webkit-tap-highlight-color:transparent;display:block;width:100%;min-height:42px;padding:9px 12px;border-radius:0;border-top:1px solid #edf0f3;background:#fff;color:#16324f;font-size:15px;font-weight:700;text-align:left}
+.people-chip.conflict{background:#b42318}
 .people-count{display:flex;align-items:center;gap:8px;margin-top:10px;color:#52606d;font-size:13px;font-weight:700}
 .people-field .people-count input{width:84px;margin:0;padding:9px;text-align:right;font-weight:700}
 .people-msg{margin-top:6px;color:#b42318;font-size:12px;font-weight:800;line-height:1.5}
@@ -298,7 +299,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
   <section id="scheduleRegisterSection">
     <div class="card">
       <h2>일일작업등록</h2>
-      <div class="hint">선종 → 호선 → STAGE → 구역 순서로 고른 뒤, 작업구분과 작업방식은 눌러서 펼친 목록에서 여러 개를 체크할 수 있습니다. 투입 인원은 고른 작업 전체에 한 번 이름으로 입력하고(이름 없이 인원 수만 적어도 됩니다), 공정률은 작업마다 숫자로 입력합니다. 같은 작업을 다시 등록하면 공정률은 높은 쪽 값으로 지표에 남습니다.</div>
+      <div class="hint">선종 → 호선 → STAGE → 구역 순서로 고른 뒤, 작업구분과 작업방식은 눌러서 펼친 목록에서 여러 개를 체크할 수 있습니다. 투입 인원은 고른 작업 전체에 한 번 이름으로 입력하고(이름 없이 인원 수만 적어도 됩니다), 공정률은 작업마다 숫자로 입력합니다. 한 사람은 같은 작업일에 한 작업에만 넣을 수 있습니다. 같은 작업을 다시 등록하면 공정률은 높은 쪽 값으로 지표에 남습니다.</div>
       <div id="scheduleSetupNotice" class="schedule-setup-notice hidden"></div>
 
       <div class="schedule-form-head" style="margin-top:14px">
@@ -1029,7 +1030,7 @@ async function loadScheduleData(force=false){
     scheduleProgressMap=map;
     /* 투입 인원 이름 후보: 앱에 가입한 사람 + 지금까지 투입 인원으로 적힌 이름(많이 적힌 순). */
     const people=new Map();
-    const addPerson=(value,weight)=>{const name=normalizeName(value);if(!name)return;const key=name.toLowerCase(),item=people.get(key)||{name,count:0};item.count+=weight;people.set(key,item)};
+    const addPerson=(value,weight)=>{const name=normalizeName(value);if(!name)return;const key=personKey(name),item=people.get(key)||{name,count:0};item.count+=weight;people.set(key,item)};
     (profileResult?.data||[]).forEach(u=>addPerson(u.name,0));
     (scheduleResult.data||[]).forEach(r=>{if(Array.isArray(r.worker_names))r.worker_names.forEach(name=>addPerson(name,1))});
     schedulePeopleCandidates=[...people.values()].sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,"ko")).map(item=>item.name);
@@ -1196,7 +1197,7 @@ function renderScheduleNotice(){
 
 /* 마스터를 다시 불러왔을 때 열려 있는 입력칸을 다시 채웁니다(이미 고른 값과 입력한 공정률은 유지). */
 function refreshScheduleForm(){
-  [...$("scheduleRows").querySelectorAll(".schedule-row-card")].forEach(card=>{refreshScheduleCascade(card,0,false);card._people?.refreshPicks()});
+  [...$("scheduleRows").querySelectorAll(".schedule-row-card")].forEach(card=>{refreshScheduleCascade(card,0,false);card._people?.recheck()});
   renderScheduleNotice();
 }
 
@@ -1210,62 +1211,139 @@ function showScheduleTab(mode){
   if(reg){
     if(!$("scheduleRows").querySelector(".schedule-row-card"))resetScheduleForm();
     loadScheduleData();
+    refreshScheduleDayPeople();
   }else loadProductionScheduleList();
 }
 
-/* 투입 인원 입력칸. 이름을 넣으면 인원 수가 자동으로 맞춰집니다.
-   이름 없이 인원 수만 적어도 되고, 이름을 모르는 인원이 있으면 인원 수를 이름 수보다 크게 고칠 수 있습니다. */
-function createPeopleField(initialNames=[],initialCount=null){
+/* ---------- 투입 인원 이름 ---------- */
+/* 이름 비교용 열쇠: 띄어쓰기와 대소문자를 무시합니다(홍 길동 = 홍길동). */
+function personKey(value){return normalizeName(value).replace(/\s+/g,"").toLowerCase()}
+/* 한글을 자모로 풀어 씁니다. 글자를 다 적기 전(예: "김ㄷ", "김도")에도 "김동근"이 추천되게 하려는 용도입니다. */
+const HANGUL_INITIALS=["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+const HANGUL_MEDIALS=["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅗㅏ","ㅗㅐ","ㅗㅣ","ㅛ","ㅜ","ㅜㅓ","ㅜㅔ","ㅜㅣ","ㅠ","ㅡ","ㅡㅣ","ㅣ"];
+const HANGUL_FINALS=["","ㄱ","ㄲ","ㄱㅅ","ㄴ","ㄴㅈ","ㄴㅎ","ㄷ","ㄹ","ㄹㄱ","ㄹㅁ","ㄹㅂ","ㄹㅅ","ㄹㅌ","ㄹㅍ","ㄹㅎ","ㅁ","ㅂ","ㅂㅅ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+const HANGUL_COMPOUND={"ㄳ":"ㄱㅅ","ㄵ":"ㄴㅈ","ㄶ":"ㄴㅎ","ㄺ":"ㄹㄱ","ㄻ":"ㄹㅁ","ㄼ":"ㄹㅂ","ㄽ":"ㄹㅅ","ㄾ":"ㄹㅌ","ㄿ":"ㄹㅍ","ㅀ":"ㄹㅎ","ㅄ":"ㅂㅅ","ㅘ":"ㅗㅏ","ㅙ":"ㅗㅐ","ㅚ":"ㅗㅣ","ㅝ":"ㅜㅓ","ㅞ":"ㅜㅔ","ㅟ":"ㅜㅣ","ㅢ":"ㅡㅣ"};
+function hangulJamo(value){
+  let out="";
+  for(const ch of personKey(value)){
+    const code=ch.charCodeAt(0)-0xAC00;
+    if(code>=0&&code<11172)out+=HANGUL_INITIALS[Math.floor(code/588)]+HANGUL_MEDIALS[Math.floor(code%588/28)]+HANGUL_FINALS[code%28];
+    else out+=HANGUL_COMPOUND[ch]||ch;
+  }
+  return out;
+}
+/* 적은 글자와 가까운 이름을 고릅니다: 앞에서부터 맞는 이름 먼저, 그다음 중간에 그 글자가 들어 있는 이름. */
+function suggestPeople(text,isExcluded,limit=6){
+  const typed=personKey(text),jamo=hangulJamo(text);
+  if(!typed)return [];
+  const head=[],middle=[];
+  schedulePeopleCandidates.forEach(name=>{
+    if(isExcluded(name))return;
+    if(hangulJamo(name).startsWith(jamo))head.push(name);
+    else if(personKey(name).includes(typed))middle.push(name);
+  });
+  return head.concat(middle).slice(0,limit);
+}
+
+/* 작업일별로 이미 투입 인원에 들어 있는 이름. 한 사람은 같은 작업일에 한 작업(함께 등록한 묶음)에만 넣을 수 있습니다. */
+const scheduleDayPeopleCache=new Map();
+function scheduleRecordLabel(r){return [[r.ship_no,r.area].filter(Boolean).join(" / "),[r.work_type,r.work_method].filter(Boolean).join(" ")||r.work_name||""].filter(Boolean).join(" · ")||"다른 작업"}
+async function loadDayPeople(date,force=false){
+  if(!date)return new Map();
+  const cached=scheduleDayPeopleCache.get(date);
+  if(!force&&cached&&Date.now()-cached.at<20000)return cached.map;
+  const {data,error}=await supabase.from("production_schedules").select("id,batch_id,ship_no,area,work_type,work_method,work_name,worker_names,author_name").eq("work_date",date).limit(2000);
+  if(error)throw error;
+  const map=new Map();
+  (data||[]).forEach(r=>{
+    if(!Array.isArray(r.worker_names))return;
+    const group=r.batch_id||r.id;
+    r.worker_names.forEach(value=>{
+      const key=personKey(value);if(!key)return;
+      const list=map.get(key)||[];
+      if(!list.some(item=>item.group===group))list.push({group,label:scheduleRecordLabel(r),author:r.author_name||""});
+      map.set(key,list);
+    });
+  });
+  scheduleDayPeopleCache.set(date,{at:Date.now(),map});
+  return map;
+}
+/* 그 이름이 같은 작업일의 다른 등록(ownGroup 제외)에 이미 있으면 그 등록을 돌려줍니다. */
+function dayPeopleConflict(map,name,ownGroup=null){return (map?.get(personKey(name))||[]).find(item=>item.group!==ownGroup)||null}
+function dayPeopleReason(date,hit){return `${date} 에 이미 ${hit.label} 작업에 투입되어 있습니다${hit.author?` (작성자 ${hit.author})`:""}`}
+const PEOPLE_ONE_WORK_RULE="한 사람은 같은 작업일에 한 작업에만 넣을 수 있습니다.";
+
+/* 투입 인원 입력칸.
+   - 이름을 적으면 가까운 이름이 추천으로 나옵니다(미리 다 보여 주지 않음).
+   - 넣은 이름 수만큼 인원 수가 맞춰집니다. 이름 없이 인원 수만 적어도 되고, 이름을 모르는 인원이 있으면 더 크게 고칠 수 있습니다.
+   - options.blockedReason(name): 그 이름을 넣을 수 없는 까닭(같은 작업일에 이미 다른 작업에 투입)을 글로 돌려주면 넣지 않습니다. */
+function createPeopleField(initialNames=[],initialCount=null,options={}){
+  const blockedReason=typeof options.blockedReason==="function"?options.blockedReason:()=>"";
+  const changed=()=>{if(typeof options.onChange==="function")options.onChange()};
   const box=document.createElement("div");box.className="people-field";
-  box.innerHTML=`<div class="people-chips"></div><div class="people-add"><input class="people-name-input" autocomplete="off" enterkeyhint="done" placeholder="이름 입력" aria-label="투입 인원 이름"><button type="button" class="people-add-btn">추가</button></div><div class="people-picks"></div><div class="people-count"><span>인원 수</span><input class="people-count-input" type="number" min="1" step="1" inputmode="numeric" placeholder="명" aria-label="투입 인원 수"><span>명</span></div><div class="people-msg"></div>`;
+  box.innerHTML=`<div class="people-chips"></div><div class="people-add"><input class="people-name-input" autocomplete="off" enterkeyhint="done" placeholder="이름 입력" aria-label="투입 인원 이름"><button type="button" class="people-add-btn">추가</button></div><div class="people-suggest hidden"></div><div class="people-count"><span>인원 수</span><input class="people-count-input" type="number" min="0" step="1" inputmode="numeric" aria-label="투입 인원 수"><span>명</span></div><div class="people-msg"></div>`;
   const names=[];let countTouched=false;
-  const chips=box.querySelector(".people-chips"),picks=box.querySelector(".people-picks"),nameInput=box.querySelector(".people-name-input"),countInput=box.querySelector(".people-count-input"),msg=box.querySelector(".people-msg");
-  const has=name=>names.some(n=>n.toLowerCase()===name.toLowerCase());
+  const chips=box.querySelector(".people-chips"),suggest=box.querySelector(".people-suggest"),nameInput=box.querySelector(".people-name-input"),countInput=box.querySelector(".people-count-input"),msg=box.querySelector(".people-msg");
+  const has=name=>names.some(n=>personKey(n)===personKey(name));
   const syncCount=()=>{
     if(!names.length){if(!countTouched)countInput.value="";return}
     const current=Number(countInput.value);
     if(!countTouched||countInput.value.trim()===""||!Number.isInteger(current)||current<names.length)countInput.value=String(names.length);
   };
-  const renderPicks=()=>{
-    const keyword=normalizeName(nameInput.value).toLowerCase();
-    picks.innerHTML="";
-    schedulePeopleCandidates.filter(name=>!has(name)&&(!keyword||name.toLowerCase().includes(keyword))).slice(0,40).forEach(name=>{
-      const b=document.createElement("button");b.type="button";b.className="people-pick";b.textContent="+ "+name;b.onclick=()=>{nameInput.value="";add(name)};picks.appendChild(b);
+  const renderSuggest=()=>{
+    const list=suggestPeople(nameInput.value,name=>has(name)||!!blockedReason(name));
+    suggest.innerHTML="";
+    suggest.classList.toggle("hidden",!list.length);
+    if(!list.length)return;
+    const title=document.createElement("div");title.className="people-suggest-title";title.textContent="추천 · 누르면 추가됩니다";suggest.appendChild(title);
+    list.forEach(name=>{
+      const b=document.createElement("button");b.type="button";b.className="people-suggest-row";b.textContent=name;
+      b.onclick=()=>{nameInput.value="";addMany([name]);renderSuggest();nameInput.focus()};
+      suggest.appendChild(b);
     });
   };
   const render=()=>{
     chips.innerHTML="";
     names.forEach(name=>{
-      const chip=document.createElement("span");chip.className="people-chip";
+      const chip=document.createElement("span");chip.className="people-chip"+(blockedReason(name)?" conflict":"");
       chip.innerHTML=`<span>${escapeHtml(name)}</span><button type="button" aria-label="${escapeHtml(name)} 빼기">×</button>`;
-      chip.querySelector("button").onclick=()=>{names.splice(names.indexOf(name),1);msg.textContent="";syncCount();render()};
+      chip.querySelector("button").onclick=()=>{names.splice(names.indexOf(name),1);msg.textContent="";syncCount();render();changed()};
       chips.appendChild(chip);
     });
-    renderPicks();
+    renderSuggest();
   };
+  /* 이름 하나를 넣습니다. 돌려주는 값: "" = 넣음, 그 밖의 글 = 넣지 못한 까닭. blocked 는 같은 작업일 중복으로 막힌 경우만 true. */
   function add(value){
     const name=normalizeName(value);
-    if(!name)return false;
-    if(has(name)){msg.textContent=`${name} 님은 이미 넣었습니다.`;return false}
-    names.push(name);msg.textContent="";syncCount();render();
-    return true;
+    if(!name)return {text:"",blocked:false};
+    if(has(name))return {text:`${name} 님은 이미 넣었습니다.`,blocked:false};
+    const reason=blockedReason(name);
+    if(reason)return {text:`${name} 님은 ${reason}. ${PEOPLE_ONE_WORK_RULE}`,blocked:true};
+    names.push(name);syncCount();render();changed();
+    return {text:"",blocked:false};
   }
+  /* 여러 이름을 넣고, 넣지 못한 이름의 까닭을 보여 줍니다. 같은 작업일 중복으로 막힌 까닭만 따로 돌려줍니다(저장 차단용). */
+  const addMany=list=>{
+    const results=list.map(add),failed=results.filter(r=>r.text);
+    msg.textContent=failed.map(r=>r.text).join(" ");
+    return failed.filter(r=>r.blocked).map(r=>r.text).join(" ");
+  };
   /* 입력칸에 적힌 이름을 넣습니다. 쉼표로 여러 명을 한 번에 적을 수 있습니다. */
   const commitInput=()=>{
     const parts=nameInput.value.split(/[,，、\n]+/).map(normalizeName).filter(Boolean);
-    if(!parts.length){nameInput.value="";return}
     nameInput.value="";
-    parts.forEach(add);
-    renderPicks();
+    const blocked=parts.length?addMany(parts):"";
+    renderSuggest();
+    return blocked;
   };
   nameInput.addEventListener("input",()=>{
     msg.textContent="";
     if(/[,，、]/.test(nameInput.value)){
       const pieces=nameInput.value.split(/[,，、]/),rest=pieces.pop();
-      pieces.map(normalizeName).filter(Boolean).forEach(add);
+      addMany(pieces.map(normalizeName).filter(Boolean));
       nameInput.value=rest;
     }
-    renderPicks();
+    renderSuggest();
   });
   /* 한글 입력 중(조합 중) Enter 는 keydown 이 아니라 keyup 에서 처리됩니다. 이미 넣은 뒤라면 입력칸이 비어 있어 두 번 들어가지 않습니다. */
   nameInput.addEventListener("keydown",e=>{if(e.key!=="Enter")return;e.preventDefault();if(e.isComposing||e.keyCode===229)return;commitInput()});
@@ -1274,24 +1352,47 @@ function createPeopleField(initialNames=[],initialCount=null){
   countInput.addEventListener("input",()=>{countTouched=countInput.value.trim()!=="";msg.textContent=""});
   countInput.addEventListener("change",()=>{const current=Number(countInput.value);if(names.length&&countInput.value.trim()!==""&&Number.isInteger(current)&&current<names.length){countInput.value=String(names.length);msg.textContent=`이름을 ${names.length}명 넣어서 인원 수를 ${names.length}명으로 맞췄습니다.`}});
   (Array.isArray(initialNames)?initialNames:[]).forEach(name=>{const n=normalizeName(name);if(n&&!has(n))names.push(n)});
-  const startCount=Number(initialCount);
-  if(Number.isInteger(startCount)&&startCount>0){countInput.value=String(Math.max(startCount,names.length));countTouched=startCount>names.length||!names.length}
+  const startCount=initialCount===null||initialCount===undefined||initialCount===""?NaN:Number(initialCount);
+  if(Number.isInteger(startCount)&&startCount>=0&&(startCount>0||!names.length)){countInput.value=String(Math.max(startCount,names.length));countTouched=startCount>names.length||!names.length}
   else syncCount();
   render();
-  box.refreshPicks=renderPicks;
-  /* 저장할 때 읽습니다. 입력칸에 적어 두고 추가를 누르지 않은 이름도 함께 넣습니다. */
+  box.keys=()=>names.map(personKey);
+  /* 작업일이나 다른 작업 칸이 바뀌었을 때: 이제 넣을 수 없게 된 이름을 빨갛게 표시하고 알려 줍니다. */
+  box.recheck=()=>{
+    render();
+    const bad=names.map(name=>({name,reason:blockedReason(name)})).filter(item=>item.reason);
+    if(bad.length)msg.textContent=bad.map(item=>`${item.name} 님은 ${item.reason}.`).join(" ")+" 이름을 빼 주세요.";
+    else if(/이름을 빼 주세요\.$/.test(msg.textContent))msg.textContent="";
+    return bad;
+  };
+  /* 저장할 때 읽습니다. 입력칸에 적어 두고 추가를 누르지 않은 이름도 함께 넣습니다(넣을 수 없는 이름이면 pending 에 까닭). */
   box.read=()=>{
-    if(normalizeName(nameInput.value))commitInput();
+    const pending=normalizeName(nameInput.value)?commitInput():"";
     syncCount();
     const text=countInput.value.trim();
-    return {names:[...names],manpower:text===""?null:Number(text)};
+    return {names:[...names],manpower:text===""?null:Number(text),pending};
   };
   return box;
 }
 
+/* 등록 화면의 작업 칸끼리, 그리고 그 작업일에 이미 등록된 기록과 이름이 겹치는지 확인합니다. */
+function scheduleFormBlockedReason(card,name){
+  const key=personKey(name),cards=[...$("scheduleRows").querySelectorAll(".schedule-row-card")];
+  const other=cards.find(c=>c!==card&&c._people&&c._people.keys().includes(key));
+  if(other)return `이 화면의 작업 ${cards.indexOf(other)+1}에 이미 넣었습니다`;
+  const date=$("scheduleWorkDate").value,hit=dayPeopleConflict(scheduleDayPeopleCache.get(date)?.map,name);
+  return hit?dayPeopleReason(date,hit):"";
+}
+function recheckSchedulePeople(){[...$("scheduleRows").querySelectorAll(".schedule-row-card")].forEach(card=>card._people?.recheck())}
+async function refreshScheduleDayPeople(force=false){
+  const date=$("scheduleWorkDate").value;
+  if(date){try{await loadDayPeople(date,force)}catch(e){/* 저장할 때 다시 확인합니다 */}}
+  recheckSchedulePeople();
+}
+
 function readScheduleCard(card){
   const people=card._people.read();
-  return {...readScheduleSelection(card),types:[...card._types],manpower:people.manpower,worker_names:people.names,
+  return {...readScheduleSelection(card),types:[...card._types],manpower:people.manpower,worker_names:people.names,peoplePending:people.pending,
     works:scheduleSelectedWorks(card).map(m=>({work_type:m.work_type,work_method:m.work_method,progress_rate:productionNumber(card._rates.get(scheduleWorkKey(m.work_type,m.work_method)))}))};
 }
 
@@ -1314,10 +1415,10 @@ function scheduleRowTemplate(prefill={}){
     +`<div><label>작업구분</label>${boxHtml("schedule-type-box")}</div>
     <div><label>작업방식</label>${boxHtml("schedule-method-box")}</div>
     <div class="multi-panel hidden"></div>
-    <div class="schedule-wide-field schedule-people-slot"><label>오늘 투입 인원</label><div class="schedule-field-note">이름을 넣으면 인원 수가 자동으로 맞춰집니다. 고른 작업 전체에 투입된 인원이며, 합계에는 한 번만 반영됩니다.</div></div>
+    <div class="schedule-wide-field schedule-people-slot"><label>오늘 투입 인원</label><div class="schedule-field-note">이름을 적으면 비슷한 이름이 추천으로 나오고, 넣은 이름 수만큼 인원 수가 맞춰집니다. 같은 작업일에 이미 다른 작업에 넣은 사람은 다시 넣을 수 없습니다. 그 인원만으로 한 작업이면 인원 수를 0으로 적으세요.</div></div>
     <div class="schedule-wide-field"><div class="rate-head"><label>현재 공정률(%) <span class="rate-sub">· 작업별 입력</span></label><button type="button" class="schedule-rate-same hidden">모두 같은 값</button></div><div class="schedule-rate-list"></div><div class="schedule-rate-msg"></div></div>
   </div>`;
-  card._people=createPeopleField();
+  card._people=createPeopleField([],null,{blockedReason:name=>scheduleFormBlockedReason(card,name),onChange:()=>recheckSchedulePeople()});
   card.querySelector(".schedule-people-slot").insertBefore(card._people,card.querySelector(".schedule-people-slot .schedule-field-note"));
   /* 드롭다운을 위에서부터 채웁니다. prefill 값이 있으면(작업 추가 시 앞 작업의 선종 · 호선 · STAGE · 구역) 그대로 골라 둡니다. */
   SCHEDULE_LEVELS.forEach((def,index)=>{
@@ -1353,6 +1454,7 @@ function scheduleRowTemplate(prefill={}){
     card.remove();
     if(!$("scheduleRows").querySelector(".schedule-row-card"))addScheduleRow();
     refreshScheduleRowHeads();
+    recheckSchedulePeople();
   };
   return card;
 }
@@ -1384,12 +1486,24 @@ async function saveProductionSchedule(){
     if(!r.types.length){status.textContent=`작업 ${i+1}의 작업구분을 선택하세요.`;return}
     const noMethod=r.types.find(type=>!r.works.some(w=>w.work_type===type));
     if(noMethod){status.textContent=`작업 ${i+1}의 ${noMethod} 작업방식을 선택하세요.`;return}
-    if(r.manpower===null||!Number.isInteger(r.manpower)||r.manpower<1){status.textContent=`작업 ${i+1}의 오늘 투입 인원을 입력하세요. 이름을 넣거나 인원 수를 1명 이상 숫자로 적으면 됩니다.`;return}
+    if(r.peoplePending){status.textContent=`작업 ${i+1}: ${r.peoplePending}`;return}
+    if(r.manpower===null||!Number.isInteger(r.manpower)||r.manpower<0){status.textContent=`작업 ${i+1}의 오늘 투입 인원을 입력하세요. 이름을 넣거나 인원 수를 숫자로 적으면 됩니다. 같은 작업일에 이미 다른 작업에 넣은 인원만으로 한 작업이면 0을 적습니다.`;return}
     const badRate=r.works.find(w=>w.progress_rate===null||w.progress_rate<0||w.progress_rate>100);
     if(badRate){status.textContent=`작업 ${i+1}의 ${badRate.work_type} · ${badRate.work_method} 공정률을 0 ~ 100 사이 숫자로 입력하세요.`;return}
   }
   try{
     btn.disabled=true;status.textContent="일일작업 등록 중...";
+    /* 같은 작업일에 한 사람이 두 작업에 들어가지 않게, 저장 직전에 그 날짜의 등록을 다시 읽어 확인합니다. */
+    const dayPeople=await loadDayPeople(workDate,true),seenPeople=new Map();
+    for(let i=0;i<rows.length;i++){
+      for(const name of rows[i].worker_names){
+        const key=personKey(name);
+        if(seenPeople.has(key)){status.textContent=`작업 ${i+1}: ${name} 님은 작업 ${seenPeople.get(key)+1}에 이미 넣었습니다. ${PEOPLE_ONE_WORK_RULE}`;recheckSchedulePeople();return}
+        const hit=dayPeopleConflict(dayPeople,name);
+        if(hit){status.textContent=`작업 ${i+1}: ${name} 님은 ${dayPeopleReason(workDate,hit)}. ${PEOPLE_ONE_WORK_RULE}`;recheckSchedulePeople();return}
+        seenPeople.set(key,i);
+      }
+    }
     const now=new Date().toISOString(),payload=[];
     rows.forEach(r=>{
       const batchId=newScheduleBatchId();
@@ -1398,7 +1512,9 @@ async function saveProductionSchedule(){
     const {error}=await supabase.from("production_schedules").insert(payload);if(error)throw error;
     status.textContent=`등록 완료 · 작업 ${payload.length}건 · 투입 인원 ${rows.reduce((sum,r)=>sum+r.manpower,0)}명`;
     $("scheduleRows").innerHTML="";addScheduleRow();
+    scheduleDayPeopleCache.clear();
     loadScheduleData(true);
+    refreshScheduleDayPeople(true);
   }catch(e){status.textContent="등록 실패: "+(productionSchemaMessage(e)||e?.message||"오류")}finally{btn.disabled=false}
 }
 
@@ -1420,11 +1536,17 @@ function toggleScheduleEdit(card,record,batchSize=1){
   box.querySelector(".schedule-edit-date").value=record.work_date||"";
   const rateInput=box.querySelector(".schedule-edit-rate"),rate=productionNumber(record.progress_rate);
   if(rateInput&&rate!==null)rateInput.value=String(rate);
-  box._people=createPeopleField(names,Number(record.manpower||0)||names.length||null);
+  /* 수정 중인 기록(함께 등록한 묶음) 자신은 빼고, 같은 작업일의 다른 등록과 이름이 겹치면 막습니다. */
+  const ownGroup=record.batch_id||record.id,dateInput=box.querySelector(".schedule-edit-date");
+  box._people=createPeopleField(names,record.manpower,{blockedReason:name=>{const hit=dayPeopleConflict(scheduleDayPeopleCache.get(dateInput.value)?.map,name,ownGroup);return hit?dayPeopleReason(dateInput.value,hit):""}});
   box.querySelector(".schedule-edit-people").appendChild(box._people);
+  const refreshEditPeople=async()=>{if(dateInput.value){try{await loadDayPeople(dateInput.value)}catch(e){/* 저장할 때 다시 확인합니다 */}}box._people.recheck()};
+  dateInput.addEventListener("change",refreshEditPeople);
+  refreshEditPeople();
   const notes=[];
   if(record.batch_id&&batchSize>1)notes.push(`함께 등록한 작업 ${batchSize}건에 작업일과 투입 인원이 같이 바뀝니다.${isStageRecord?" 공정률은 이 작업만 바뀝니다.":""}`);
   if(isStageRecord)notes.push("지표에는 같은 작업의 기록 중 가장 높은 공정률이 남습니다.");
+  notes.push(PEOPLE_ONE_WORK_RULE);
   notes.push("호선 · 구역 · 작업을 바꾸려면 삭제한 뒤 다시 등록하세요.");
   box.querySelector(".schedule-edit-note").innerHTML=notes.map(escapeHtml).join("<br>");
   box.querySelector(".schedule-edit-cancel").onclick=()=>box.remove();
@@ -1437,11 +1559,17 @@ async function saveScheduleEdit(record,box){
   const status=box.querySelector(".schedule-edit-status"),btn=box.querySelector(".schedule-edit-save"),rateInput=box.querySelector(".schedule-edit-rate");
   const workDate=box.querySelector(".schedule-edit-date").value,people=box._people.read();
   if(!workDate){status.textContent="작업일을 선택하세요.";return}
-  if(people.manpower===null||!Number.isInteger(people.manpower)||people.manpower<1){status.textContent="투입 인원을 입력하세요. 이름을 넣거나 인원 수를 1명 이상 숫자로 적으면 됩니다.";return}
+  if(people.pending){status.textContent=people.pending;return}
+  if(people.manpower===null||!Number.isInteger(people.manpower)||people.manpower<0){status.textContent="투입 인원을 입력하세요. 이름을 넣거나 인원 수를 숫자로 적으면 됩니다. 같은 작업일에 이미 다른 작업에 넣은 인원만으로 한 작업이면 0을 적습니다.";return}
   let rate=null;
   if(rateInput){rate=productionNumber(rateInput.value);if(rate===null||rate<0||rate>100){status.textContent="공정률을 0 ~ 100 사이 숫자로 입력하세요.";return}}
   try{
     btn.disabled=true;status.textContent="수정 저장 중...";
+    const dayPeople=await loadDayPeople(workDate,true),ownGroup=record.batch_id||record.id;
+    for(const name of people.names){
+      const hit=dayPeopleConflict(dayPeople,name,ownGroup);
+      if(hit){status.textContent=`${name} 님은 ${dayPeopleReason(workDate,hit)}. ${PEOPLE_ONE_WORK_RULE}`;box._people.recheck();btn.disabled=false;return}
+    }
     const now=new Date().toISOString(),shared={work_date:workDate,manpower:people.manpower,worker_names:people.names,updated_at:now};
     if(record.batch_id){
       const {error}=await supabase.from("production_schedules").update(shared).eq("batch_id",record.batch_id);if(error)throw error;
@@ -1449,7 +1577,7 @@ async function saveScheduleEdit(record,box){
     }else{
       const {error}=await supabase.from("production_schedules").update(rateInput?{...shared,progress_rate:rate}:shared).eq("id",record.id);if(error)throw error;
     }
-    scheduleDataLoadedAt=0;
+    scheduleDataLoadedAt=0;scheduleDayPeopleCache.clear();
     await loadProductionScheduleList();
   }catch(e){status.textContent="수정 실패: "+(productionSchemaMessage(e)||e?.message||"오류");btn.disabled=false}
 }
@@ -1491,7 +1619,7 @@ async function loadProductionScheduleList(){
 async function deleteProductionSchedule(record){
   if(!confirm(`${record.work_date||""} / ${record.ship_no||""} / ${record.work_name||""}\n\n이 일일작업 기록을 삭제하시겠습니까?`))return;
   const {error}=await supabase.from("production_schedules").delete().eq("id",record.id);if(error){alert("삭제 실패: "+error.message);return}
-  scheduleDataLoadedAt=0;
+  scheduleDataLoadedAt=0;scheduleDayPeopleCache.clear();
   loadProductionScheduleList();
 }
 
@@ -1509,6 +1637,7 @@ document.addEventListener("click",e=>{
   });
 });
 $("saveScheduleBtn").onclick=saveProductionSchedule;
+$("scheduleWorkDate").addEventListener("change",()=>refreshScheduleDayPeople());
 $("refreshScheduleListBtn").onclick=loadProductionScheduleList;
 $("scheduleSearchBtn").onclick=loadProductionScheduleList;
 $("scheduleResetBtn").onclick=()=>{$("scheduleFilterDate").value="";$("scheduleFilterShip").value="";$("scheduleFilterAuthor").value="";loadProductionScheduleList()};
