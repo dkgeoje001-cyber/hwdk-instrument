@@ -48,7 +48,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .schedule-field-note{margin-top:4px;color:#64748b;font-size:12px;line-height:1.4}
 /* 투입 인원: 이름을 넣으면 인원 수가 자동으로 맞춰짐 */
 .people-field{margin-top:4px;padding:10px;border:1px solid #dbe2e8;border-radius:10px;background:#f8fafc}
-.people-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.people-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .people-chips:empty{display:none}
 .people-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 5px 5px 12px;border-radius:999px;background:#16324f;color:#fff;font-size:14px;font-weight:700;line-height:1.2}
 .people-chip button{width:24px;height:24px;padding:0;border-radius:50%;background:rgba(255,255,255,.24);color:#fff;font-size:15px;line-height:1}
@@ -59,6 +59,32 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .people-suggest-title{padding:6px 12px;background:#f1f5f9;color:#64748b;font-size:12px;font-weight:700}
 .people-suggest-row{-webkit-tap-highlight-color:transparent;display:block;width:100%;min-height:42px;padding:9px 12px;border-radius:0;border-top:1px solid #edf0f3;background:#fff;color:#16324f;font-size:15px;font-weight:700;text-align:left}
 .people-chip.conflict{background:#b42318}
+/* 투입 인원 드롭다운: 반장 이름 → 펼치면 반장 · 반원 체크 */
+.people-box{-webkit-tap-highlight-color:transparent;display:flex;align-items:center;gap:6px;width:100%;min-height:43px;padding:9px 10px;border:1px solid #ccd2d8;border-radius:7px;background:#fff;color:#222;font-size:16px;font-weight:400;text-align:left}
+.people-box.open{border-color:#16324f;box-shadow:0 0 0 2px rgba(22,50,79,.15)}
+.people-box .multi-text.placeholder{color:#555}
+.people-panel{margin-top:6px;border:1px solid #16324f;border-radius:10px;background:#fff;overflow:hidden;box-shadow:0 6px 16px rgba(22,50,79,.16)}
+.people-row{-webkit-tap-highlight-color:transparent;display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:8px 12px;border-radius:0;border-top:1px solid #edf0f3;background:#fff;color:#334155;font-size:16px;font-weight:700;text-align:left}
+.people-row.on{background:#eef6fd;color:#16324f}
+.people-check{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border:2px solid #9aa8b5;border-radius:5px;background:#fff;color:#fff;font-size:15px;line-height:1}
+.people-row.on .people-check{border-color:#16324f;background:#16324f}
+.people-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;border-top:1px solid #dbe2e8;background:#f8fafc;color:#52606d;font-size:13px;font-weight:800}
+.people-done{padding:9px 16px;background:#16324f;color:#fff;font-size:14px}
+.people-crew-list{position:relative}
+.people-leader-row{-webkit-tap-highlight-color:transparent;display:flex;align-items:center;gap:8px;width:100%;min-height:46px;padding:9px 12px;border-radius:0;border-top:1px solid #e3e8ee;background:#f8fafc;color:#16324f;font-size:16px;font-weight:900;text-align:left}
+.people-leader-row:first-child{border-top:0}
+.people-leader-row.open{background:#e3eefa}
+.people-leader-name{flex:1 1 auto;min-width:0}
+.people-leader-count{flex:0 0 auto;padding:2px 8px;border-radius:999px;background:#16324f;color:#fff;font-size:11px;font-weight:800}
+.people-leader-caret{flex:0 0 auto;width:14px;color:#52606d;font-size:13px;text-align:center}
+.people-person{padding-left:24px}
+.people-person.blocked{color:#9aa5b1;background:#fafbfc}
+.people-person.blocked .people-check{border-color:#d0d7de;background:#eef1f4;color:transparent}
+.people-person-note{margin-left:auto;padding-left:8px;color:#b42318;font-size:11px;font-weight:700;text-align:right}
+.people-all{padding-left:24px;background:#f4f8fc;color:#16324f;font-size:14px}
+.people-crew-empty{padding:12px;color:#64748b;font-size:13px;line-height:1.5}
+.people-direct{padding:10px 12px;border-top:1px solid #dbe2e8;background:#fff}
+.people-direct-title{margin-bottom:6px;color:#52606d;font-size:12px;font-weight:800}
 .people-count{display:flex;align-items:center;gap:8px;margin-top:10px;color:#52606d;font-size:13px;font-weight:700}
 .people-field .people-count input{width:84px;margin:0;padding:9px;text-align:right;font-weight:700}
 .people-msg{margin-top:6px;color:#b42318;font-size:12px;font-weight:800;line-height:1.5}
@@ -299,7 +325,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
   <section id="scheduleRegisterSection">
     <div class="card">
       <h2>일일작업등록</h2>
-      <div class="hint">선종 → 호선 → STAGE → 구역 순서로 고른 뒤, 작업구분과 작업방식은 눌러서 펼친 목록에서 여러 개를 체크할 수 있습니다. 투입 인원은 고른 작업 전체에 한 번 이름으로 입력하고(이름 없이 인원 수만 적어도 됩니다), 공정률은 작업마다 숫자로 입력합니다. 한 사람은 같은 작업일에 한 작업에만 넣을 수 있습니다. 같은 작업을 다시 등록하면 공정률은 높은 쪽 값으로 지표에 남습니다.</div>
+      <div class="hint">선종 → 호선 → STAGE → 구역 순서로 고른 뒤, 작업구분과 작업방식은 눌러서 펼친 목록에서 여러 개를 체크할 수 있습니다. 투입 인원은 고른 작업 전체에 한 번, 반장 이름을 눌러 펼친 목록에서 체크해 고르고(이름 없이 인원 수만 적어도 됩니다), 공정률은 작업마다 숫자로 입력합니다. 한 사람은 같은 작업일에 한 작업에만 넣을 수 있습니다. 같은 작업을 다시 등록하면 공정률은 높은 쪽 값으로 지표에 남습니다.</div>
       <div id="scheduleSetupNotice" class="schedule-setup-notice hidden"></div>
 
       <div class="schedule-form-head" style="margin-top:14px">
@@ -972,6 +998,9 @@ let scheduleSetupError="";
 /* 작업(호선 · STAGE · 구역 · 작업구분 · 작업방식)별로 지금까지 입력된 공정률 중 가장 높은 값 */
 let scheduleProgressMap=new Map();
 let schedulePeopleCandidates=[];
+/* 투입 인원 드롭다운용 조직도 명단: [{key, leader, team, people:[이름…]}]. 반장 본인이 people 맨 앞. */
+let scheduleCrews=[];
+let scheduleCrewsLoaded=false;
 let scheduleDataLoadedAt=0;
 let scheduleDataLoading=null;
 
@@ -1012,10 +1041,11 @@ async function loadScheduleData(force=false){
   if(scheduleDataLoading){await scheduleDataLoading;if(!force)return}
   if(!force&&scheduleDataLoadedAt&&Date.now()-scheduleDataLoadedAt<30000){refreshScheduleForm();return}
   scheduleDataLoading=(async()=>{
-    const [masterResult,scheduleResult,profileResult]=await Promise.all([
+    const [masterResult,scheduleResult,profileResult,crewResult]=await Promise.all([
       fetchAllRows(productionMasterQuery),
       fetchAllRows(()=>supabase.from("production_schedules").select("id,ship_no,stage,area,work_type,work_method,progress_rate,worker_names,created_at").order("created_at",{ascending:true}).order("id",{ascending:true})),
-      supabase.from("user_profiles").select("name").order("name",{ascending:true})
+      supabase.from("user_profiles").select("name").order("name",{ascending:true}),
+      fetchAllRows(()=>supabase.from("production_crews").select("id,team_order,team_name,leader_name,member_name,is_leader,member_order").eq("active",true).order("team_order",{ascending:true}).order("member_order",{ascending:true}).order("id",{ascending:true}))
     ]);
     const error=masterResult.error||scheduleResult.error;
     scheduleSetupError=error?(productionSchemaMessage(error)||("마스터를 불러오지 못했습니다: "+(error.message||"오류"))):"";
@@ -1032,6 +1062,9 @@ async function loadScheduleData(force=false){
     const people=new Map();
     const addPerson=(value,weight)=>{const name=normalizeName(value);if(!name)return;const key=personKey(name),item=people.get(key)||{name,count:0};item.count+=weight;people.set(key,item)};
     (profileResult?.data||[]).forEach(u=>addPerson(u.name,0));
+    /* 조직도 명단(표가 아직 없으면 빈 명단으로 두고 이름 직접 입력만 씁니다). */
+    if(!crewResult.error){scheduleCrews=buildScheduleCrews(crewResult.data);scheduleCrewsLoaded=true}
+    scheduleCrews.forEach(crew=>crew.people.forEach(name=>addPerson(name,0)));
     (scheduleResult.data||[]).forEach(r=>{if(Array.isArray(r.worker_names))r.worker_names.forEach(name=>addPerson(name,1))});
     schedulePeopleCandidates=[...people.values()].sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,"ko")).map(item=>item.name);
     scheduleDataLoadedAt=Date.now();
@@ -1212,7 +1245,7 @@ function showScheduleTab(mode){
     if(!$("scheduleRows").querySelector(".schedule-row-card"))resetScheduleForm();
     loadScheduleData();
     refreshScheduleDayPeople();
-  }else loadProductionScheduleList();
+  }else{loadProductionScheduleList();loadScheduleData()}
 }
 
 /* ---------- 투입 인원 이름 ---------- */
@@ -1273,22 +1306,82 @@ function dayPeopleConflict(map,name,ownGroup=null){return (map?.get(personKey(na
 function dayPeopleReason(date,hit){return `${date} 에 이미 ${hit.label} 작업에 투입되어 있습니다${hit.author?` (작성자 ${hit.author})`:""}`}
 const PEOPLE_ONE_WORK_RULE="한 사람은 같은 작업일에 한 작업에만 넣을 수 있습니다.";
 
-/* 투입 인원 입력칸.
-   - 이름을 적으면 가까운 이름이 추천으로 나옵니다(미리 다 보여 주지 않음).
-   - 넣은 이름 수만큼 인원 수가 맞춰집니다. 이름 없이 인원 수만 적어도 되고, 이름을 모르는 인원이 있으면 더 크게 고칠 수 있습니다.
-   - options.blockedReason(name): 그 이름을 넣을 수 없는 까닭(같은 작업일에 이미 다른 작업에 투입)을 글로 돌려주면 넣지 않습니다. */
+/* 조직도 명단을 반장별로 묶습니다. 반장(is_leader) 이 맨 앞, 나머지는 member_order 순서. */
+function buildScheduleCrews(rows){
+  const crews=new Map();
+  (rows||[]).forEach(r=>{
+    const leader=normalizeName(r.leader_name),name=normalizeName(r.member_name);
+    if(!leader||!name)return;
+    const key=`${r.team_order??""}|||${personKey(leader)}`;
+    const crew=crews.get(key)||{key,leader,team:r.team_name||"",order:Number(r.team_order)||0,list:[]};
+    crew.list.push({name,isLeader:!!r.is_leader||personKey(name)===personKey(leader),order:Number(r.member_order)||0});
+    crews.set(key,crew);
+  });
+  return [...crews.values()].sort((a,b)=>a.order-b.order).map(crew=>{
+    const list=crew.list.sort((a,b)=>(b.isLeader-a.isLeader)||(a.order-b.order)),people=[];
+    if(!list.some(p=>p.isLeader))people.push(crew.leader);
+    list.forEach(p=>{if(!people.some(n=>personKey(n)===personKey(p.name)))people.push(p.name)});
+    return {key:crew.key,leader:crew.leader,team:crew.team,people};
+  });
+}
+
+/* 투입 인원 칸.
+   - 드롭다운을 누르면 반장(팀장 · 직장) 이름만 나오고, 이름을 누르면 그 반 인원(반장 포함)이 펼쳐져 체크로 고릅니다.
+   - 명단에 없는 사람은 목록 맨 아래에 직접 적습니다(적는 동안 가까운 이름 추천).
+   - 고른 인원 수만큼 인원 수가 맞춰집니다. 이름 없이 인원 수만 적어도 되고, 이름을 모르는 인원이 있으면 더 크게 고칠 수 있습니다.
+   - options.blockedReason(name): 그 사람을 넣을 수 없는 까닭(같은 작업일에 이미 다른 작업에 투입)을 글로 돌려주면 고를 수 없습니다. */
 function createPeopleField(initialNames=[],initialCount=null,options={}){
   const blockedReason=typeof options.blockedReason==="function"?options.blockedReason:()=>"";
   const changed=()=>{if(typeof options.onChange==="function")options.onChange()};
   const box=document.createElement("div");box.className="people-field";
-  box.innerHTML=`<div class="people-chips"></div><div class="people-add"><input class="people-name-input" autocomplete="off" enterkeyhint="done" placeholder="이름 입력" aria-label="투입 인원 이름"><button type="button" class="people-add-btn">추가</button></div><div class="people-suggest hidden"></div><div class="people-count"><span>인원 수</span><input class="people-count-input" type="number" min="0" step="1" inputmode="numeric" aria-label="투입 인원 수"><span>명</span></div><div class="people-msg"></div>`;
-  const names=[];let countTouched=false;
-  const chips=box.querySelector(".people-chips"),suggest=box.querySelector(".people-suggest"),nameInput=box.querySelector(".people-name-input"),countInput=box.querySelector(".people-count-input"),msg=box.querySelector(".people-msg");
+  box.innerHTML=`<button type="button" class="people-box" aria-haspopup="true"><span class="multi-text"></span><span class="multi-count hidden"></span><span class="multi-caret">▾</span></button>`
+    +`<div class="people-panel hidden"><div class="people-crew-list"></div>`
+    +`<div class="people-direct"><div class="people-direct-title">명단에 없는 사람</div><div class="people-add"><input class="people-name-input" autocomplete="off" enterkeyhint="done" placeholder="이름 직접 입력" aria-label="명단에 없는 투입 인원 이름"><button type="button" class="people-add-btn">추가</button></div><div class="people-suggest hidden"></div></div>`
+    +`<div class="people-foot"><span class="people-foot-count"></span><button type="button" class="people-done">선택 완료</button></div></div>`
+    +`<div class="people-chips"></div><div class="people-count"><span>인원 수</span><input class="people-count-input" type="number" min="0" step="1" inputmode="numeric" aria-label="투입 인원 수"><span>명</span></div><div class="people-msg"></div>`;
+  const names=[];let countTouched=false,openCrew="";
+  const q=sel=>box.querySelector(sel);
+  const boxBtn=q(".people-box"),panel=q(".people-panel"),crewList=q(".people-crew-list"),chips=q(".people-chips"),suggest=q(".people-suggest"),nameInput=q(".people-name-input"),countInput=q(".people-count-input"),msg=q(".people-msg");
   const has=name=>names.some(n=>personKey(n)===personKey(name));
   const syncCount=()=>{
     if(!names.length){if(!countTouched)countInput.value="";return}
     const current=Number(countInput.value);
     if(!countTouched||countInput.value.trim()===""||!Number.isInteger(current)||current<names.length)countInput.value=String(names.length);
+  };
+  const renderBox=()=>{
+    const text=boxBtn.querySelector(".multi-text"),count=boxBtn.querySelector(".multi-count");
+    text.textContent=names.length?names.slice(0,2).join(" · ")+(names.length>2?` 외 ${names.length-2}명`:""):"반장을 눌러 인원 선택";
+    text.classList.toggle("placeholder",!names.length);
+    count.textContent=`${names.length}명`;count.classList.toggle("hidden",!names.length);
+    boxBtn.classList.toggle("open",!panel.classList.contains("hidden"));
+    q(".people-foot-count").textContent=`선택 ${names.length}명`;
+  };
+  const shortReason=reason=>{const m=/이 화면의 작업 (\d+)/.exec(reason);return m?`작업 ${m[1]}에 넣음`:"다른 작업 투입"};
+  const renderCrews=()=>{
+    if(panel.classList.contains("hidden"))return;
+    crewList.innerHTML="";
+    if(!scheduleCrews.length){
+      crewList.innerHTML=`<div class="people-crew-empty">${scheduleCrewsLoaded?"조직도 명단이 비어 있습니다.":"조직도 명단을 불러오는 중이거나 아직 없습니다."} 아래에 이름을 직접 적어 주세요.</div>`;
+      return;
+    }
+    scheduleCrews.forEach(crew=>{
+      const picked=crew.people.filter(has).length,isOpen=openCrew===crew.key;
+      const head=document.createElement("button");head.type="button";head.className="people-leader-row"+(isOpen?" open":"");head.dataset.crew=crew.key;
+      head.innerHTML=`<span class="people-leader-name">${escapeHtml(crew.leader)}</span>${picked?`<span class="people-leader-count">${picked}명</span>`:""}<span class="people-leader-caret">${isOpen?"▾":"▸"}</span>`;
+      head.setAttribute("aria-expanded",isOpen?"true":"false");
+      crewList.appendChild(head);
+      if(!isOpen)return;
+      const free=crew.people.filter(name=>!blockedReason(name)||has(name));
+      const all=document.createElement("button");all.type="button";all.className="people-row people-all"+(free.length&&free.every(has)?" on":"");all.dataset.all=crew.key;
+      all.innerHTML=`<span class="people-check">✓</span><span>반 전체</span>`;
+      crewList.appendChild(all);
+      crew.people.forEach(name=>{
+        const reason=has(name)?"":blockedReason(name);
+        const row=document.createElement("button");row.type="button";row.className="people-row people-person"+(has(name)?" on":"")+(reason?" blocked":"");row.dataset.name=name;
+        row.innerHTML=`<span class="people-check">✓</span><span>${escapeHtml(name)}</span>${reason?`<span class="people-person-note">${escapeHtml(shortReason(reason))}</span>`:""}`;
+        crewList.appendChild(row);
+      });
+    });
   };
   const renderSuggest=()=>{
     const list=suggestPeople(nameInput.value,name=>has(name)||!!blockedReason(name));
@@ -1307,12 +1400,17 @@ function createPeopleField(initialNames=[],initialCount=null,options={}){
     names.forEach(name=>{
       const chip=document.createElement("span");chip.className="people-chip"+(blockedReason(name)?" conflict":"");
       chip.innerHTML=`<span>${escapeHtml(name)}</span><button type="button" aria-label="${escapeHtml(name)} 빼기">×</button>`;
-      chip.querySelector("button").onclick=()=>{names.splice(names.indexOf(name),1);msg.textContent="";syncCount();render();changed()};
+      chip.querySelector("button").onclick=()=>{remove(name)};
       chips.appendChild(chip);
     });
-    renderSuggest();
+    renderBox();renderCrews();renderSuggest();
   };
-  /* 이름 하나를 넣습니다. 돌려주는 값: "" = 넣음, 그 밖의 글 = 넣지 못한 까닭. blocked 는 같은 작업일 중복으로 막힌 경우만 true. */
+  function remove(name){
+    const i=names.findIndex(n=>personKey(n)===personKey(name));
+    if(i<0)return;
+    names.splice(i,1);msg.textContent="";syncCount();render();changed();
+  }
+  /* 이름 하나를 넣습니다. 돌려주는 값: text "" = 넣음, 그 밖의 글 = 넣지 못한 까닭. blocked 는 같은 작업일 중복으로 막힌 경우만 true. */
   function add(value){
     const name=normalizeName(value);
     if(!name)return {text:"",blocked:false};
@@ -1328,6 +1426,37 @@ function createPeopleField(initialNames=[],initialCount=null,options={}){
     msg.textContent=failed.map(r=>r.text).join(" ");
     return failed.filter(r=>r.blocked).map(r=>r.text).join(" ");
   };
+  const setOpen=open=>{
+    panel.classList.toggle("hidden",!open);
+    box.classList.toggle("open",open);
+    if(open&&!openCrew){const first=scheduleCrews.find(crew=>crew.people.some(has));if(first)openCrew=first.key}
+    render();
+  };
+  box.closePanel=()=>{if(!panel.classList.contains("hidden"))setOpen(false)};
+  boxBtn.onclick=()=>setOpen(panel.classList.contains("hidden"));
+  q(".people-done").onclick=()=>{if(normalizeName(nameInput.value))commitInput();setOpen(false)};
+  crewList.addEventListener("click",e=>{
+    const head=e.target.closest(".people-leader-row");
+    if(head){
+      openCrew=openCrew===head.dataset.crew?"":head.dataset.crew;renderCrews();
+      /* 반장 목록은 다 보이게 두고(안쪽 스크롤 없음), 펼친 반이 화면 아래쪽이면 그 반장 줄이 위로 오게 화면을 내립니다. */
+      const opened=crewList.querySelector(".people-leader-row.open");
+      if(opened&&opened.getBoundingClientRect().top>window.innerHeight*0.45)opened.scrollIntoView({block:"start",behavior:"smooth"});
+      return;
+    }
+    const all=e.target.closest(".people-all");
+    if(all){
+      const crew=scheduleCrews.find(c=>c.key===all.dataset.all);if(!crew)return;
+      const free=crew.people.filter(name=>!blockedReason(name)||has(name));
+      if(free.length&&free.every(has))free.forEach(remove);else addMany(free.filter(name=>!has(name)));
+      return;
+    }
+    const row=e.target.closest(".people-person");
+    if(!row)return;
+    const name=row.dataset.name;
+    if(has(name)){remove(name);return}
+    addMany([name]);
+  });
   /* 입력칸에 적힌 이름을 넣습니다. 쉼표로 여러 명을 한 번에 적을 수 있습니다. */
   const commitInput=()=>{
     const parts=nameInput.value.split(/[,，、\n]+/).map(normalizeName).filter(Boolean);
@@ -1348,7 +1477,7 @@ function createPeopleField(initialNames=[],initialCount=null,options={}){
   /* 한글 입력 중(조합 중) Enter 는 keydown 이 아니라 keyup 에서 처리됩니다. 이미 넣은 뒤라면 입력칸이 비어 있어 두 번 들어가지 않습니다. */
   nameInput.addEventListener("keydown",e=>{if(e.key!=="Enter")return;e.preventDefault();if(e.isComposing||e.keyCode===229)return;commitInput()});
   nameInput.addEventListener("keyup",e=>{if(e.key==="Enter"&&!e.isComposing&&normalizeName(nameInput.value))commitInput()});
-  box.querySelector(".people-add-btn").onclick=()=>{commitInput();nameInput.focus()};
+  q(".people-add-btn").onclick=()=>{commitInput();nameInput.focus()};
   countInput.addEventListener("input",()=>{countTouched=countInput.value.trim()!=="";msg.textContent=""});
   countInput.addEventListener("change",()=>{const current=Number(countInput.value);if(names.length&&countInput.value.trim()!==""&&Number.isInteger(current)&&current<names.length){countInput.value=String(names.length);msg.textContent=`이름을 ${names.length}명 넣어서 인원 수를 ${names.length}명으로 맞췄습니다.`}});
   (Array.isArray(initialNames)?initialNames:[]).forEach(name=>{const n=normalizeName(name);if(n&&!has(n))names.push(n)});
@@ -1357,7 +1486,7 @@ function createPeopleField(initialNames=[],initialCount=null,options={}){
   else syncCount();
   render();
   box.keys=()=>names.map(personKey);
-  /* 작업일이나 다른 작업 칸이 바뀌었을 때: 이제 넣을 수 없게 된 이름을 빨갛게 표시하고 알려 줍니다. */
+  /* 작업일 · 다른 작업 칸 · 조직도 명단이 바뀌었을 때: 다시 그리고, 이제 넣을 수 없게 된 이름을 빨갛게 표시합니다. */
   box.recheck=()=>{
     render();
     const bad=names.map(name=>({name,reason:blockedReason(name)})).filter(item=>item.reason);
@@ -1374,6 +1503,11 @@ function createPeopleField(initialNames=[],initialCount=null,options={}){
   };
   return box;
 }
+/* 펼쳐 둔 투입 인원 목록은 바깥을 누르면 닫습니다(목록을 다시 그려도 눌린 위치를 알 수 있게 이벤트 경로로 판단). */
+document.addEventListener("click",e=>{
+  const path=e.composedPath?e.composedPath():[];
+  document.querySelectorAll(".people-field.open").forEach(field=>{if(!path.includes(field))field.closePanel?.()});
+});
 
 /* 등록 화면의 작업 칸끼리, 그리고 그 작업일에 이미 등록된 기록과 이름이 겹치는지 확인합니다. */
 function scheduleFormBlockedReason(card,name){
@@ -1415,7 +1549,7 @@ function scheduleRowTemplate(prefill={}){
     +`<div><label>작업구분</label>${boxHtml("schedule-type-box")}</div>
     <div><label>작업방식</label>${boxHtml("schedule-method-box")}</div>
     <div class="multi-panel hidden"></div>
-    <div class="schedule-wide-field schedule-people-slot"><label>오늘 투입 인원</label><div class="schedule-field-note">이름을 적으면 비슷한 이름이 추천으로 나오고, 넣은 이름 수만큼 인원 수가 맞춰집니다. 같은 작업일에 이미 다른 작업에 넣은 사람은 다시 넣을 수 없습니다. 그 인원만으로 한 작업이면 인원 수를 0으로 적으세요.</div></div>
+    <div class="schedule-wide-field schedule-people-slot"><label>오늘 투입 인원</label><div class="schedule-field-note">반장 이름을 누르면 그 반 인원(반장 포함)이 펼쳐지고, 체크한 인원 수만큼 인원 수가 맞춰집니다. 명단에 없는 사람은 목록 맨 아래에 직접 적습니다. 같은 작업일에 이미 다른 작업에 넣은 사람은 고를 수 없습니다. 그 인원만으로 한 작업이면 인원 수를 0으로 적으세요.</div></div>
     <div class="schedule-wide-field"><div class="rate-head"><label>현재 공정률(%) <span class="rate-sub">· 작업별 입력</span></label><button type="button" class="schedule-rate-same hidden">모두 같은 값</button></div><div class="schedule-rate-list"></div><div class="schedule-rate-msg"></div></div>
   </div>`;
   card._people=createPeopleField([],null,{blockedReason:name=>scheduleFormBlockedReason(card,name),onChange:()=>recheckSchedulePeople()});
