@@ -178,6 +178,30 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .board-card{border-left:5px solid #d9a72b}
 .board-card-focus{box-shadow:0 0 0 2px rgba(217,119,6,.35)}
 .board-content{margin-top:9px;padding:10px;background:#f7f9fb;border-radius:7px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+/* 누락사항 추가(마스터에 없는 작업을 적어 두는 칸) */
+.schedule-actions .missing-open-btn{background:#fff8e7;color:#664c00;border:1px solid #e3c66f}
+.schedule-actions .missing-open-btn.open{background:#664c00;color:#fff;border-color:#664c00}
+.missing-panel{margin-top:12px;border:2px dashed #e3c66f;background:#fffdf6;border-radius:11px;padding:12px}
+.missing-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.missing-title{font-size:16px;font-weight:900;color:#664c00}
+.missing-close{width:30px;height:30px;padding:0;border-radius:50%;background:#f3ead0;color:#664c00;font-size:17px;line-height:30px}
+.missing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.missing-grid label{margin:0;font-size:12px;color:#52606d;height:18px;line-height:18px}
+.missing-grid input{margin-top:4px}
+.missing-grid .missing-wide{grid-column:1/-1}
+.missing-req{color:#c2410c;margin-left:2px}
+.missing-panel .primary{margin-top:12px;background:#664c00}
+.missing-list{margin-top:12px}
+.missing-list-title{font-size:13px;font-weight:900;color:#664c00;margin-bottom:6px}
+.missing-item{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:9px 10px;margin-top:6px;background:#fff;border:1px solid #eadfbd;border-radius:8px}
+.missing-item-main{font-size:14px;font-weight:800;color:#3d3000;line-height:1.45;overflow-wrap:anywhere}
+.missing-item-meta{font-size:12px;color:#7a6a3a;margin-top:2px;line-height:1.45;overflow-wrap:anywhere}
+.missing-item button{flex:0 0 auto;padding:7px 10px;font-size:12px}
+@media(max-width:720px){
+.schedule-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+.schedule-actions #saveScheduleBtn{grid-column:1/-1}
+.missing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 </style>
 </head>
 <body>
@@ -335,7 +359,32 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 
       <div id="scheduleRows" class="schedule-rows"></div>
 
+      <div id="scheduleMissingPanel" class="missing-panel hidden">
+        <div class="missing-head">
+          <div class="missing-title">누락사항 추가</div>
+          <button id="missingCloseBtn" class="missing-close" type="button" aria-label="누락사항 닫기">×</button>
+        </div>
+        <div class="hint">드롭다운에 없는 구역 · 작업구분 · 작업방식을 직접 적어 둡니다. 작업일은 위 작업일로 들어갑니다. 여기 적은 내용은 드롭다운과 생산통합지표에는 들어가지 않고, 엑셀 '일일 실적 누락 추가사항' 시트에 따로 모입니다.</div>
+        <div class="missing-grid">
+          <div><label for="missingShipType">선종<span class="missing-req">*</span></label><input id="missingShipType" list="missingShipTypeList" autocomplete="off" placeholder="예: LPG"></div>
+          <div><label for="missingShipNo">호선<span class="missing-req">*</span></label><input id="missingShipNo" list="missingShipNoList" autocomplete="off" placeholder="예: 2378"></div>
+          <div><label for="missingStage">STAGE<span class="missing-req">*</span></label><input id="missingStage" list="missingStageList" autocomplete="off" placeholder="예: DOCK"></div>
+          <div><label for="missingArea">구역<span class="missing-req">*</span></label><input id="missingArea" list="missingAreaList" autocomplete="off" placeholder="예: NO.5 C/HOLD"></div>
+          <div><label for="missingWorkType">작업구분<span class="missing-req">*</span></label><input id="missingWorkType" list="missingWorkTypeList" autocomplete="off" placeholder="예: 센서"></div>
+          <div><label for="missingWorkMethod">작업방식<span class="missing-req">*</span></label><input id="missingWorkMethod" list="missingWorkMethodList" autocomplete="off" placeholder="예: 설치"></div>
+          <div><label for="missingManpower">투입 인원(명)</label><input id="missingManpower" type="number" inputmode="numeric" min="0" step="1" placeholder="비워도 됩니다"></div>
+          <div><label for="missingRate">공정률(%)</label><input id="missingRate" type="number" inputmode="decimal" min="0" max="100" step="any" placeholder="비워도 됩니다"></div>
+          <div class="missing-wide"><label for="missingNote">비고</label><input id="missingNote" autocomplete="off" placeholder="예: 구역 이름이 목록에 없음"></div>
+        </div>
+        <datalist id="missingShipTypeList"></datalist><datalist id="missingShipNoList"></datalist><datalist id="missingStageList"></datalist>
+        <datalist id="missingAreaList"></datalist><datalist id="missingWorkTypeList"></datalist><datalist id="missingWorkMethodList"></datalist>
+        <button id="missingSaveBtn" class="primary" type="button">누락사항 저장</button>
+        <div id="missingStatus" class="status"></div>
+        <div id="missingList" class="missing-list"></div>
+      </div>
+
       <div class="schedule-actions">
+        <button id="openMissingBtn" class="missing-open-btn" type="button">누락사항 추가</button>
         <button id="addScheduleRowBtn" class="secondary" type="button">+ 작업 추가</button>
         <button id="saveScheduleBtn" class="primary" type="button" style="margin-top:0">일일작업 등록</button>
       </div>
@@ -1600,7 +1649,7 @@ function addScheduleRow(){
   $("scheduleRows").appendChild(scheduleRowTemplate(prefill));
   refreshScheduleRowHeads();
 }
-function resetScheduleForm(){$("scheduleWorkDate").value=localToday();$("scheduleAuthor").value=currentUserName;$("scheduleSaveStatus").textContent="";$("scheduleRows").innerHTML="";scheduleRowSeq=0;addScheduleRow()}
+function resetScheduleForm(){$("scheduleWorkDate").value=localToday();$("scheduleAuthor").value=currentUserName;$("scheduleSaveStatus").textContent="";$("scheduleRows").innerHTML="";scheduleRowSeq=0;addScheduleRow();resetMissingPanel()}
 function collectScheduleRows(){return [...$("scheduleRows").querySelectorAll(".schedule-row-card")].map(readScheduleCard)}
 /* 함께 등록한 작업 묶음 번호. 같은 묶음의 투입 인원은 합계에 한 번만 반영합니다. */
 function newScheduleBatchId(){
@@ -1771,7 +1820,117 @@ document.addEventListener("click",e=>{
   });
 });
 $("saveScheduleBtn").onclick=saveProductionSchedule;
-$("scheduleWorkDate").addEventListener("change",()=>refreshScheduleDayPeople());
+$("scheduleWorkDate").addEventListener("change",()=>{refreshScheduleDayPeople();if(!$("scheduleMissingPanel").classList.contains("hidden"))loadMissingItems()});
+
+/* ----- 누락사항 추가: 마스터(드롭다운)에 없는 작업을 적어 두는 칸 -----
+   production_missing_items 표에만 저장합니다. 드롭다운 · 생산통합지표에는 넣지 않고,
+   엑셀 '일일 실적 누락 추가사항' 시트(sheet-export/missing.csv)로 모읍니다. */
+const MISSING_TABLE="production_missing_items";
+const MISSING_FIELDS=[
+  {id:"missingShipType",field:"ship_type",label:"선종",particle:"을"},
+  {id:"missingShipNo",field:"ship_no",label:"호선",particle:"을"},
+  {id:"missingStage",field:"stage",label:"STAGE",particle:"를"},
+  {id:"missingArea",field:"area",label:"구역",particle:"을"},
+  {id:"missingWorkType",field:"work_type",label:"작업구분",particle:"을"},
+  {id:"missingWorkMethod",field:"work_method",label:"작업방식",particle:"을"}
+];
+function missingSchemaMessage(error){
+  const text=`${error?.code||""} ${error?.message||""}`;
+  if(/PGRST204|PGRST205|42703|42P01|schema cache|does not exist/i.test(text))return "누락사항 표가 아직 없습니다. 제공된 누락사항 SQL(hwdk_missing_items.sql)을 Supabase SQL Editor에서 먼저 실행하세요.";
+  return "";
+}
+function readMissingInputs(){
+  const v={};MISSING_FIELDS.forEach(f=>{v[f.field]=normalizeName($(f.id).value)});
+  return v;
+}
+/* 적는 동안 마스터에 있는 이름을 추천합니다(위 칸에 적은 값에 맞는 것만). 목록에 없는 값도 그대로 적을 수 있습니다. */
+function refreshMissingSuggestions(){
+  const v=readMissingInputs(),same=(a,b)=>!b||productionNormalize(a)===productionNormalize(b);
+  const pick=(field,filters)=>{
+    const out=[];
+    scheduleMaster.forEach(m=>{if(filters.every(f=>same(m[f],v[f]))&&m[field]&&!out.includes(m[field]))out.push(m[field])});
+    return out;
+  };
+  const fill=(id,values)=>{$(id).innerHTML=values.slice(0,300).map(x=>`<option value="${escapeHtml(x)}"></option>`).join("")};
+  const types=[...SHIP_TYPES];scheduleMaster.forEach(m=>{if(m.ship_type&&!types.includes(m.ship_type))types.push(m.ship_type)});
+  fill("missingShipTypeList",types);
+  fill("missingShipNoList",pick("ship_no",["ship_type"]));
+  const stages=pick("stage",["ship_type","ship_no"]);["P.E","DOCK","안벽"].forEach(x=>{if(!stages.includes(x))stages.push(x)});
+  fill("missingStageList",stages);
+  fill("missingAreaList",pick("area",["ship_type","ship_no","stage"]));
+  fill("missingWorkTypeList",pick("work_type",["ship_type","stage"]));
+  fill("missingWorkMethodList",pick("work_method",["work_type"]));
+}
+function resetMissingPanel(){
+  $("scheduleMissingPanel").classList.add("hidden");$("openMissingBtn").classList.remove("open");
+  MISSING_FIELDS.forEach(f=>{$(f.id).value=""});["missingManpower","missingRate","missingNote"].forEach(id=>{$(id).value=""});
+  $("missingStatus").textContent="";$("missingList").innerHTML="";
+}
+function openMissingPanel(){
+  const panel=$("scheduleMissingPanel");
+  if(!panel.classList.contains("hidden")){panel.classList.add("hidden");$("openMissingBtn").classList.remove("open");return}
+  /* 마지막 작업 칸에서 고른 선종 · 호선 · STAGE 가 있으면 미리 채웁니다. */
+  const cards=$("scheduleRows").querySelectorAll(".schedule-row-card"),last=cards[cards.length-1];
+  if(last){
+    const sel=readScheduleSelection(last);
+    [["missingShipType","ship_type"],["missingShipNo","ship_no"],["missingStage","stage"]].forEach(([id,f])=>{if(!$(id).value&&sel[f])$(id).value=sel[f]});
+  }
+  panel.classList.remove("hidden");$("openMissingBtn").classList.add("open");$("missingStatus").textContent="";
+  refreshMissingSuggestions();loadMissingItems();
+  panel.scrollIntoView({behavior:"smooth",block:"start"});
+  const firstEmpty=MISSING_FIELDS.find(f=>!$(f.id).value);
+  setTimeout(()=>$((firstEmpty||MISSING_FIELDS[3]).id).focus({preventScroll:true}),250);
+}
+async function loadMissingItems(){
+  const box=$("missingList"),workDate=$("scheduleWorkDate").value;
+  if(!workDate){box.innerHTML="";return}
+  const {data,error}=await supabase.from(MISSING_TABLE).select("id,work_date,ship_type,ship_no,stage,area,work_type,work_method,manpower,progress_rate,note,author_name,created_by,created_at").eq("work_date",workDate).order("created_at",{ascending:true});
+  if(error){box.innerHTML=`<div class="hint">${escapeHtml(missingSchemaMessage(error)||("누락사항을 불러오지 못했습니다: "+(error.message||"오류")))}</div>`;return}
+  const rows=data||[];
+  if(!rows.length){box.innerHTML=`<div class="hint">${escapeHtml(workDate)} 에 적은 누락사항이 아직 없습니다.</div>`;return}
+  box.innerHTML=`<div class="missing-list-title">${escapeHtml(workDate)} 에 적은 누락사항 ${rows.length}건</div>`+rows.map(r=>{
+    const extra=[r.manpower!==null&&r.manpower!==undefined?`${r.manpower}명`:"",r.progress_rate!==null&&r.progress_rate!==undefined?`${Number(r.progress_rate)}%`:""].filter(Boolean).join(" · ");
+    const canDelete=isAdmin||r.created_by===currentUserId;
+    return `<div class="missing-item"><div><div class="missing-item-main">${escapeHtml(`${r.ship_type} ${r.ship_no} · ${r.stage} · ${r.area} · ${r.work_type} / ${r.work_method}`)}${extra?` · ${escapeHtml(extra)}`:""}</div><div class="missing-item-meta">작성자 ${escapeHtml(r.author_name||"-")}${r.note?` · ${escapeHtml(r.note)}`:""}</div></div>${canDelete?`<button type="button" class="secondary" data-missing-delete="${escapeHtml(r.id)}">삭제</button>`:""}</div>`;
+  }).join("");
+  box.querySelectorAll("[data-missing-delete]").forEach(btn=>btn.onclick=async()=>{
+    if(!confirm("이 누락사항을 삭제할까요?"))return;
+    btn.disabled=true;
+    const {error:delError}=await supabase.from(MISSING_TABLE).delete().eq("id",btn.dataset.missingDelete);
+    if(delError){$("missingStatus").textContent="삭제 실패: "+(missingSchemaMessage(delError)||delError.message||"오류");btn.disabled=false;return}
+    $("missingStatus").textContent="삭제했습니다.";loadMissingItems();
+  });
+}
+async function saveMissingItem(){
+  const status=$("missingStatus"),btn=$("missingSaveBtn"),workDate=$("scheduleWorkDate").value,v=readMissingInputs();
+  if(!workDate){status.textContent="위 작업일을 먼저 선택하세요.";return}
+  const empty=MISSING_FIELDS.find(f=>!v[f.field]);
+  if(empty){status.textContent=`${empty.label}${empty.particle} 적어 주세요.`;$(empty.id).focus();return}
+  const manText=$("missingManpower").value.trim(),rateText=$("missingRate").value.trim();
+  const manpower=manText===""?null:Number(manText),rate=rateText===""?null:Number(rateText);
+  if(manpower!==null&&(!Number.isInteger(manpower)||manpower<0)){status.textContent="투입 인원은 0 이상의 정수로 적어 주세요.";return}
+  if(rate!==null&&(!Number.isFinite(rate)||rate<0||rate>100)){status.textContent="공정률은 0 ~ 100 사이 숫자로 적어 주세요.";return}
+  /* 이미 마스터에 있는 작업이면 드롭다운에서 고르도록 안내합니다. */
+  const key=MISSING_FIELDS.map(f=>productionNormalize(v[f.field])).join("|||");
+  if(scheduleMaster.some(m=>MISSING_FIELDS.map(f=>productionNormalize(m[f.field])).join("|||")===key)){
+    status.textContent="이미 목록에 있는 작업입니다. 위 작업 칸의 드롭다운에서 골라 일일작업으로 등록하세요.";return;
+  }
+  try{
+    btn.disabled=true;status.textContent="누락사항 저장 중...";
+    const now=new Date().toISOString();
+    const {error}=await supabase.from(MISSING_TABLE).insert({work_date:workDate,...v,manpower,progress_rate:rate,note:normalizeName($("missingNote").value)||null,author_name:currentUserName,created_by:currentUserId,updated_at:now});
+    if(error)throw error;
+    status.textContent=`저장했습니다 · ${v.ship_type} ${v.ship_no} ${v.area} ${v.work_type} / ${v.work_method}. 엑셀 '일일 실적 누락 추가사항' 시트에 들어갑니다.`;
+    /* 같은 호선 · 구역의 다른 작업을 이어서 적기 쉽게 선종 · 호선 · STAGE · 구역은 남겨 둡니다. */
+    ["missingWorkType","missingWorkMethod","missingManpower","missingRate","missingNote"].forEach(id=>{$(id).value=""});
+    refreshMissingSuggestions();loadMissingItems();
+    $("missingWorkType").focus({preventScroll:true});
+  }catch(e){status.textContent="저장 실패: "+(missingSchemaMessage(e)||e?.message||"오류")}finally{btn.disabled=false}
+}
+$("openMissingBtn").onclick=openMissingPanel;
+$("missingCloseBtn").onclick=()=>{$("scheduleMissingPanel").classList.add("hidden");$("openMissingBtn").classList.remove("open")};
+$("missingSaveBtn").onclick=saveMissingItem;
+MISSING_FIELDS.forEach(f=>$(f.id).addEventListener("input",refreshMissingSuggestions));
 $("refreshScheduleListBtn").onclick=loadProductionScheduleList;
 $("scheduleSearchBtn").onclick=loadProductionScheduleList;
 $("scheduleResetBtn").onclick=()=>{$("scheduleFilterDate").value="";$("scheduleFilterShip").value="";$("scheduleFilterAuthor").value="";loadProductionScheduleList()};
