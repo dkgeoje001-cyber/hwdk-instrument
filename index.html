@@ -202,6 +202,68 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .schedule-actions #saveScheduleBtn{grid-column:1/-1}
 .missing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+/* 자재관리대장 */
+.mat-tabs .mat-count{display:inline-block;min-width:22px;margin-left:4px;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.25);font-size:12px}
+.mat-tabs button:not(.active) .mat-count{background:#d5dbe1;color:#33404d}
+.mat-filters{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:8px;margin-top:12px}
+.mat-filters input,.mat-filters select{margin:0}
+.mat-cats{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.mat-cat-chip{padding:6px 10px;border-radius:999px;background:#eef1e4;color:#4a4c2b;font-size:12px;font-weight:800;border:1px solid #d6d9bf}
+.mat-cat-chip.active{background:#5d5f37;color:#fff;border-color:#5d5f37}
+.mat-group{margin-top:14px}
+.mat-group-title{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:900;color:#4a4c2b;padding:6px 2px;border-bottom:2px solid #5d5f37}
+.mat-group-title span{font-size:12px;color:#6b6d4a}
+.mat-out-row{display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;margin-top:7px;padding:11px 12px;background:#fff;border:1px solid #dfe2cf;border-left:5px solid #b7791f;border-radius:9px;text-align:left;color:#222;font-weight:400}
+.mat-out-row.overdue{border-left-color:#d64545;background:#fff7f7}
+.mat-out-row,.mat-free-chip,.mat-tabs button{-webkit-tap-highlight-color:transparent}
+.mat-nowrap{white-space:nowrap}
+.mat-code{font-family:Consolas,"Courier New",monospace;font-size:15px;font-weight:900;color:#1f2933}
+.mat-name{font-size:14px;font-weight:800;color:#33404d;overflow-wrap:anywhere}
+.mat-meta{font-size:12px;color:#66707a;margin-top:2px;line-height:1.45;overflow-wrap:anywhere}
+.mat-days{font-size:12px;font-weight:900;color:#8a5700;background:#fff0c9;border-radius:999px;padding:4px 9px;white-space:nowrap}
+.mat-out-row.overdue .mat-days{background:#ffe0e0;color:#b42318}
+.mat-free-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:7px;margin-top:8px}
+.mat-free-chip{padding:10px 6px;border-radius:9px;background:#f4f7ee;border:1px solid #cfd8b8;color:#2f3a1c;text-align:center;font-weight:400}
+.mat-free-chip .mat-code{font-size:14px;color:#2f5d1f}
+.mat-free-chip .mat-meta{margin-top:1px}
+.mat-hist-row{padding:10px 12px;margin-top:7px;background:#fff;border:1px solid #e1e5ea;border-radius:9px}
+.mat-hist-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.mat-hist-photos{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.mat-hist-photos img{width:72px;height:72px;object-fit:cover;border-radius:7px;border:1px solid #d9dee3;cursor:pointer}
+.mat-photo-btn{padding:7px 10px;font-size:12px;background:#eef1e4;color:#4a4c2b}
+.mat-state{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:900;white-space:nowrap}
+.mat-state.out{background:#fff0c9;color:#8a5700}.mat-state.back{background:#dcefe5;color:#16603c}
+.mat-sheet{position:fixed;inset:0;z-index:8500;background:rgba(15,23,32,.55);display:flex;align-items:flex-end;justify-content:center}
+.mat-sheet-card{width:100%;max-width:560px;max-height:92vh;overflow-y:auto;background:#fff;border-radius:16px 16px 0 0;padding:16px 16px 22px;box-shadow:0 -6px 24px rgba(0,0,0,.18)}
+.mat-sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.mat-sheet-code{font-family:Consolas,"Courier New",monospace;font-size:22px;font-weight:900;color:#1f2933}
+.mat-sheet-name{font-size:15px;font-weight:800;color:#4a4c2b;margin-top:2px}
+.mat-sheet-close{width:34px;height:34px;padding:0;border-radius:50%;background:#e8edf2;color:#33404d;font-size:19px;line-height:34px;flex:0 0 34px}
+.mat-sheet-info{margin-top:12px;padding:11px 12px;border-radius:9px;background:#f4f7ee;border:1px solid #d6dcc0;font-size:14px;line-height:1.6}
+.mat-sheet-info.out{background:#fff8e7;border-color:#e5c76f}
+.mat-sheet-info.overdue{background:#fff1f1;border-color:#f0a3a3}
+.mat-sheet-card .primary{background:#5d5f37}
+.mat-sheet-card #matReturnBtn{background:#167148}
+.mat-cam-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mat-cam-row label{margin:0;display:flex;align-items:center;justify-content:center;gap:6px;padding:13px 8px;border-radius:9px;background:#16324f;color:#fff;font-weight:800;cursor:pointer;text-align:center}
+.mat-cam-row label.alt{background:#e8edf2;color:#222}
+.mat-file-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.mat-photo-preview{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.mat-photo-preview div{position:relative}
+.mat-photo-preview img{width:84px;height:84px;object-fit:cover;border-radius:8px;border:1px solid #d9dee3}
+.mat-photo-preview button{position:absolute;right:-6px;top:-6px;width:24px;height:24px;padding:0;border-radius:50%;background:#d64545;color:#fff;font-size:14px;line-height:24px}
+.mat-req{color:#c2410c;margin-left:2px}
+.mat-cancel-btn{width:100%;margin-top:8px;background:transparent;color:#8a5700;text-decoration:underline;font-size:13px}
+.mat-item-history{margin-top:16px;border-top:1px solid #e5e8eb;padding-top:10px}
+.mat-item-history-title{font-size:13px;font-weight:900;color:#4a4c2b}
+.mat-item-history .mat-hist-row{padding:8px 10px}
+@media(max-width:720px){
+.mat-filters{grid-template-columns:1fr}
+.mat-out-row{grid-template-columns:78px minmax(0,1fr) auto;gap:8px;padding:10px}
+.mat-code{font-size:14px}
+.mat-free-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.mat-sheet-card{max-height:94vh;padding:14px 14px 20px}
+}
 </style>
 </head>
 <body>
@@ -331,7 +393,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
         <div class="dashboard-grid">
           <button id="openMaterialLedgerBtn" class="module-btn module-material" type="button">
             <span class="module-name">자재관리대장</span>
-            <span class="module-sub">자재 입·출고 및 재고관리</span>
+            <span class="module-sub">자재 불출 · 반납 · 불출현황</span>
           </button>
         </div>
       </div>
@@ -464,6 +526,63 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
     <div id="boardList"></div>
   </div>
 </div>
+
+<!-- 자재관리대장 모듈 -->
+<div id="materialApp" class="container hidden">
+  <div class="tabs mat-tabs">
+    <button id="matOutTab" class="active" type="button">불출중<span id="matOutCount" class="mat-count">0</span></button>
+    <button id="matFreeTab" type="button">불출가능<span id="matFreeCount" class="mat-count">0</span></button>
+    <button id="matHistoryTab" type="button">이력</button>
+  </div>
+  <div class="card">
+    <div class="section-heading">
+      <h2 id="matTitle">불출중 자재</h2>
+      <button id="matRefreshBtn" class="refresh" type="button">새로고침</button>
+    </div>
+    <div id="matHint" class="hint"></div>
+    <div class="mat-filters">
+      <input id="matSearch" type="search" autocomplete="off" placeholder="고유번호 · 품목 · 사용자 검색 (예: WR-08, 사다리, 한장훈)">
+      <select id="matCategory"><option value="">전체 품목</option></select>
+    </div>
+    <div id="matStatus" class="status"></div>
+    <div id="matList"></div>
+  </div>
+</div>
+<div id="matSheet" class="mat-sheet hidden" role="dialog" aria-modal="true">
+  <div class="mat-sheet-card">
+    <div class="mat-sheet-head">
+      <div><div id="matSheetCode" class="mat-sheet-code"></div><div id="matSheetName" class="mat-sheet-name"></div></div>
+      <button id="matSheetClose" class="mat-sheet-close" type="button" aria-label="닫기">×</button>
+    </div>
+    <div id="matSheetInfo" class="mat-sheet-info"></div>
+    <div id="matCheckoutBox">
+      <label for="matBorrower">사용자(불출자)<span class="mat-req">*</span></label>
+      <input id="matBorrower" list="matPeopleList" autocomplete="off" placeholder="이름">
+      <label for="matOutNote">메모 (선택)</label>
+      <input id="matOutNote" autocomplete="off" placeholder="예: 2371 DOCK 작업용">
+      <button id="matCheckoutBtn" class="primary" type="button">불출 등록</button>
+    </div>
+    <div id="matReturnBox">
+      <label for="matReturner">반납자<span class="mat-req">*</span></label>
+      <input id="matReturner" list="matPeopleList" autocomplete="off" placeholder="이름">
+      <label>반납 사진<span class="mat-req">*</span> <span class="hint" style="display:inline">1장 이상 찍어야 반납됩니다</span></label>
+      <div class="mat-cam-row">
+        <label for="matPhotoCamera">📷 사진 촬영</label>
+        <label for="matPhotoAlbum" class="alt">앨범에서 선택</label>
+      </div>
+      <input id="matPhotoCamera" class="mat-file-input" type="file" accept="image/*" capture="environment">
+      <input id="matPhotoAlbum" class="mat-file-input" type="file" accept="image/*,.jpg,.jpeg,.jfif,.png,.webp,.avif,.gif,.bmp,.heic,.heif" multiple>
+      <div id="matPhotoPreview" class="mat-photo-preview"></div>
+      <label for="matReturnNote">메모 (선택)</label>
+      <input id="matReturnNote" autocomplete="off" placeholder="예: 와이어 끝부분 손상">
+      <button id="matReturnBtn" class="primary" type="button">반납 등록</button>
+      <button id="matCancelLoanBtn" class="mat-cancel-btn hidden" type="button">잘못 누른 불출 취소</button>
+    </div>
+    <div id="matSheetStatus" class="status"></div>
+    <div id="matItemHistory" class="mat-item-history"></div>
+  </div>
+</div>
+<datalist id="matPeopleList"></datalist>
 
 <!-- BHD 모듈 -->
 <div id="bhdApp" class="container hidden">
@@ -823,7 +942,7 @@ async function nameToSyntheticEmail(name){
   return `u_${hex.slice(0,40)}@hwdk-bhd.com`;
 }
 
-function hideAllMain(){authScreen.classList.add("hidden");moduleHome.classList.add("hidden");scheduleApp.classList.add("hidden");$("productionDashboardApp")?.classList.add("hidden");$("boardApp")?.classList.add("hidden");bhdApp.classList.add("hidden");requestApp.classList.add("hidden");myWorkApp.classList.add("hidden")}
+function hideAllMain(){authScreen.classList.add("hidden");moduleHome.classList.add("hidden");scheduleApp.classList.add("hidden");$("productionDashboardApp")?.classList.add("hidden");$("boardApp")?.classList.add("hidden");$("materialApp")?.classList.add("hidden");if($("matSheet")&&!$("matSheet").classList.contains("hidden"))closeMaterialSheet();bhdApp.classList.add("hidden");requestApp.classList.add("hidden");myWorkApp.classList.add("hidden")}
 function updateHeader(){
   $("userBadge").textContent=isAdmin?`관리자 · ${currentUserName||"관리자"}`:currentUserName;
   $("userBadge").className=isAdmin?"user-badge admin":"user-badge";
@@ -958,7 +1077,7 @@ async function enterWorkerSession(user){
   currentUserName=name;startNotificationPolling();showHome(true);
 }
 
-$("openMaterialLedgerBtn").onclick=()=>alert("자재관리대장은 메뉴를 먼저 반영했습니다. 세부 등록항목은 다음 개발 단계에서 연결할 수 있습니다.");
+$("openMaterialLedgerBtn").onclick=()=>showMaterial("out",true);
 
 $("showSignupBtn").onclick=()=>{
   setAuthMode("signup");
@@ -2224,6 +2343,234 @@ function showBoard(push=true,focusId=null){
   if(push)pushState({screen:"board",admin:isAdmin});
 }
 $("openBoardBtn").onclick=()=>showBoard(true);
+
+/* ===== 자재관리대장: 자재마다 고유번호(품목약호-기존번호), 불출중 / 불출가능 목록, 눌러서 불출 · 사진 찍고 반납 =====
+   equipment_items(자재 1개 = 1행), equipment_loans(불출 1번 = 1행, returned_at 이 비어 있으면 불출중).
+   한 자재는 반납 전에는 다시 불출되지 않습니다(DB 에서도 막음). 반납 사진은 bhd-images 의 equipment/ 폴더. */
+let matItems=[],matOpen=new Map(),matTab="out",matCategoryFilter="",matPeople=[],matSheetItem=null,matPhotos=[],matBusy=false,matLoadedAt=0;
+const MAT_TABS={out:{btn:"matOutTab",title:"불출중 자재",hint:"지금 나가 있는 자재입니다. 누르면 사진을 찍어 반납할 수 있습니다. 렌턴은 당일 반납 품목이라 하루가 지나면 빨간색으로 표시됩니다."},
+  free:{btn:"matFreeTab",title:"불출가능 자재",hint:"창고에 있는 자재입니다. 누르면 사용자를 적고 불출합니다."},
+  history:{btn:"matHistoryTab",title:"불출 · 반납 이력",hint:"최근 불출 · 반납 기록입니다(최근 300건). 반납 사진은 눌러서 크게 볼 수 있습니다."}};
+function matSchemaMessage(error){
+  const text=`${error?.code||""} ${error?.message||""}`;
+  if(/PGRST204|PGRST205|42703|42P01|schema cache|does not exist/i.test(text))return "자재관리대장 표가 아직 없습니다. 제공된 자재관리대장 SQL(hwdk_equipment.sql)을 Supabase SQL Editor에서 먼저 실행하세요.";
+  return "";
+}
+function matItemLabel(item){return [item.category,item.spec].filter(Boolean).join(" · ")}
+function matDateOnly(v){if(!v)return "";const d=new Date(v);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function matDays(v){if(!v)return 0;const a=new Date(matDateOnly(v)+"T00:00:00"),b=new Date(localToday()+"T00:00:00");return Math.max(0,Math.round((b-a)/86400000))}
+function matOutWhen(loan){return loan.source&&loan.source!=="앱"?matDateOnly(loan.out_at):formatDateTime(loan.out_at)}
+function matIsOverdue(item,loan){return !!(item?.same_day_return&&loan&&matDays(loan.out_at)>=1)}
+function matSearchText(item){const loan=matOpen.get(item.id);return [item.code,item.category,item.spec,item.item_no,loan?.borrower_name,loan?.out_note].map(x=>String(x||"").toLowerCase()).join(" ")}
+function matFiltered(){
+  const q=normalizeName($("matSearch").value).toLowerCase(),words=q?q.split(" "):[];
+  return matItems.filter(item=>(!matCategoryFilter||item.category===matCategoryFilter)&&words.every(w=>matSearchText(item).includes(w)));
+}
+async function loadMaterialData(){
+  const status=$("matStatus");
+  status.textContent="불러오는 중...";
+  const [itemRes,loanRes,crewRes,profileRes]=await Promise.all([
+    fetchAllRows(()=>supabase.from("equipment_items").select("id,code,category,spec,item_no,same_day_return,sort_order,active,note").eq("active",true).order("sort_order",{ascending:true}).order("code",{ascending:true})),
+    fetchAllRows(()=>supabase.from("equipment_loans").select("id,item_id,borrower_name,out_at,out_by,out_author,out_note,source").is("returned_at",null).order("out_at",{ascending:true})),
+    supabase.from("production_crews").select("member_name,team_order,member_order").eq("active",true).order("team_order",{ascending:true}).order("member_order",{ascending:true}),
+    supabase.from("user_profiles").select("name").order("name",{ascending:true})
+  ]);
+  const error=itemRes.error||loanRes.error;
+  if(error){status.textContent=matSchemaMessage(error)||("자재 목록을 불러오지 못했습니다: "+(error.message||"오류"));matItems=[];matOpen=new Map();renderMaterial();return}
+  matItems=itemRes.data||[];
+  matOpen=new Map((loanRes.data||[]).map(l=>[l.item_id,l]));
+  const people=[];const add=n=>{const v=normalizeName(n);if(v&&v!=="관리자"&&!people.includes(v))people.push(v)};
+  (crewRes?.data||[]).forEach(r=>add(r.member_name));(profileRes?.data||[]).forEach(r=>add(r.name));
+  matPeople=people;$("matPeopleList").innerHTML=people.map(n=>`<option value="${escapeHtml(n)}"></option>`).join("");
+  const cats=[];matItems.forEach(i=>{if(!cats.includes(i.category))cats.push(i.category)});
+  const sel=$("matCategory"),keep=matCategoryFilter;
+  sel.innerHTML=`<option value="">전체 품목</option>`+cats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+  sel.value=cats.includes(keep)?keep:"";matCategoryFilter=sel.value;
+  matLoadedAt=Date.now();status.textContent="";
+  renderMaterial();
+}
+function renderMaterialCounts(){
+  const out=matItems.filter(i=>matOpen.has(i.id)).length;
+  $("matOutCount").textContent=out;$("matFreeCount").textContent=matItems.length-out;
+}
+function matGroups(items){const map=new Map();items.forEach(i=>{if(!map.has(i.category))map.set(i.category,[]);map.get(i.category).push(i)});return [...map.entries()]}
+function renderMaterial(){
+  renderMaterialCounts();
+  Object.entries(MAT_TABS).forEach(([k,v])=>$(v.btn).classList.toggle("active",k===matTab));
+  $("matTitle").textContent=MAT_TABS[matTab].title;$("matHint").textContent=MAT_TABS[matTab].hint;
+  const box=$("matList");
+  if(matTab==="history"){loadMaterialHistory();return}
+  if(!matItems.length){box.innerHTML=$("matStatus").textContent?"":`<div class="empty">등록된 자재가 없습니다.</div>`;return}
+  const list=matFiltered().filter(i=>matTab==="out"?matOpen.has(i.id):!matOpen.has(i.id));
+  if(!list.length){box.innerHTML=`<div class="empty">${matTab==="out"?"불출중인 자재가 없습니다.":"불출가능한 자재가 없습니다."}</div>`;return}
+  if(matTab==="out"){
+    list.sort((a,b)=>(matIsOverdue(b,matOpen.get(b.id))-matIsOverdue(a,matOpen.get(a.id)))||(a.sort_order-b.sort_order));
+    box.innerHTML=matGroups(list).map(([cat,items])=>`<div class="mat-group"><div class="mat-group-title">${escapeHtml(cat)}<span>${items.length}개 불출중</span></div>${items.map(item=>{
+      const loan=matOpen.get(item.id),over=matIsOverdue(item,loan),days=matDays(loan.out_at);
+      const dayText=over?`당일 반납 지남 · ${days}일`:(days?`${days}일째`:"오늘");
+      return `<button type="button" class="mat-out-row${over?" overdue":""}" data-mat-item="${escapeHtml(item.id)}"><div class="mat-code">${escapeHtml(item.code)}</div><div><div class="mat-name">${escapeHtml(loan.borrower_name)}</div><div class="mat-meta">${escapeHtml(matItemLabel(item))} · <span class="mat-nowrap">불출 ${escapeHtml(matDateOnly(loan.out_at))}</span>${loan.out_note?` · ${escapeHtml(loan.out_note)}`:""}</div></div><span class="mat-days">${escapeHtml(dayText)}</span></button>`;
+    }).join("")}</div>`).join("");
+  }else{
+    box.innerHTML=matGroups(list).map(([cat,items])=>`<div class="mat-group"><div class="mat-group-title">${escapeHtml(cat)}<span>${items.length}개 가능</span></div><div class="mat-free-grid">${items.map(item=>`<button type="button" class="mat-free-chip" data-mat-item="${escapeHtml(item.id)}"><div class="mat-code">${escapeHtml(item.code)}</div>${item.spec?`<div class="mat-meta">${escapeHtml(item.spec)}</div>`:""}</button>`).join("")}</div></div>`).join("");
+  }
+  box.querySelectorAll("[data-mat-item]").forEach(btn=>btn.onclick=()=>openMaterialSheet(btn.dataset.matItem));
+}
+async function loadMaterialHistory(){
+  const box=$("matList");box.innerHTML=`<div class="hint">이력을 불러오는 중...</div>`;
+  const {data,error}=await supabase.from("equipment_loans").select("id,item_id,borrower_name,out_at,out_author,out_note,returned_at,return_name,return_author,return_photos,return_note,source").order("out_at",{ascending:false}).limit(300);
+  if(matTab!=="history")return;
+  if(error){box.innerHTML=`<div class="hint">${escapeHtml(matSchemaMessage(error)||("이력을 불러오지 못했습니다: "+(error.message||"오류")))}</div>`;return}
+  const byId=new Map(matItems.map(i=>[i.id,i])),q=normalizeName($("matSearch").value).toLowerCase(),words=q?q.split(" "):[];
+  const rows=(data||[]).filter(l=>{const item=byId.get(l.item_id);if(!item)return false;if(matCategoryFilter&&item.category!==matCategoryFilter)return false;const t=[item.code,item.category,item.spec,l.borrower_name,l.return_name].join(" ").toLowerCase();return words.every(w=>t.includes(w))});
+  if(!rows.length){box.innerHTML=`<div class="empty">이력이 없습니다.</div>`;return}
+  box.innerHTML=rows.map(l=>matHistoryRow(l,byId.get(l.item_id),true)).join("");
+  bindMaterialPhotoButtons(box);
+}
+function matHistoryRow(l,item,withCode){
+  const back=!!l.returned_at,photos=Array.isArray(l.return_photos)?l.return_photos:[];
+  return `<div class="mat-hist-row"><div class="mat-hist-top"><div>${withCode?`<span class="mat-code">${escapeHtml(item.code)}</span> <span class="mat-meta" style="display:inline">${escapeHtml(matItemLabel(item))}</span><br>`:""}<span class="mat-name">${escapeHtml(l.borrower_name)}</span> <span class="mat-meta" style="display:inline">불출 ${escapeHtml(matOutWhen(l))}${l.source&&l.source!=="앱"?` · ${escapeHtml(l.source)}`:(l.out_author&&l.out_author!==l.borrower_name?` · 등록 ${escapeHtml(l.out_author)}`:"")}</span>${l.out_note?`<div class="mat-meta">메모: ${escapeHtml(l.out_note)}</div>`:""}${back?`<div class="mat-meta">반납 ${escapeHtml(formatDateTime(l.returned_at))} · ${escapeHtml(l.return_name||"-")}${l.return_note?` · ${escapeHtml(l.return_note)}`:""}</div>`:""}</div><span class="mat-state ${back?"back":"out"}">${back?"반납":"불출중"}</span></div>${photos.length?`<button type="button" class="mat-photo-btn" data-mat-photos="${escapeHtml(JSON.stringify(photos))}">반납 사진 ${photos.length}장 보기</button><div class="mat-hist-photos"></div>`:""}</div>`;
+}
+function bindMaterialPhotoButtons(root){
+  root.querySelectorAll("[data-mat-photos]").forEach(btn=>btn.onclick=async()=>{
+    const paths=JSON.parse(btn.dataset.matPhotos||"[]"),wrap=btn.nextElementSibling;
+    btn.disabled=true;btn.textContent="사진 불러오는 중...";
+    const urls=await displayUrls(paths);
+    wrap.innerHTML=urls.map((u,i)=>`<img src="${escapeHtml(u)}" alt="반납 사진 ${i+1}" data-mat-zoom="${i}">`).join("")||`<span class="hint">사진을 불러오지 못했습니다.</span>`;
+    wrap.querySelectorAll("[data-mat-zoom]").forEach(img=>img.onclick=()=>openImageModal(img.src,"HWDK-반납사진.jpg",false));
+    btn.classList.add("hidden");
+  });
+}
+function showMaterial(tab="out",push=true){
+  hideAllMain();showHeader();$("materialApp").classList.remove("hidden");
+  matTab=MAT_TABS[tab]?tab:"out";
+  if(!matLoadedAt||Date.now()-matLoadedAt>15000)loadMaterialData();else renderMaterial();
+  if(push)pushState({screen:"material",tab:matTab,admin:isAdmin});
+}
+function setMaterialTab(tab){matTab=tab;renderMaterial();replaceState({screen:"material",tab,admin:isAdmin})}
+function renderMatPhotoPreview(){
+  const box=$("matPhotoPreview");
+  box.innerHTML=matPhotos.map((p,i)=>`<div><img src="${escapeHtml(p.url)}" alt="반납 사진 ${i+1}"><button type="button" data-mat-photo-del="${i}" aria-label="사진 빼기">×</button></div>`).join("");
+  box.querySelectorAll("[data-mat-photo-del]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.matPhotoDel);URL.revokeObjectURL(matPhotos[i].url);matPhotos.splice(i,1);renderMatPhotoPreview()});
+  $("matReturnBtn").textContent=matPhotos.length?`반납 등록 (사진 ${matPhotos.length}장)`:"반납 등록";
+}
+async function addMaterialPhotos(input){
+  const files=[...(input.files||[])];input.value="";
+  if(!files.length)return;
+  const status=$("matSheetStatus");
+  try{
+    const list=await normalizeSelectedImages(files,status);
+    list.forEach(f=>matPhotos.push({file:f,url:URL.createObjectURL(f)}));
+    status.textContent="";renderMatPhotoPreview();
+  }catch(e){status.textContent=e?.message||"사진을 읽지 못했습니다."}
+}
+/* 휴대폰 사진은 크기가 커서 긴 변 1600px 로 줄여 올립니다. */
+async function shrinkMaterialPhoto(file){
+  try{
+    const bitmap=await createImageBitmap(file),ratio=Math.min(1,1600/Math.max(bitmap.width,bitmap.height));
+    if(ratio>=1&&file.size<1500000){bitmap.close();return file}
+    const canvas=document.createElement("canvas");canvas.width=Math.round(bitmap.width*ratio);canvas.height=Math.round(bitmap.height*ratio);
+    canvas.getContext("2d").drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close();
+    const blob=await new Promise((res,rej)=>canvas.toBlob(b=>b?res(b):rej(new Error("사진 줄이기 실패")),"image/jpeg",.85));
+    return new File([blob],jpgName(file.name||"photo.jpg"),{type:"image/jpeg"});
+  }catch(e){return file}
+}
+function closeMaterialSheet(){
+  $("matSheet").classList.add("hidden");document.body.style.overflow="";
+  matPhotos.forEach(p=>URL.revokeObjectURL(p.url));matPhotos=[];matSheetItem=null;
+}
+async function openMaterialSheet(itemId){
+  const item=matItems.find(i=>i.id===itemId);if(!item)return;
+  matSheetItem=item;matPhotos.forEach(p=>URL.revokeObjectURL(p.url));matPhotos=[];
+  const loan=matOpen.get(item.id),me=isAdmin?"":normalizeName(currentUserName);
+  $("matSheetCode").textContent=item.code;$("matSheetName").textContent=matItemLabel(item)+(item.same_day_return?" · 당일 반납":"");
+  const info=$("matSheetInfo");
+  if(loan){
+    const over=matIsOverdue(item,loan),days=matDays(loan.out_at);
+    info.className="mat-sheet-info "+(over?"overdue":"out");
+    info.innerHTML=`<b>불출중</b> · 사용자 <b>${escapeHtml(loan.borrower_name)}</b><br>불출 ${escapeHtml(matOutWhen(loan))} (${days?`${days}일째`:"오늘"})${over?" · <b style=\"color:#b42318\">당일 반납 지남</b>":""}${loan.out_note?`<br>메모: ${escapeHtml(loan.out_note)}`:""}${loan.source&&loan.source!=="앱"?`<br><span class="hint">${escapeHtml(loan.source)}에서 옮긴 기록</span>`:""}`;
+    $("matCheckoutBox").classList.add("hidden");$("matReturnBox").classList.remove("hidden");
+    $("matReturner").value=me;$("matReturnNote").value="";
+    $("matCancelLoanBtn").classList.toggle("hidden",!(isAdmin||(loan.out_by&&loan.out_by===currentUserId)));
+  }else{
+    info.className="mat-sheet-info";info.innerHTML=`<b>불출가능</b> · 창고에 있는 자재입니다.`;
+    $("matCheckoutBox").classList.remove("hidden");$("matReturnBox").classList.add("hidden");
+    $("matBorrower").value=me;$("matOutNote").value="";
+  }
+  renderMatPhotoPreview();$("matSheetStatus").textContent="";
+  $("matSheet").classList.remove("hidden");document.body.style.overflow="hidden";
+  $("matSheet").querySelector(".mat-sheet-card").scrollTop=0;
+  loadMaterialItemHistory(item);
+}
+async function loadMaterialItemHistory(item){
+  const box=$("matItemHistory");box.innerHTML="";
+  const {data,error}=await supabase.from("equipment_loans").select("id,item_id,borrower_name,out_at,out_author,out_note,returned_at,return_name,return_author,return_photos,return_note,source").eq("item_id",item.id).order("out_at",{ascending:false}).limit(5);
+  if(error||matSheetItem?.id!==item.id)return;
+  const rows=(data||[]).filter(l=>l.returned_at);
+  if(!rows.length)return;
+  box.innerHTML=`<div class="mat-item-history-title">최근 반납 기록</div>`+rows.map(l=>matHistoryRow(l,item,false)).join("");
+  bindMaterialPhotoButtons(box);
+}
+async function checkoutMaterial(){
+  if(matBusy||!matSheetItem)return;
+  const status=$("matSheetStatus"),btn=$("matCheckoutBtn"),borrower=normalizeName($("matBorrower").value),item=matSheetItem;
+  if(!borrower){status.textContent="사용자(불출자) 이름을 적어 주세요.";$("matBorrower").focus();return}
+  try{
+    matBusy=true;btn.disabled=true;status.textContent="불출 등록 중...";
+    const {error}=await supabase.from("equipment_loans").insert({item_id:item.id,borrower_name:borrower,out_at:new Date().toISOString(),out_by:currentUserId,out_author:currentUserName,out_note:normalizeName($("matOutNote").value)||null});
+    if(error){
+      if(error.code==="23505"||/duplicate|equipment_loans_one_open/i.test(error.message||"")){status.textContent="이미 다른 사람이 불출한 자재입니다. 목록을 새로 고칩니다.";await loadMaterialData();return}
+      throw error;
+    }
+    closeMaterialSheet();$("matStatus").textContent=`${item.code} 불출 완료 · ${borrower}`;
+    await loadMaterialData();$("matStatus").textContent=`${item.code} 불출 완료 · ${borrower}`;
+  }catch(e){status.textContent="불출 실패: "+(matSchemaMessage(e)||e?.message||"오류")}finally{matBusy=false;btn.disabled=false}
+}
+async function returnMaterial(){
+  if(matBusy||!matSheetItem)return;
+  const status=$("matSheetStatus"),btn=$("matReturnBtn"),item=matSheetItem,loan=matOpen.get(item.id),returner=normalizeName($("matReturner").value);
+  if(!loan){status.textContent="이미 반납된 자재입니다.";return}
+  if(!returner){status.textContent="반납자 이름을 적어 주세요.";$("matReturner").focus();return}
+  if(!matPhotos.length){status.textContent="반납 사진을 1장 이상 찍어 주세요.";return}
+  try{
+    matBusy=true;btn.disabled=true;status.textContent=`사진 ${matPhotos.length}장 올리는 중...`;
+    const files=[];for(const p of matPhotos)files.push(await shrinkMaterialPhoto(p.file));
+    const paths=await uploadFiles(files,`equipment/${item.code}`);
+    status.textContent="반납 등록 중...";
+    const {data,error}=await supabase.from("equipment_loans").update({returned_at:new Date().toISOString(),return_name:returner,returned_by:currentUserId,return_author:currentUserName,return_photos:paths,return_note:normalizeName($("matReturnNote").value)||null}).eq("id",loan.id).is("returned_at",null).select("id");
+    if(error)throw error;
+    if(!data||!data.length){status.textContent="이미 다른 사람이 반납 처리했습니다. 목록을 새로 고칩니다.";await loadMaterialData();return}
+    closeMaterialSheet();
+    await loadMaterialData();$("matStatus").textContent=`${item.code} 반납 완료 · ${returner} · 사진 ${paths.length}장`;
+  }catch(e){status.textContent="반납 실패: "+(matSchemaMessage(e)||e?.message||"오류")}finally{matBusy=false;btn.disabled=false}
+}
+async function cancelMaterialLoan(){
+  if(matBusy||!matSheetItem)return;
+  const item=matSheetItem,loan=matOpen.get(item.id),status=$("matSheetStatus");
+  if(!loan||!confirm(`${item.code} 불출 기록(${loan.borrower_name})을 취소할까요? 반납이 아니라 기록 자체를 지웁니다.`))return;
+  try{
+    matBusy=true;status.textContent="취소 중...";
+    const {error}=await supabase.from("equipment_loans").delete().eq("id",loan.id).is("returned_at",null);
+    if(error)throw error;
+    closeMaterialSheet();await loadMaterialData();
+    $("matStatus").textContent=matOpen.has(item.id)?`${item.code} 불출 취소 권한이 없습니다(불출한 본인 또는 관리자만).`:`${item.code} 불출 기록을 취소했습니다.`;
+  }catch(e){status.textContent="취소 실패: "+(e?.message||"오류")}finally{matBusy=false}
+}
+$("matOutTab").onclick=()=>setMaterialTab("out");
+$("matFreeTab").onclick=()=>setMaterialTab("free");
+$("matHistoryTab").onclick=()=>setMaterialTab("history");
+$("matRefreshBtn").onclick=()=>loadMaterialData();
+let matSearchTimer=null;
+$("matSearch").addEventListener("input",()=>{if(matTab!=="history"){renderMaterial();return}clearTimeout(matSearchTimer);matSearchTimer=setTimeout(loadMaterialHistory,350)});
+$("matSearch").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.isComposing&&e.keyCode!==229&&matTab==="history")loadMaterialHistory()});
+$("matCategory").onchange=()=>{matCategoryFilter=$("matCategory").value;renderMaterial()};
+$("matSheetClose").onclick=closeMaterialSheet;
+$("matSheet").addEventListener("click",e=>{if(e.target===$("matSheet"))closeMaterialSheet()});
+$("matCheckoutBtn").onclick=checkoutMaterial;
+$("matReturnBtn").onclick=returnMaterial;
+$("matCancelLoanBtn").onclick=cancelMaterialLoan;
+$("matPhotoCamera").onchange=e=>addMaterialPhotos(e.target);
+$("matPhotoAlbum").onchange=e=>addMaterialPhotos(e.target);
+["matBorrower","matReturner","matOutNote","matReturnNote"].forEach(id=>$(id).addEventListener("input",()=>{if(!matBusy)$("matSheetStatus").textContent=""}));
 $("boardWriteBtn").onclick=openBoardForm;
 $("refreshBoardBtn").onclick=()=>loadBoardList();
 $("boardSaveBtn").onclick=saveBoardPost;
@@ -3566,7 +3913,7 @@ $("notificationBtn").onclick=()=>showMyWork(true);
 $("refreshMyWorkBtn").onclick=loadMyWork;
 
 /* ---------- 브라우저 뒤로가기 ---------- */
-async function renderHistoryState(state){const t=state||{screen:"auth"};if(t.screen!=="image")hideImageModalOnly();if(t.screen!=="log"&&t.screen!=="image")hideHistoryModalOnly();if(t.screen==="auth"){showAuth();return}if(t.admin){if(!await checkCurrentUserAdmin()){showAuth();replaceState({screen:"auth"});return}isAdmin=true;currentUserName="관리자"}showHeader();if(t.screen==="home"){showHome(false);return}if(t.screen==="mywork"){showMyWork(false);return}if(t.screen==="schedule-tab"){showScheduleTab(t.tab||"register");return}if(t.screen==="production-dashboard"){showProductionDashboard(false);return}if(t.screen==="board"){showBoard(false);return}if(t.screen==="bhd-tab"){showBhdTab(t.tab||"register");return}if(t.screen==="bhd-edit"){const r=await fetchRecordById(t.recordId);if(r)await loadForEdit(r,false);else showBhdTab("list");return}if(t.screen==="bhd-detail"){const r=await fetchRecordById(t.recordId);if(r)await renderRecordDetail(r,false);else showBhdTab("list");return}if(t.screen==="request-tab"){showRequestTab(t.tab||"register");return}if(t.screen==="request-detail"){const r=await fetchRequestById(t.recordId);if(r)await renderRequestDetail(r,false);else showRequestTab("list");return}if(t.screen==="log"){const r=await fetchRecordById(t.recordId);if(r)await openHistoryModal(r,Number(t.logIndex||0),false);return}if(t.screen==="image"){showImageModalOnly(t.url,t.filename||"HWDK-photo.jpg",!!t.mirror)}}
+async function renderHistoryState(state){const t=state||{screen:"auth"};if(t.screen!=="image")hideImageModalOnly();if(t.screen!=="log"&&t.screen!=="image")hideHistoryModalOnly();if(t.screen==="auth"){showAuth();return}if(t.admin){if(!await checkCurrentUserAdmin()){showAuth();replaceState({screen:"auth"});return}isAdmin=true;currentUserName="관리자"}showHeader();if(t.screen==="home"){showHome(false);return}if(t.screen==="mywork"){showMyWork(false);return}if(t.screen==="schedule-tab"){showScheduleTab(t.tab||"register");return}if(t.screen==="production-dashboard"){showProductionDashboard(false);return}if(t.screen==="board"){showBoard(false);return}if(t.screen==="material"){showMaterial(t.tab||"out",false);return}if(t.screen==="bhd-tab"){showBhdTab(t.tab||"register");return}if(t.screen==="bhd-edit"){const r=await fetchRecordById(t.recordId);if(r)await loadForEdit(r,false);else showBhdTab("list");return}if(t.screen==="bhd-detail"){const r=await fetchRecordById(t.recordId);if(r)await renderRecordDetail(r,false);else showBhdTab("list");return}if(t.screen==="request-tab"){showRequestTab(t.tab||"register");return}if(t.screen==="request-detail"){const r=await fetchRequestById(t.recordId);if(r)await renderRequestDetail(r,false);else showRequestTab("list");return}if(t.screen==="log"){const r=await fetchRecordById(t.recordId);if(r)await openHistoryModal(r,Number(t.logIndex||0),false);return}if(t.screen==="image"){showImageModalOnly(t.url,t.filename||"HWDK-photo.jpg",!!t.mirror)}}
 addEventListener("popstate",e=>{updateAppBackButton();renderHistoryState(e.state)});
 
 /* ---------- 초기 실행 ---------- */
