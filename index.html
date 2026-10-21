@@ -264,6 +264,121 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .mat-free-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .mat-sheet-card{max-height:94vh;padding:14px 14px 20px}
 }
+/* 자재이력카드 */
+.ec-tabs .mat-count{display:inline-block;min-width:22px;margin-left:4px;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.25);font-size:12px}
+.ec-tabs button:not(.active) .mat-count{background:#d5dbe1;color:#33404d}
+.module-equipcard{background:#46644f;color:#fff}
+.ec-head-btns{display:flex;gap:7px;align-items:center}
+.ec-add-btn{background:#46644f;color:#fff;padding:10px 13px;font-size:14px;white-space:nowrap}
+.ec-filters{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:12px}
+.ec-filters input,.ec-filters select{margin:0}
+.ec-row{display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;margin-top:7px;padding:11px 12px;background:#fff;border:1px solid #dde3dc;border-left:5px solid #46644f;border-radius:9px;text-align:left;color:#222;font-weight:400;-webkit-tap-highlight-color:transparent}
+.ec-row.soon{border-left-color:#d08a00;background:#fffcf2}
+.ec-row.over{border-left-color:#d64545;background:#fff7f7}
+.ec-row.st-수리중{border-left-color:#c2410c}
+.ec-row.st-폐기{border-left-color:#8a9199;background:#f3f4f5;color:#6b7280}
+.ec-row-badges{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.ec-due{display:inline-block;margin-top:4px;font-size:12px;font-weight:800;color:#46644f}
+.ec-due.none{color:#8a9199;font-weight:400}
+.ec-due.soon{color:#8a5700}
+.ec-due.over{color:#b42318}
+.ec-st{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:900;white-space:nowrap}
+.ec-st.st-정상{background:#dcefe5;color:#16603c}
+.ec-st.st-수리중{background:#fde7d6;color:#b54708}
+.ec-st.st-폐기{background:#4b5563;color:#fff}
+.ec-perm-hint{margin-top:14px;padding:9px 11px;background:#f4f7f3;border:1px solid #dbe4d8;border-radius:8px}
+.ec-detail-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.ec-badges{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end}
+.ec-alert{margin-top:12px;padding:10px 12px;border-radius:9px;font-size:14px;line-height:1.55;background:#fff8e7;border:1px solid #e5c76f;color:#5c4300}
+.ec-alert.over,.ec-alert.repair{background:#fff1f1;border-color:#f0a3a3;color:#8f1d1d}
+.ec-alert.dispose{background:#f1f2f4;border-color:#c5cad0;color:#374151}
+.ec-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.ec-act{padding:10px 13px;font-size:14px;background:#e8edf2;color:#1f2933}
+.ec-act.inspect{background:#46644f;color:#fff}
+.ec-act.issue{background:#c2410c;color:#fff}
+.ec-act.repair{background:#167148;color:#fff}
+.ec-act.dispose{background:#4b5563;color:#fff}
+.ec-act.ledger{background:#5d5f37;color:#fff}
+.ec-form{margin-top:12px;padding:13px;border-radius:10px;background:#f6f8f5;border:1px solid #d5dfd2}
+.ec-form-title{font-size:15px;font-weight:900;color:#2f4a36}
+.ec-form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 10px}
+.ec-form-grid .ec-wide{grid-column:1/-1}
+.ec-form textarea,.ec-textarea{min-height:76px}
+.ec-form-btns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:8px;margin-top:14px}
+.ec-form-btns button{margin:0}
+.ec-form .primary,#ecRegisterView .primary{background:#46644f}
+.ec-form.dispose .primary{background:#4b5563}
+.ec-form.issue .primary{background:#c2410c}
+.ec-seg{display:flex;gap:0;border:1px solid #c6cfd6;border-radius:8px;overflow:hidden;background:#fff}
+.ec-seg button{-webkit-tap-highlight-color:transparent;flex:1;padding:11px 6px;border-radius:0;background:#fff;color:#33404d;font-size:14px;border-left:1px solid #e1e6ea}
+.ec-seg button:first-child{border-left:0}
+.ec-seg button.active{background:#46644f;color:#fff}
+.ec-seg button.active[data-v="불량"],.ec-seg button.active[data-v="고장"]{background:#c2410c}
+.ec-seg button.active[data-v="문제"],.ec-seg button.active[data-v="문제 있음"]{background:#b7791f}
+.ec-check{display:flex;align-items:center;gap:7px;margin-top:12px;font-weight:700;cursor:pointer}
+.ec-check input{width:20px;height:20px;margin:0;flex:0 0 20px;accent-color:#46644f}
+.ec-sub{margin:0;font-size:17px;color:#2f4a36}
+.ec-info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin-top:10px;background:#e3e8e2;border:1px solid #e3e8e2;border-radius:9px;overflow:hidden}
+.ec-info{padding:9px 11px;background:#fff;min-width:0}
+.ec-info.wide{grid-column:1/-1}
+.ec-info-label{font-size:12px;color:#6b7280;font-weight:700}
+.ec-info-value{margin-top:3px;font-size:15px;font-weight:800;color:#1f2933;overflow-wrap:anywhere;line-height:1.45}
+.ec-info-value.none{color:#a0a7ae;font-weight:400}
+.ec-info-value .ec-due{margin-top:0;margin-left:4px}
+.ec-ev{margin-top:8px;padding:10px 12px;background:#fff;border:1px solid #e1e5ea;border-left:5px solid #94a3b8;border-radius:9px}
+.ec-ev.t-점검{border-left-color:#46644f}.ec-ev.t-점검.bad,.ec-ev.t-고장{border-left-color:#d64545}
+.ec-ev.t-문제{border-left-color:#d08a00}.ec-ev.t-특이사항{border-left-color:#2f6fae}
+.ec-ev.t-수리완료{border-left-color:#167148}.ec-ev.t-폐기{border-left-color:#374151}
+.ec-ev.t-정보수정{border-left-color:#6366f1}
+.ec-ev-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ec-ev-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.ec-ev-date{font-size:13px;font-weight:900;color:#33404d;font-family:Consolas,"Courier New",monospace}
+.ec-type{display:inline-block;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:900;white-space:nowrap;background:#e8edf2;color:#33404d}
+.ec-type.t-점검{background:#dcefe5;color:#16603c}.ec-type.t-점검.bad,.ec-type.t-고장{background:#ffe0e0;color:#b42318}
+.ec-type.t-문제{background:#fff0c9;color:#8a5700}.ec-type.t-특이사항{background:#e3eefa;color:#1e4f86}
+.ec-type.t-수리완료{background:#dcefe5;color:#16603c}.ec-type.t-폐기{background:#374151;color:#fff}
+.ec-type.t-정보수정{background:#eef0ff;color:#3730a3}
+.ec-ev-content{margin-top:6px;font-size:14px;line-height:1.55;color:#1f2933;white-space:pre-wrap;overflow-wrap:anywhere}
+.ec-ev-tools{display:flex;gap:5px;flex:0 0 auto}
+.ec-ev-tools button{padding:5px 9px;font-size:12px;background:#eef1f4;color:#33404d}
+.ec-ev-tools button.del{background:#fbe9e9;color:#a12b2b}
+.ec-ev-code{padding:0;background:transparent;color:#1f2933;font-weight:900;text-decoration:underline;font-size:14px;font-family:Consolas,"Courier New",monospace}
+.ec-ev-edit{margin-top:8px}
+.ec-ev-edit .ec-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ec-loans-toggle{width:100%;margin-top:12px;background:#f1f3ea;color:#4a4c2b;font-size:13px}
+.ec-code-preview{margin-top:12px;padding:10px 12px;border-radius:9px;background:#f4f7f3;border:1px dashed #9db39f;font-size:14px;line-height:1.6;min-height:22px}
+.ec-code-preview b{font-family:Consolas,"Courier New",monospace}
+.ec-code-preview .dup{color:#b42318;font-weight:800}
+.ec-next-no{font-size:12px;color:#46644f;margin-top:4px}
+.mat-free-chip.repair{background:#f1f2f4;border-color:#d3d7dc;color:#8a9199}
+.mat-free-chip.repair .mat-code{color:#8a9199;text-decoration:line-through}
+.mat-chip-flag{display:inline-block;margin-top:3px;padding:1px 6px;border-radius:999px;font-size:11px;font-weight:900}
+.mat-chip-flag.repair{background:#fde7d6;color:#b54708}
+.mat-chip-flag.over{background:#ffe0e0;color:#b42318}
+.mat-sheet-info.repair{background:#f3f4f5;border-color:#c9ced4}
+.mat-card-link{display:block;margin:8px 0 0 auto;padding:6px 10px;background:#eef3ec;color:#2f4a36;font-size:13px}
+.mat-cond{margin-top:2px}
+@media(max-width:720px){
+.ec-filters{grid-template-columns:1fr 1fr}
+.ec-filters input{grid-column:1/-1}
+.ec-row{grid-template-columns:78px minmax(0,1fr) auto;gap:8px;padding:10px}
+.ec-head-btns .ec-add-btn{padding:9px 10px;font-size:13px}
+.ec-actions{display:grid;grid-template-columns:1fr 1fr}
+.ec-act{width:100%}
+.ec-form-grid{grid-template-columns:1fr 1fr}
+.ec-info-grid{grid-template-columns:1fr 1fr}
+.ec-info.m-wide{grid-column:1/-1}
+.ec-info-value{font-size:14px}
+.ec-ev-edit .ec-form-grid{grid-template-columns:1fr}
+}
+.ec-ev .mat-photo-btn{margin-top:7px}
+.ec-ev-edit .primary{background:#46644f}
+.ec-tabs button.ec-due-alert:not(.active) .mat-count{background:#d64545;color:#fff}
+@media(max-width:720px){
+#ecIssueWrap{grid-column:1/-1}
+}
+/* 로그인: 비밀번호 칸 안내(사번)는 회색 작은 글씨 */
+#loginPassword::placeholder{color:#9aa3ad;font-size:13px;font-weight:400}
 </style>
 </head>
 <body>
@@ -278,7 +393,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
     <input id="loginName" type="text" autocomplete="username" placeholder="이름 입력">
 
     <label>비밀번호</label>
-    <input id="loginPassword" type="password" autocomplete="current-password" placeholder="비밀번호 입력">
+    <input id="loginPassword" type="password" autocomplete="current-password" placeholder="사번">
 
     <div id="loginActions" class="auth-actions">
       <button id="loginBtn" class="primary" style="margin-top:0">로그인</button>
@@ -394,6 +509,10 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
           <button id="openMaterialLedgerBtn" class="module-btn module-material" type="button">
             <span class="module-name">자재관리대장</span>
             <span class="module-sub">자재 불출 · 반납 · 불출현황</span>
+          </button>
+          <button id="openEquipCardBtn" class="module-btn module-equipcard" type="button">
+            <span class="module-name">자재이력카드</span>
+            <span class="module-sub">점검주기 · 점검 · 고장 · 구매 · 폐기 이력</span>
           </button>
         </div>
       </div>
@@ -555,6 +674,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
       <button id="matSheetClose" class="mat-sheet-close" type="button" aria-label="닫기">×</button>
     </div>
     <div id="matSheetInfo" class="mat-sheet-info"></div>
+    <button id="matCardLink" type="button" class="mat-card-link">자재이력카드 보기 →</button>
     <div id="matCheckoutBox">
       <label for="matBorrower">사용자(불출자)<span class="mat-req">*</span></label>
       <input id="matBorrower" list="matPeopleList" autocomplete="off" placeholder="이름">
@@ -573,7 +693,10 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
       <input id="matPhotoCamera" class="mat-file-input" type="file" accept="image/*" capture="environment">
       <input id="matPhotoAlbum" class="mat-file-input" type="file" accept="image/*,.jpg,.jpeg,.jfif,.png,.webp,.avif,.gif,.bmp,.heic,.heif" multiple>
       <div id="matPhotoPreview" class="mat-photo-preview"></div>
-      <label for="matReturnNote">메모 (선택)</label>
+      <label>반납 상태<span class="mat-req">*</span></label>
+      <div id="matReturnCond" class="ec-seg mat-cond"><button type="button" data-v="정상" class="active">정상</button><button type="button" data-v="문제 있음">문제 있음</button><button type="button" data-v="고장">고장</button></div>
+      <div id="matCondHint" class="hint">'문제 있음' · '고장' · 메모는 자재이력카드 이력에 자동으로 남습니다. '고장'이면 수리 완료 전까지 불출이 막힙니다.</div>
+      <label for="matReturnNote" id="matReturnNoteLabel">메모 (선택)</label>
       <input id="matReturnNote" autocomplete="off" placeholder="예: 와이어 끝부분 손상">
       <button id="matReturnBtn" class="primary" type="button">반납 등록</button>
       <button id="matCancelLoanBtn" class="mat-cancel-btn hidden" type="button">잘못 누른 불출 취소</button>
@@ -583,6 +706,134 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
   </div>
 </div>
 <datalist id="matPeopleList"></datalist>
+
+<!-- 자재이력카드 모듈 -->
+<div id="equipCardApp" class="container hidden">
+  <section id="ecListView">
+    <div class="tabs ec-tabs">
+      <button id="ecCardsTab" class="active" type="button">자재 카드<span id="ecCardsCount" class="mat-count">0</span></button>
+      <button id="ecDueTab" type="button">점검 도래<span id="ecDueCount" class="mat-count">0</span></button>
+      <button id="ecRecentTab" type="button">최근 이력</button>
+    </div>
+    <div class="card">
+      <div class="section-heading">
+        <h2 id="ecTitle">자재 카드</h2>
+        <div class="ec-head-btns">
+          <button id="ecRegisterBtn" class="ec-add-btn hidden" type="button">+ 자재 등록</button>
+          <button id="ecRefreshBtn" class="refresh" type="button">새로고침</button>
+        </div>
+      </div>
+      <div id="ecHint" class="hint"></div>
+      <div class="ec-filters">
+        <input id="ecSearch" type="search" autocomplete="off" placeholder="고유번호 · 품목 · 제조사 · 보관위치 검색 (예: LT-03, 렌턴)">
+        <select id="ecCategory"><option value="">전체 품목</option></select>
+        <select id="ecStatusFilter">
+          <option value="use">폐기 제외</option>
+          <option value="정상">정상</option>
+          <option value="수리중">수리중</option>
+          <option value="폐기">폐기</option>
+          <option value="all">전체</option>
+        </select>
+      </div>
+      <div id="ecStatus" class="status"></div>
+      <div id="ecList"></div>
+      <div id="ecPermHint" class="hint ec-perm-hint hidden"></div>
+    </div>
+  </section>
+
+  <section id="ecDetailView" class="hidden">
+    <div class="card">
+      <div class="ec-detail-top">
+        <div><div id="ecDetailCode" class="mat-sheet-code"></div><div id="ecDetailName" class="mat-sheet-name"></div></div>
+        <div id="ecDetailBadges" class="ec-badges"></div>
+      </div>
+      <div id="ecDetailAlert" class="ec-alert hidden"></div>
+      <div class="ec-actions">
+        <button id="ecInspectBtn" type="button" class="ec-act inspect">점검 등록</button>
+        <button id="ecIssueBtn" type="button" class="ec-act issue">고장 · 특이사항</button>
+        <button id="ecEditBtn" type="button" class="ec-act edit hidden">내용 수정</button>
+        <button id="ecRepairBtn" type="button" class="ec-act repair hidden">수리 완료</button>
+        <button id="ecDisposeBtn" type="button" class="ec-act dispose hidden">폐기</button>
+        <button id="ecRestoreBtn" type="button" class="ec-act restore hidden">폐기 취소</button>
+        <button id="ecLedgerBtn" type="button" class="ec-act ledger">자재관리대장</button>
+      </div>
+      <div id="ecDetailStatus" class="status"></div>
+      <div id="ecDetailPerm" class="hint hidden"></div>
+
+      <div id="ecEventForm" class="ec-form hidden">
+        <div id="ecEventFormTitle" class="ec-form-title">점검 등록</div>
+        <div class="ec-form-grid">
+          <div><label for="ecEventDate" id="ecEventDateLabel">날짜<span class="mat-req">*</span></label><input id="ecEventDate" type="date"></div>
+          <div id="ecResultWrap" class="ec-wide-m"><label>점검 결과<span class="mat-req">*</span></label><div id="ecResultSeg" class="ec-seg"><button type="button" data-v="양호" class="active">양호</button><button type="button" data-v="불량">불량</button></div></div>
+          <div id="ecIssueWrap" class="ec-wide-m"><label>구분<span class="mat-req">*</span></label><div id="ecIssueSeg" class="ec-seg"><button type="button" data-v="고장" class="active">고장</button><button type="button" data-v="문제">문제</button><button type="button" data-v="특이사항">특이사항</button></div></div>
+        </div>
+        <div id="ecEventNote" class="hint"></div>
+        <label for="ecEventContent" id="ecEventContentLabel">내용</label>
+        <textarea id="ecEventContent"></textarea>
+        <div id="ecPhotoWrap">
+          <label>사진 (선택)</label>
+          <div class="mat-cam-row">
+            <label for="ecPhotoCamera">📷 사진 촬영</label>
+            <label for="ecPhotoAlbum" class="alt">앨범에서 선택</label>
+          </div>
+          <input id="ecPhotoCamera" class="mat-file-input" type="file" accept="image/*" capture="environment">
+          <input id="ecPhotoAlbum" class="mat-file-input" type="file" accept="image/*,.jpg,.jpeg,.jfif,.png,.webp,.avif,.gif,.bmp,.heic,.heif" multiple>
+          <div id="ecPhotoPreview" class="mat-photo-preview"></div>
+        </div>
+        <div class="ec-form-btns"><button id="ecEventCancel" type="button" class="secondary">취소</button><button id="ecEventSave" type="button" class="primary">등록</button></div>
+        <div id="ecEventStatus" class="status"></div>
+      </div>
+
+      <div id="ecEditForm" class="ec-form hidden">
+        <div class="ec-form-title">내용 수정</div>
+        <div class="hint">고유번호 · 품목 · 기존번호는 자재관리대장과 묶여 있어 바꾸지 않습니다. 바꾼 내용은 이력에 '정보수정'으로 남습니다.</div>
+        <div id="ecEditFields" class="ec-form-grid"></div>
+        <label class="ec-check"><input id="ecFCycleAll" type="checkbox"> <span id="ecFCycleAllText">같은 품목 모두에 점검주기 적용</span></label>
+        <div class="ec-form-btns"><button id="ecEditCancel" type="button" class="secondary">취소</button><button id="ecEditSave" type="button" class="primary">수정 저장</button></div>
+        <div id="ecEditStatus" class="status"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="ec-sub">자재 정보</h3>
+      <div id="ecInfoGrid" class="ec-info-grid"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-heading"><h3 class="ec-sub">이력</h3><span id="ecTimelineCount" class="hint" style="margin:0"></span></div>
+      <div class="hint">점검 · 고장 · 문제 · 특이사항 · 수리 · 폐기 · 정보수정. 자재관리대장 반납 때 '문제 있음' · '고장'을 고르거나 메모를 적으면 여기에 자동으로 남습니다.</div>
+      <div id="ecTimeline"></div>
+      <button id="ecLoansToggle" type="button" class="ec-loans-toggle hidden"></button>
+      <div id="ecLoans" class="hidden"></div>
+    </div>
+  </section>
+
+  <section id="ecRegisterView" class="hidden">
+    <div class="card">
+      <h2 style="margin-bottom:4px">자재 등록</h2>
+      <div class="hint">등록하면 자재관리대장 '불출가능'에 바로 나옵니다. 고유번호는 품목약호-기존번호(예: 렌턴 13 → LT-13)입니다. 여러 개는 기존번호를 13-15 또는 13,14,15 처럼 적습니다.</div>
+      <div class="ec-form-grid">
+        <div><label for="ecRCategory">품목<span class="mat-req">*</span></label><input id="ecRCategory" list="ecCategoryList" autocomplete="off" placeholder="예: 렌턴"></div>
+        <div><label for="ecRPrefix">품목약호<span class="mat-req">*</span></label><input id="ecRPrefix" autocomplete="off" maxlength="6" autocapitalize="characters" placeholder="영문 대문자 (예: LT)"></div>
+        <div><label for="ecRNumbers">기존번호<span class="mat-req">*</span></label><input id="ecRNumbers" autocomplete="off" placeholder="예: 13 또는 13-15"><div id="ecRNextNo" class="ec-next-no"></div></div>
+        <div><label for="ecRSpec">규격</label><input id="ecRSpec" autocomplete="off" placeholder="예: 200파이, 6M"></div>
+        <div><label for="ecRMaker">제조사</label><input id="ecRMaker" autocomplete="off"></div>
+        <div><label for="ecRModel">모델</label><input id="ecRModel" autocomplete="off"></div>
+        <div><label for="ecRSerial">제조번호</label><input id="ecRSerial" autocomplete="off" placeholder="1개 등록할 때만"></div>
+        <div><label for="ecRLocation">보관위치</label><input id="ecRLocation" autocomplete="off" placeholder="예: 공구실 A"></div>
+        <div><label for="ecRPurchase">구매일</label><input id="ecRPurchase" type="date"></div>
+        <div><label for="ecRCycle">점검주기 (개월)</label><input id="ecRCycle" type="number" inputmode="numeric" min="1" max="120" placeholder="예: 6"></div>
+        <div><label for="ecRLast">최근 점검일</label><input id="ecRLast" type="date"></div>
+        <div class="ec-wide"><label for="ecRNote">메모</label><input id="ecRNote" autocomplete="off"></div>
+      </div>
+      <label class="ec-check"><input id="ecRSameDay" type="checkbox"> 당일 반납 품목 (렌턴처럼 하루 지나면 빨간색)</label>
+      <div id="ecRPreview" class="ec-code-preview"></div>
+      <div class="ec-form-btns"><button id="ecRCancel" type="button" class="secondary">취소</button><button id="ecRSave" type="button" class="primary">자재 등록</button></div>
+      <div id="ecRStatus" class="status"></div>
+    </div>
+  </section>
+</div>
+<datalist id="ecCategoryList"></datalist>
 
 <!-- BHD 모듈 -->
 <div id="bhdApp" class="container hidden">
@@ -942,7 +1193,7 @@ async function nameToSyntheticEmail(name){
   return `u_${hex.slice(0,40)}@hwdk-bhd.com`;
 }
 
-function hideAllMain(){authScreen.classList.add("hidden");moduleHome.classList.add("hidden");scheduleApp.classList.add("hidden");$("productionDashboardApp")?.classList.add("hidden");$("boardApp")?.classList.add("hidden");$("materialApp")?.classList.add("hidden");if($("matSheet")&&!$("matSheet").classList.contains("hidden"))closeMaterialSheet();bhdApp.classList.add("hidden");requestApp.classList.add("hidden");myWorkApp.classList.add("hidden")}
+function hideAllMain(){authScreen.classList.add("hidden");moduleHome.classList.add("hidden");scheduleApp.classList.add("hidden");$("productionDashboardApp")?.classList.add("hidden");$("boardApp")?.classList.add("hidden");$("materialApp")?.classList.add("hidden");$("equipCardApp")?.classList.add("hidden");if($("matSheet")&&!$("matSheet").classList.contains("hidden"))closeMaterialSheet();bhdApp.classList.add("hidden");requestApp.classList.add("hidden");myWorkApp.classList.add("hidden")}
 function updateHeader(){
   $("userBadge").textContent=isAdmin?`관리자 · ${currentUserName||"관리자"}`:currentUserName;
   $("userBadge").className=isAdmin?"user-badge admin":"user-badge";
@@ -952,7 +1203,7 @@ function setAuthMode(mode){
   $("loginActions").classList.toggle("hidden",signup);
   $("signupActions").classList.toggle("hidden",!signup);
   $("authSubtitle").textContent=signup?"사용할 이름과 비밀번호를 등록하세요.":"이름과 비밀번호로 로그인합니다.";
-  $("authHint").textContent=signup?"회원가입 중에는 로그인 버튼이 표시되지 않습니다. 비밀번호는 6자 이상 사용하세요.":"처음 사용하는 작업자는 회원가입을 눌러 등록하세요.";
+  $("authHint").textContent=signup?"명단에 없는 사람만 회원가입하세요. 비밀번호는 사번(출입번호)을 쓰면 됩니다(6자 이상).":"이름과 사번(출입번호)으로 로그인합니다. 계장공종 인원은 이미 등록되어 있으니 회원가입하지 않아도 됩니다.";
   $("authStatus").textContent="";
 }
 function showAuth(){hideAllMain();appHeader.classList.add("hidden");authScreen.classList.remove("hidden");setAuthMode("login")}
@@ -1109,7 +1360,7 @@ $("signupBtn").onclick=async()=>{
     const {error:profileError}=await supabase.from("user_profiles").upsert({user_id:user.id,name},{onConflict:"user_id"});
     if(profileError)throw profileError;
     currentUserId=user.id;currentUserName=name;isAdmin=false;status.textContent="";startNotificationPolling();showHome(true);
-  }catch(e){status.textContent="회원가입 실패: "+(e?.message||"오류")}
+  }catch(e){status.textContent=/already registered|already been registered/i.test(e?.message||"")?"이미 등록된 이름입니다. 로그인 화면에서 이름과 사번으로 로그인하세요.":"회원가입 실패: "+(e?.message||"오류")}
 };
 
 $("loginBtn").onclick=async()=>{
@@ -2349,7 +2600,7 @@ $("openBoardBtn").onclick=()=>showBoard(true);
    한 자재는 반납 전에는 다시 불출되지 않습니다(DB 에서도 막음). 반납 사진은 bhd-images 의 equipment/ 폴더. */
 let matItems=[],matOpen=new Map(),matTab="out",matCategoryFilter="",matPeople=[],matSheetItem=null,matPhotos=[],matBusy=false,matLoadedAt=0;
 const MAT_TABS={out:{btn:"matOutTab",title:"불출중 자재",hint:"지금 나가 있는 자재입니다. 누르면 사진을 찍어 반납할 수 있습니다. 렌턴은 당일 반납 품목이라 하루가 지나면 빨간색으로 표시됩니다."},
-  free:{btn:"matFreeTab",title:"불출가능 자재",hint:"창고에 있는 자재입니다. 누르면 사용자를 적고 불출합니다."},
+  free:{btn:"matFreeTab",title:"불출가능 자재",hint:"창고에 있는 자재입니다. 누르면 사용자를 적고 불출합니다. 회색은 수리중이라 수리 완료 전까지 불출할 수 없습니다."},
   history:{btn:"matHistoryTab",title:"불출 · 반납 이력",hint:"최근 불출 · 반납 기록입니다(최근 300건). 반납 사진은 눌러서 크게 볼 수 있습니다."}};
 function matSchemaMessage(error){
   const text=`${error?.code||""} ${error?.message||""}`;
@@ -2367,10 +2618,11 @@ function matFiltered(){
   return matItems.filter(item=>(!matCategoryFilter||item.category===matCategoryFilter)&&words.every(w=>matSearchText(item).includes(w)));
 }
 async function loadMaterialData(){
+  ecLoadedAt=0;
   const status=$("matStatus");
   status.textContent="불러오는 중...";
   const [itemRes,loanRes,crewRes,profileRes]=await Promise.all([
-    fetchAllRows(()=>supabase.from("equipment_items").select("id,code,category,spec,item_no,same_day_return,sort_order,active,note").eq("active",true).order("sort_order",{ascending:true}).order("code",{ascending:true})),
+    matFetchItems(),
     fetchAllRows(()=>supabase.from("equipment_loans").select("id,item_id,borrower_name,out_at,out_by,out_author,out_note,source").is("returned_at",null).order("out_at",{ascending:true})),
     supabase.from("production_crews").select("member_name,team_order,member_order").eq("active",true).order("team_order",{ascending:true}).order("member_order",{ascending:true}),
     supabase.from("user_profiles").select("name").order("name",{ascending:true})
@@ -2390,8 +2642,8 @@ async function loadMaterialData(){
   renderMaterial();
 }
 function renderMaterialCounts(){
-  const out=matItems.filter(i=>matOpen.has(i.id)).length;
-  $("matOutCount").textContent=out;$("matFreeCount").textContent=matItems.length-out;
+  const out=matItems.filter(i=>matOpen.has(i.id)).length,blocked=matItems.filter(i=>!matOpen.has(i.id)&&!matCanOut(i)).length;
+  $("matOutCount").textContent=out;$("matFreeCount").textContent=matItems.length-out-blocked;
 }
 function matGroups(items){const map=new Map();items.forEach(i=>{if(!map.has(i.category))map.set(i.category,[]);map.get(i.category).push(i)});return [...map.entries()]}
 function renderMaterial(){
@@ -2411,7 +2663,7 @@ function renderMaterial(){
       return `<button type="button" class="mat-out-row${over?" overdue":""}" data-mat-item="${escapeHtml(item.id)}"><div class="mat-code">${escapeHtml(item.code)}</div><div><div class="mat-name">${escapeHtml(loan.borrower_name)}</div><div class="mat-meta">${escapeHtml(matItemLabel(item))} · <span class="mat-nowrap">불출 ${escapeHtml(matDateOnly(loan.out_at))}</span>${loan.out_note?` · ${escapeHtml(loan.out_note)}`:""}</div></div><span class="mat-days">${escapeHtml(dayText)}</span></button>`;
     }).join("")}</div>`).join("");
   }else{
-    box.innerHTML=matGroups(list).map(([cat,items])=>`<div class="mat-group"><div class="mat-group-title">${escapeHtml(cat)}<span>${items.length}개 가능</span></div><div class="mat-free-grid">${items.map(item=>`<button type="button" class="mat-free-chip" data-mat-item="${escapeHtml(item.id)}"><div class="mat-code">${escapeHtml(item.code)}</div>${item.spec?`<div class="mat-meta">${escapeHtml(item.spec)}</div>`:""}</button>`).join("")}</div></div>`).join("");
+    box.innerHTML=matGroups(list).map(([cat,items])=>{const ok=items.filter(matCanOut).length,rep=items.length-ok;return `<div class="mat-group"><div class="mat-group-title">${escapeHtml(cat)}<span>${ok}개 가능${rep?` · 수리중 ${rep}`:""}</span></div><div class="mat-free-grid">${items.map(item=>{const blocked=!matCanOut(item),over=!blocked&&ecDueState(item)==="over";return `<button type="button" class="mat-free-chip${blocked?" repair":""}" data-mat-item="${escapeHtml(item.id)}"><div class="mat-code">${escapeHtml(item.code)}</div>${item.spec?`<div class="mat-meta">${escapeHtml(item.spec)}</div>`:""}${blocked?`<div class="mat-chip-flag repair">${escapeHtml(item.status)}</div>`:(over?`<div class="mat-chip-flag over">점검 지남</div>`:"")}</button>`}).join("")}</div></div>`}).join("");
   }
   box.querySelectorAll("[data-mat-item]").forEach(btn=>btn.onclick=()=>openMaterialSheet(btn.dataset.matItem));
 }
@@ -2489,10 +2741,14 @@ async function openMaterialSheet(itemId){
     info.className="mat-sheet-info "+(over?"overdue":"out");
     info.innerHTML=`<b>불출중</b> · 사용자 <b>${escapeHtml(loan.borrower_name)}</b><br>불출 ${escapeHtml(matOutWhen(loan))} (${days?`${days}일째`:"오늘"})${over?" · <b style=\"color:#b42318\">당일 반납 지남</b>":""}${loan.out_note?`<br>메모: ${escapeHtml(loan.out_note)}`:""}${loan.source&&loan.source!=="앱"?`<br><span class="hint">${escapeHtml(loan.source)}에서 옮긴 기록</span>`:""}`;
     $("matCheckoutBox").classList.add("hidden");$("matReturnBox").classList.remove("hidden");
-    $("matReturner").value=me;$("matReturnNote").value="";
+    $("matReturner").value=me;$("matReturnNote").value="";matSetCond("정상");
     $("matCancelLoanBtn").classList.toggle("hidden",!(isAdmin||(loan.out_by&&loan.out_by===currentUserId)));
+  }else if(!matCanOut(item)){
+    info.className="mat-sheet-info repair";info.innerHTML=`<b>${escapeHtml(item.status)}</b> · 수리 완료 전까지 불출할 수 없습니다.<br><span class="hint">자재이력카드에서 '수리 완료'를 등록하면 다시 불출할 수 있습니다.</span>`;
+    $("matCheckoutBox").classList.add("hidden");$("matReturnBox").classList.add("hidden");
   }else{
-    info.className="mat-sheet-info";info.innerHTML=`<b>불출가능</b> · 창고에 있는 자재입니다.`;
+    const dueOver=ecDueState(item)==="over";
+    info.className="mat-sheet-info";info.innerHTML=`<b>불출가능</b> · 창고에 있는 자재입니다.${dueOver?`<br><b style="color:#b42318">점검일 지남</b> (${escapeHtml(ecNextDue(item))}) · 점검 후 사용하세요.`:""}`;
     $("matCheckoutBox").classList.remove("hidden");$("matReturnBox").classList.add("hidden");
     $("matBorrower").value=me;$("matOutNote").value="";
   }
@@ -2518,6 +2774,7 @@ async function checkoutMaterial(){
     matBusy=true;btn.disabled=true;status.textContent="불출 등록 중...";
     const {error}=await supabase.from("equipment_loans").insert({item_id:item.id,borrower_name:borrower,out_at:new Date().toISOString(),out_by:currentUserId,out_author:currentUserName,out_note:normalizeName($("matOutNote").value)||null});
     if(error){
+      if(error.code==="42501"||/row-level security/i.test(error.message||"")){closeMaterialSheet();await loadMaterialData();$("matStatus").textContent=`${item.code} 은(는) 수리중이거나 폐기된 자재라 불출할 수 없습니다.`;return}
       if(error.code==="23505"||/duplicate|equipment_loans_one_open/i.test(error.message||"")){status.textContent="이미 다른 사람이 불출한 자재입니다. 목록을 새로 고칩니다.";await loadMaterialData();return}
       throw error;
     }
@@ -2531,16 +2788,25 @@ async function returnMaterial(){
   if(!loan){status.textContent="이미 반납된 자재입니다.";return}
   if(!returner){status.textContent="반납자 이름을 적어 주세요.";$("matReturner").focus();return}
   if(!matPhotos.length){status.textContent="반납 사진을 1장 이상 찍어 주세요.";return}
+  const cond=matCondValue(),note=normalizeName($("matReturnNote").value);
+  if(cond!=="정상"&&!note){status.textContent=`'${cond}'(으)로 반납하면 어떤 상태인지 상태 설명을 적어 주세요.`;$("matReturnNote").focus();return}
   try{
     matBusy=true;btn.disabled=true;status.textContent=`사진 ${matPhotos.length}장 올리는 중...`;
     const files=[];for(const p of matPhotos)files.push(await shrinkMaterialPhoto(p.file));
     const paths=await uploadFiles(files,`equipment/${item.code}`);
     status.textContent="반납 등록 중...";
-    const {data,error}=await supabase.from("equipment_loans").update({returned_at:new Date().toISOString(),return_name:returner,returned_by:currentUserId,return_author:currentUserName,return_photos:paths,return_note:normalizeName($("matReturnNote").value)||null}).eq("id",loan.id).is("returned_at",null).select("id");
+    const payload={returned_at:new Date().toISOString(),return_name:returner,returned_by:currentUserId,return_author:currentUserName,return_photos:paths,return_note:note||null,return_condition:cond};
+    let condSaved=true;
+    let {data,error}=await supabase.from("equipment_loans").update(payload).eq("id",loan.id).is("returned_at",null).select("id");
+    if(error&&/return_condition/.test(error.message||"")){
+      /* 자재이력카드 SQL 실행 전: 상태 칸이 없으면 상태를 메모 앞에 붙여 반납만 처리 */
+      condSaved=false;delete payload.return_condition;if(cond!=="정상")payload.return_note=`[${cond}] ${note}`;
+      ({data,error}=await supabase.from("equipment_loans").update(payload).eq("id",loan.id).is("returned_at",null).select("id"));
+    }
     if(error)throw error;
     if(!data||!data.length){status.textContent="이미 다른 사람이 반납 처리했습니다. 목록을 새로 고칩니다.";await loadMaterialData();return}
     closeMaterialSheet();
-    await loadMaterialData();$("matStatus").textContent=`${item.code} 반납 완료 · ${returner} · 사진 ${paths.length}장`;
+    await loadMaterialData();$("matStatus").textContent=`${item.code} 반납 완료 · ${returner} · 사진 ${paths.length}장${condSaved?(cond==="고장"?" · 고장 → 수리중(수리 완료 전까지 불출 막힘)":(cond!=="정상"||note?" · 자재이력카드에 기록됨":"")):""}`;
   }catch(e){status.textContent="반납 실패: "+(matSchemaMessage(e)||e?.message||"오류")}finally{matBusy=false;btn.disabled=false}
 }
 async function cancelMaterialLoan(){
@@ -2571,6 +2837,618 @@ $("matCancelLoanBtn").onclick=cancelMaterialLoan;
 $("matPhotoCamera").onchange=e=>addMaterialPhotos(e.target);
 $("matPhotoAlbum").onchange=e=>addMaterialPhotos(e.target);
 ["matBorrower","matReturner","matOutNote","matReturnNote"].forEach(id=>$(id).addEventListener("input",()=>{if(!matBusy)$("matSheetStatus").textContent=""}));
+/* ---------- 자재이력카드 ----------
+   equipment_items 에 구매일 · 제조사 · 점검주기 · 최근 점검일 · 상태(정상/수리중/폐기)를 더하고, equipment_events 에 이력을 쌓습니다.
+   상태 · 최근 점검일은 DB 트리거가 이력에 맞춰 바꿉니다(점검 → 최근 점검일, 고장 · 점검 불량 → 수리중, 수리완료 → 정상, 폐기 → 대장 목록에서 빠짐).
+   자재관리대장 반납 때 '문제 있음' · '고장' · 메모도 DB 트리거가 이력에 자동 저장합니다.
+   자재 등록 · 내용 수정 · 수리 완료 · 폐기: equipment_editors(박만석 · 허정호 · 이기성 · 이인수 · 황경준) + 관리자. 점검 · 고장 · 특이사항 기록: 누구나. */
+const EC_ITEM_COLS="id,code,category,spec,item_no,same_day_return,sort_order,active,note,created_at,updated_at,purchase_date,maker,model,serial_no,location,inspect_cycle_months,last_inspected_on,status,disposed_on,dispose_reason,updated_name";
+const EC_EVENT_COLS="id,item_id,event_type,event_on,result,content,photos,loan_id,source,author_name,created_by,created_at";
+const MAT_ITEM_COLS="id,code,category,spec,item_no,same_day_return,sort_order,active,note";
+const EC_DUE_SOON=7;
+const EC_TABS={cards:{btn:"ecCardsTab",title:"자재 카드",hint:"자재마다 구매일 · 점검주기 · 점검 · 고장 · 폐기 이력을 관리합니다. 눌러서 카드를 엽니다."},
+  due:{btn:"ecDueTab",title:"점검 도래",hint:`점검일이 지났거나 ${EC_DUE_SOON}일 안에 돌아오는 자재입니다. 눌러서 '점검 등록'을 하면 다음 점검일이 바로 바뀝니다.`},
+  recent:{btn:"ecRecentTab",title:"최근 이력",hint:"모든 자재의 최근 이력입니다(최근 200건). 자재관리대장 반납 때 고른 문제 · 고장과 메모도 자동으로 쌓입니다."}};
+const EC_EDITABLE_EVENTS=["점검","고장","문제","특이사항","수리완료"];
+const EC_FORM={
+  "점검":{title:"점검 등록",save:"점검 등록",cls:"",content:"점검 내용",ph:"예: 외관 · 전원 · 케이블 이상 없음",note:"결과가 '불량'이면 수리중으로 바뀌어 수리 완료 전까지 불출이 막힙니다.",photo:true},
+  "이상":{title:"고장 · 문제 · 특이사항",save:"기록 등록",cls:"issue",content:"내용",ph:"예: 스위치 접촉 불량, 케이블 피복 손상",note:"'고장'이면 수리중으로 바뀌어 수리 완료 전까지 불출이 막힙니다. '문제' · '특이사항'은 기록만 남습니다.",photo:true},
+  "수리완료":{title:"수리 완료",save:"수리 완료 등록",cls:"",content:"수리 내용",ph:"예: 스위치 교체",note:"등록하면 상태가 정상으로 바뀌어 다시 불출할 수 있습니다.",photo:true},
+  "폐기":{title:"폐기",save:"폐기 등록",cls:"dispose",content:"폐기 사유",ph:"예: 수리 불가, 분실",note:"폐기하면 자재관리대장 목록에서 빠집니다. 카드와 이력은 남고, '폐기 취소'로 되돌릴 수 있습니다.",photo:false}};
+const EC_EDIT_FIELDS=[{k:"spec",l:"규격",t:"text"},{k:"maker",l:"제조사",t:"text"},{k:"model",l:"모델",t:"text"},{k:"serial_no",l:"제조번호",t:"text"},{k:"location",l:"보관위치",t:"text"},
+  {k:"purchase_date",l:"구매일",t:"date"},{k:"inspect_cycle_months",l:"점검주기 (개월)",t:"cycle"},{k:"last_inspected_on",l:"최근 점검일",t:"date"},{k:"same_day_return",l:"당일 반납",t:"bool"},{k:"note",l:"메모",t:"text",wide:true}];
+let ecItems=[],ecOpen=new Map(),ecEditors=[],ecCanEdit=false,ecTab="cards",ecView="list",ecCurrent=null,ecLoadedAt=0,ecLoadError="",ecBusy=false,ecFormMode=null,ecPhotos=[],ecEvents=[],ecRecentRows=null,ecCategoryFilter="",ecStatusFilter="use",ecListScroll=0;
+
+function ecSchemaMessage(error){
+  const text=`${error?.code||""} ${error?.message||""}`;
+  if(/PGRST204|PGRST205|42703|42P01|schema cache|does not exist/i.test(text))return "자재이력카드 표가 아직 없습니다. 제공된 자재이력카드 SQL(hwdk_equipment_card.sql)을 Supabase SQL Editor에서 먼저 실행하세요.";
+  return "";
+}
+function ecErrorMessage(e){
+  const m=ecSchemaMessage(e);if(m)return m;
+  if(e?.code==="42501"||/row-level security|permission denied/i.test(e?.message||""))return `권한이 없습니다. 자재 등록 · 내용 수정 · 수리 완료 · 폐기는 ${ecEditorNames()}만 할 수 있습니다.`;
+  return e?.message||"오류";
+}
+function ecEditorNames(){return [...ecEditors,"관리자"].join(" · ")}
+function ecDate(v){return v?String(v).slice(0,10):""}
+function ecAddMonths(dateStr,months){
+  const [y,m,d]=dateStr.split("-").map(Number),first=new Date(y,m-1+months,1),last=new Date(first.getFullYear(),first.getMonth()+1,0).getDate();
+  return `${first.getFullYear()}-${String(first.getMonth()+1).padStart(2,"0")}-${String(Math.min(d,last)).padStart(2,"0")}`;
+}
+function ecDiffDays(a,b){return Math.round((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/86400000)}
+/* 다음 점검일 = (최근 점검일 → 없으면 구매일 → 없으면 등록일) + 점검주기 */
+function ecBaseDate(item){return ecDate(item.last_inspected_on)||ecDate(item.purchase_date)||(item.created_at?matDateOnly(item.created_at):"")}
+function ecNextDue(item){const c=Number(item?.inspect_cycle_months||0);if(!c||item.status==="폐기")return "";const b=ecBaseDate(item);return b?ecAddMonths(b,c):""}
+function ecDueDays(item){const n=ecNextDue(item);return n?ecDiffDays(localToday(),n):null}
+function ecDueState(item){const d=ecDueDays(item);if(d==null)return "";return d<0?"over":(d<=EC_DUE_SOON?"soon":"")}
+function ecDueText(item){
+  if(item.status==="폐기")return `폐기${item.disposed_on?" "+ecDate(item.disposed_on):""}`;
+  if(!item.inspect_cycle_months)return "점검주기 미설정";
+  const n=ecNextDue(item),d=ecDueDays(item);
+  if(d<0)return `점검 ${-d}일 지남 · ${n}`;
+  if(d===0)return `오늘 점검 · ${n}`;
+  if(d<=EC_DUE_SOON)return `점검 D-${d} · ${n}`;
+  return `다음 점검 ${n}`;
+}
+function ecSince(dateStr){
+  if(!dateStr)return "";
+  const a=new Date(dateStr+"T00:00:00"),b=new Date(localToday()+"T00:00:00");
+  let m=(b.getFullYear()-a.getFullYear())*12+(b.getMonth()-a.getMonth());if(b.getDate()<a.getDate())m--;
+  if(m<0)return "";const y=Math.floor(m/12),r=m%12;
+  return y?`${y}년${r?` ${r}개월`:""} 사용`:(r?`${r}개월 사용`:"1개월 미만");
+}
+function ecStatusBadge(item){const s=item.status||"정상";return `<span class="ec-st st-${escapeHtml(s)}">${escapeHtml(s)}</span>`}
+/* 자재관리대장: 정상 상태만 불출 가능(수리중 · 폐기는 불출 안 됨) */
+function matCanOut(item){return (item?.status||"정상")==="정상"}
+async function matFetchItems(){
+  const q=cols=>fetchAllRows(()=>supabase.from("equipment_items").select(cols).eq("active",true).order("sort_order",{ascending:true}).order("code",{ascending:true}));
+  const res=await q(MAT_ITEM_COLS+",status,inspect_cycle_months,last_inspected_on,purchase_date,created_at");
+  if(res.error&&/PGRST204|42703|does not exist|schema cache/i.test(`${res.error.code||""} ${res.error.message||""}`))return q(MAT_ITEM_COLS);
+  return res;
+}
+function matCondValue(){return $("matReturnCond").querySelector("button.active")?.dataset.v||"정상"}
+function matSetCond(v){
+  ecSetSeg("matReturnCond",v);const need=v!=="정상";
+  $("matReturnNoteLabel").innerHTML=need?`상태 설명<span class="mat-req">*</span>`:"메모 (선택)";
+  $("matReturnNote").placeholder=need?(v==="고장"?"예: 전원 안 켜짐, 스위치 파손":"예: 케이블 피복 일부 손상"):"예: 와이어 끝부분 손상";
+}
+function ecSetSeg(id,v){$(id).querySelectorAll("button[data-v]").forEach(b=>b.classList.toggle("active",b.dataset.v===v))}
+function ecSegValue(id){return $(id).querySelector("button.active")?.dataset.v||""}
+function ecItem(id){return ecItems.find(i=>i.id===id)}
+function ecCategories(){const cats=[];ecItems.forEach(i=>{if(!cats.includes(i.category))cats.push(i.category)});return cats}
+
+async function loadEquipCardData(render=true){
+  const status=$("ecStatus");status.textContent="불러오는 중...";
+  const [itemRes,loanRes,edRes]=await Promise.all([
+    fetchAllRows(()=>supabase.from("equipment_items").select(EC_ITEM_COLS).order("sort_order",{ascending:true}).order("code",{ascending:true})),
+    fetchAllRows(()=>supabase.from("equipment_loans").select("id,item_id,borrower_name,out_at,source").is("returned_at",null).order("out_at",{ascending:true})),
+    supabase.from("equipment_editors").select("name")
+  ]);
+  const error=itemRes.error||loanRes.error||edRes.error;
+  if(error){
+    ecItems=[];ecOpen=new Map();ecLoadedAt=0;ecCanEdit=false;
+    ecLoadError=ecSchemaMessage(error)||("자재 카드를 불러오지 못했습니다: "+(error.message||"오류"));
+    status.textContent=ecLoadError;if(render)renderEquipCards();return false;
+  }
+  ecLoadError="";ecItems=itemRes.data||[];
+  ecOpen=new Map((loanRes.data||[]).map(l=>[l.item_id,l]));
+  ecEditors=(edRes.data||[]).map(r=>normalizeName(r.name)).filter(Boolean);
+  ecCanEdit=isAdmin||ecEditors.includes(normalizeName(currentUserName));
+  const cats=ecCategories();
+  $("ecCategoryList").innerHTML=cats.map(c=>`<option value="${escapeHtml(c)}"></option>`).join("");
+  const sel=$("ecCategory"),keep=ecCategoryFilter;
+  sel.innerHTML=`<option value="">전체 품목</option>`+cats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+  sel.value=cats.includes(keep)?keep:"";ecCategoryFilter=sel.value;
+  ecLoadedAt=Date.now();status.textContent="";
+  if(render)renderEquipCards();
+  return true;
+}
+function ecSetView(v){
+  if(ecView==="list"&&v!=="list")ecListScroll=window.scrollY||0;
+  ecView=v;
+  $("ecListView").classList.toggle("hidden",v!=="list");$("ecDetailView").classList.toggle("hidden",v!=="detail");$("ecRegisterView").classList.toggle("hidden",v!=="register");
+  window.scrollTo(0,v==="list"?ecListScroll:0);
+}
+async function showEquipCards(tab="cards",push=true){
+  hideAllMain();showHeader();$("equipCardApp").classList.remove("hidden");
+  ecTab=EC_TABS[tab]?tab:"cards";if(push)ecListScroll=0;
+  ecSetView("list");
+  if(push)pushState({screen:"equip-cards",tab:ecTab,admin:isAdmin});
+  if(!ecLoadedAt||Date.now()-ecLoadedAt>15000){ecRecentRows=null;await loadEquipCardData(true)}else renderEquipCards();
+}
+function setEcTab(tab){ecTab=tab;if(tab==="recent")ecRecentRows=null;renderEquipCards();replaceState({screen:"equip-cards",tab,admin:isAdmin})}
+function ecSearchText(item){const loan=ecOpen.get(item.id);return [item.code,item.category,item.spec,item.item_no,item.maker,item.model,item.serial_no,item.location,item.note,item.status,loan?.borrower_name].map(x=>String(x||"").toLowerCase()).join(" ")}
+function ecWords(){const q=normalizeName($("ecSearch").value).toLowerCase();return q?q.split(" "):[]}
+function ecStatusMatch(item){const s=item.status||"정상";return ecStatusFilter==="all"||(ecStatusFilter==="use"?s!=="폐기":s===ecStatusFilter)}
+function ecFiltered(useStatus){const words=ecWords();return ecItems.filter(i=>(!ecCategoryFilter||i.category===ecCategoryFilter)&&(!useStatus||ecStatusMatch(i))&&words.every(w=>ecSearchText(i).includes(w)))}
+function ecDueItems(){return ecItems.filter(i=>i.status!=="폐기"&&ecDueState(i))}
+function renderEquipCards(){
+  const due=ecDueItems();
+  $("ecCardsCount").textContent=ecItems.filter(i=>i.status!=="폐기").length;
+  $("ecDueCount").textContent=due.length;
+  $("ecDueTab").classList.toggle("ec-due-alert",due.some(i=>ecDueState(i)==="over"));
+  Object.entries(EC_TABS).forEach(([k,v])=>$(v.btn).classList.toggle("active",k===ecTab));
+  $("ecTitle").textContent=EC_TABS[ecTab].title;$("ecHint").textContent=EC_TABS[ecTab].hint;
+  $("ecRegisterBtn").classList.toggle("hidden",!ecCanEdit||!!ecLoadError||!ecLoadedAt);
+  $("ecStatusFilter").classList.toggle("hidden",ecTab!=="cards");
+  const perm=$("ecPermHint");
+  perm.classList.toggle("hidden",!!ecLoadError||!ecLoadedAt);
+  perm.textContent=ecCanEdit?`수정 권한: ${ecEditorNames()} — 자재 등록 · 내용 수정 · 수리 완료 · 폐기를 할 수 있습니다.`:`자재 등록 · 내용 수정 · 수리 완료 · 폐기는 ${ecEditorNames()}만 할 수 있습니다. 점검 등록 · 고장 · 특이사항 기록은 누구나 할 수 있습니다.`;
+  const box=$("ecList");
+  if(ecLoadError){box.innerHTML="";return}
+  if(ecTab==="recent"){loadEquipRecent();return}
+  if(!ecItems.length){box.innerHTML=ecLoadedAt?`<div class="empty">등록된 자재가 없습니다.</div>`:"";return}
+  if(ecTab==="due"){
+    const list=ecFiltered(false).filter(i=>i.status!=="폐기"&&ecDueState(i)).sort((a,b)=>(ecDueDays(a)-ecDueDays(b))||(a.sort_order-b.sort_order));
+    box.innerHTML=list.length?list.map(ecRow).join(""):`<div class="empty">점검이 도래한 자재가 없습니다.${ecItems.some(i=>i.inspect_cycle_months)?"":"<br>아직 점검주기가 정해진 자재가 없습니다. 카드의 '내용 수정'에서 점검주기를 넣어 주세요."}</div>`;
+  }else{
+    const list=ecFiltered(true);
+    box.innerHTML=list.length?matGroups(list).map(([cat,items])=>`<div class="mat-group"><div class="mat-group-title">${escapeHtml(cat)}<span>${items.length}개</span></div>${items.map(ecRow).join("")}</div>`).join(""):`<div class="empty">조건에 맞는 자재가 없습니다.</div>`;
+  }
+  box.querySelectorAll("[data-ec-item]").forEach(b=>b.onclick=()=>showEquipCard(b.dataset.ecItem,true));
+}
+function ecRow(item){
+  const loan=ecOpen.get(item.id),s=item.status||"정상",st=s==="폐기"?"":ecDueState(item);
+  const sub=[[item.maker,item.model].filter(Boolean).join(" "),item.location].filter(Boolean).join(" · ");
+  return `<button type="button" class="ec-row st-${escapeHtml(s)}${st?" "+st:""}" data-ec-item="${escapeHtml(item.id)}"><div class="mat-code">${escapeHtml(item.code)}</div><div><div class="mat-name">${escapeHtml(matItemLabel(item))}</div>${sub?`<div class="mat-meta">${escapeHtml(sub)}</div>`:""}<div class="ec-due ${st||(item.inspect_cycle_months||s==="폐기"?"":"none")}">${escapeHtml(ecDueText(item))}</div></div><div class="ec-row-badges">${s!=="정상"?ecStatusBadge(item):""}${loan?`<span class="mat-state out">불출중</span>`:""}</div></button>`;
+}
+async function loadEquipRecent(){
+  const box=$("ecList");
+  if(!ecRecentRows){
+    box.innerHTML=`<div class="hint">이력을 불러오는 중...</div>`;
+    const {data,error}=await supabase.from("equipment_events").select(EC_EVENT_COLS).order("event_on",{ascending:false}).order("created_at",{ascending:false}).limit(200);
+    if(ecTab!=="recent"||ecView!=="list")return;
+    if(error){box.innerHTML=`<div class="hint">${escapeHtml(ecSchemaMessage(error)||("이력을 불러오지 못했습니다: "+(error.message||"오류")))}</div>`;return}
+    ecRecentRows=data||[];
+  }
+  const byId=new Map(ecItems.map(i=>[i.id,i])),words=ecWords();
+  const rows=ecRecentRows.filter(ev=>{const item=byId.get(ev.item_id);if(!item)return false;if(ecCategoryFilter&&item.category!==ecCategoryFilter)return false;const t=[item.code,item.category,item.spec,ev.event_type,ev.result,ev.content,ev.author_name].join(" ").toLowerCase();return words.every(w=>t.includes(w))});
+  box.innerHTML=rows.length?rows.map(ev=>ecEventRow(ev,byId.get(ev.item_id),true)).join(""):`<div class="empty">이력이 없습니다.</div>`;
+  box.querySelectorAll("[data-ec-item]").forEach(b=>b.onclick=()=>showEquipCard(b.dataset.ecItem,true));
+  ecBindPhotos(box);
+}
+function ecEventLabel(ev){return ev.event_type==="점검"?`점검 ${ev.result||""}`.trim():(ev.event_type==="수리완료"?"수리 완료":(ev.event_type==="폐기취소"?"폐기 취소":ev.event_type))}
+function ecEventRow(ev,item,withCode){
+  const type=escapeHtml(ev.event_type),bad=ev.event_type==="점검"&&ev.result==="불량",photos=Array.isArray(ev.photos)?ev.photos:[];
+  const auto=ev.source&&ev.source!=="자재이력카드";
+  const tools=!withCode&&ecCanEdit&&EC_EDITABLE_EVENTS.includes(ev.event_type)?`<div class="ec-ev-tools"><button type="button" data-ec-ev-edit="${escapeHtml(ev.id)}">수정</button><button type="button" class="del" data-ec-ev-del="${escapeHtml(ev.id)}">삭제</button></div>`:"";
+  return `<div class="ec-ev t-${type}${bad?" bad":""}" data-ec-ev="${escapeHtml(ev.id)}"><div class="ec-ev-top"><div class="ec-ev-head"><span class="ec-ev-date">${escapeHtml(ecDate(ev.event_on))}</span><span class="ec-type t-${type}${bad?" bad":""}">${escapeHtml(ecEventLabel(ev))}</span>${withCode&&item?`<button type="button" class="ec-ev-code" data-ec-item="${escapeHtml(item.id)}">${escapeHtml(item.code)}</button><span class="mat-meta" style="margin:0">${escapeHtml(matItemLabel(item))}</span>`:""}</div>${tools}</div>${ev.content?`<div class="ec-ev-content">${escapeHtml(ev.content)}</div>`:""}<div class="mat-meta">기록 ${escapeHtml(ev.author_name||"-")} · ${escapeHtml(formatDateTime(ev.created_at))}${auto?` · <b>${escapeHtml(ev.source)}</b>에서 자동 저장`:""}</div>${photos.length?`<button type="button" class="mat-photo-btn" data-ec-photos="${escapeHtml(JSON.stringify(photos))}">사진 ${photos.length}장 보기</button><div class="mat-hist-photos"></div>`:""}</div>`;
+}
+function ecBindPhotos(root){
+  root.querySelectorAll("[data-ec-photos]").forEach(btn=>btn.onclick=async()=>{
+    const paths=JSON.parse(btn.dataset.ecPhotos||"[]"),wrap=btn.nextElementSibling;
+    btn.disabled=true;btn.textContent="사진 불러오는 중...";
+    const urls=await displayUrls(paths);
+    wrap.innerHTML=urls.map((u,i)=>`<img src="${escapeHtml(u)}" alt="이력 사진 ${i+1}" data-ec-zoom="${i}">`).join("")||`<span class="hint">사진을 불러오지 못했습니다.</span>`;
+    wrap.querySelectorAll("[data-ec-zoom]").forEach(img=>img.onclick=()=>openImageModal(img.src,"HWDK-자재이력.jpg",false));
+    btn.classList.add("hidden");
+  });
+}
+
+/* ----- 카드(상세) ----- */
+async function showEquipCard(id,push=true){
+  hideAllMain();showHeader();$("equipCardApp").classList.remove("hidden");
+  ecSetView("detail");ecCurrent=id;ecCloseForms();$("ecDetailStatus").textContent="";
+  if(push)pushState({screen:"equip-card",id,admin:isAdmin});
+  if(!ecLoadedAt||Date.now()-ecLoadedAt>15000||!ecItem(id)){
+    $("ecDetailCode").textContent="";$("ecDetailName").textContent="불러오는 중...";$("ecDetailBadges").innerHTML="";$("ecDetailAlert").classList.add("hidden");$("ecInfoGrid").innerHTML="";$("ecTimeline").innerHTML="";
+    await loadEquipCardData(false);
+  }
+  if(ecCurrent!==id||ecView!=="detail")return;
+  const item=ecItem(id);
+  if(!item){
+    ecSetView("list");replaceState({screen:"equip-cards",tab:ecTab,admin:isAdmin});renderEquipCards();
+    $("ecStatus").textContent=ecLoadError||"자재를 찾지 못했습니다. 목록을 확인해 주세요.";return;
+  }
+  renderEquipDetail();loadEquipTimeline(item);
+}
+function renderEquipDetail(){
+  const item=ecItem(ecCurrent);if(!item)return;
+  const s=item.status||"정상",live=s!=="폐기",loan=ecOpen.get(item.id),due=live?ecDueState(item):"",dd=ecDueDays(item),next=ecNextDue(item);
+  $("ecDetailCode").textContent=item.code;
+  $("ecDetailName").textContent=matItemLabel(item)+(item.same_day_return?" · 당일 반납":"");
+  $("ecDetailBadges").innerHTML=ecStatusBadge(item)+(loan?`<span class="mat-state out">불출중</span>`:"");
+  let a="",cls="";
+  if(!live){cls="dispose";a=`<b>폐기된 자재</b> · ${escapeHtml(ecDate(item.disposed_on)||"-")}${item.dispose_reason?` · ${escapeHtml(item.dispose_reason)}`:""}<br>자재관리대장 목록에 나오지 않습니다.${ecCanEdit?" 잘못 폐기했으면 '폐기 취소'를 누르세요.":""}`}
+  else if(s==="수리중"){cls="repair";a=`<b>수리중</b> · 수리 완료 전까지 자재관리대장에서 불출할 수 없습니다.${ecCanEdit?" 수리가 끝나면 '수리 완료'를 눌러 주세요.":""}`}
+  if(due==="over"){a+=(a?"<br>":"")+`<b>점검일이 지났습니다</b> · 다음 점검일 ${escapeHtml(next)} (${-dd}일 지남). '점검 등록'으로 결과를 남겨 주세요.`;cls=cls||"over"}
+  else if(due==="soon"){a+=(a?"<br>":"")+`<b>점검일이 다가옵니다</b> · ${escapeHtml(next)} (${dd===0?"오늘":`D-${dd}`})`;cls=cls||"soon"}
+  const alert=$("ecDetailAlert");alert.className="ec-alert "+cls+(a?"":" hidden");alert.innerHTML=a;
+  $("ecInspectBtn").classList.toggle("hidden",!live);$("ecIssueBtn").classList.toggle("hidden",!live);
+  $("ecEditBtn").classList.toggle("hidden",!ecCanEdit);
+  $("ecRepairBtn").classList.toggle("hidden",!(ecCanEdit&&s==="수리중"));
+  $("ecDisposeBtn").classList.toggle("hidden",!(ecCanEdit&&live));
+  $("ecRestoreBtn").classList.toggle("hidden",!(ecCanEdit&&!live));
+  $("ecLedgerBtn").classList.toggle("hidden",!live||item.active===false);
+  const perm=$("ecDetailPerm");perm.classList.toggle("hidden",ecCanEdit);perm.textContent=ecCanEdit?"":`내용 수정 · 수리 완료 · 폐기는 ${ecEditorNames()}만 할 수 있습니다.`;
+  const e=x=>x==null||x===""?"":escapeHtml(x);
+  const cell=(label,val,wide)=>`<div class="ec-info${wide==="m"?" m-wide":(wide?" wide":"")}"><div class="ec-info-label">${label}</div><div class="ec-info-value${val?"":" none"}">${val||"-"}</div></div>`;
+  const purchase=ecDate(item.purchase_date),since=ecSince(purchase);
+  const nextHtml=next?`${escapeHtml(next)}${due?` <span class="ec-due ${due}">${dd<0?`${-dd}일 지남`:(dd===0?"오늘":`D-${dd}`)}</span>`:""}`:(live&&!item.inspect_cycle_months?`<span class="mat-meta" style="display:inline">점검주기를 넣으면 계산됩니다</span>`:"");
+  const cells=[
+    cell("고유번호",e(item.code)),cell("품목",e(item.category)),cell("규격",e(item.spec)),
+    cell("기존번호",e(item.item_no)),cell("제조사",e(item.maker)),cell("모델",e(item.model)),
+    cell("제조번호",e(item.serial_no)),cell("보관위치",e(item.location)),cell("구매일",purchase?`${escapeHtml(purchase)}${since?` <span class="mat-meta" style="display:inline">(${escapeHtml(since)})</span>`:""}`:""),
+    cell("점검주기",item.inspect_cycle_months?`${item.inspect_cycle_months}개월마다`:""),cell("최근 점검일",e(ecDate(item.last_inspected_on))),cell("다음 점검일",nextHtml),
+    cell("상태",ecStatusBadge(item)),cell("불출",loan?`불출중 · ${escapeHtml(loan.borrower_name)} <span class="mat-meta" style="display:inline">(${escapeHtml(matOutWhen(loan))})</span>`:(live?"창고 (불출가능)":"")),cell("당일 반납",item.same_day_return?"예":"아니오","m")
+  ];
+  if(!live)cells.push(cell("폐기",[ecDate(item.disposed_on),item.dispose_reason].filter(Boolean).map(escapeHtml).join(" · "),true));
+  cells.push(cell("메모",e(item.note),true));
+  if(item.updated_name)cells.push(cell("마지막 수정",`${escapeHtml(item.updated_name)} <span class="mat-meta" style="display:inline">${escapeHtml(formatDateTime(item.updated_at))}</span>`,true));
+  $("ecInfoGrid").innerHTML=cells.join("");
+}
+async function loadEquipTimeline(item){
+  const box=$("ecTimeline"),toggle=$("ecLoansToggle"),loansBox=$("ecLoans");
+  box.innerHTML=`<div class="hint">이력을 불러오는 중...</div>`;$("ecTimelineCount").textContent="";
+  loansBox.classList.add("hidden");loansBox.innerHTML="";toggle.classList.add("hidden");
+  const [evRes,loanRes]=await Promise.all([
+    supabase.from("equipment_events").select(EC_EVENT_COLS).eq("item_id",item.id).order("event_on",{ascending:false}).order("created_at",{ascending:false}).limit(500),
+    supabase.from("equipment_loans").select("id,item_id,borrower_name,out_at,out_author,out_note,returned_at,return_name,return_author,return_photos,return_note,source").eq("item_id",item.id).order("out_at",{ascending:false}).limit(100)
+  ]);
+  if(ecCurrent!==item.id||ecView!=="detail")return;
+  if(evRes.error){box.innerHTML=`<div class="hint">${escapeHtml(ecSchemaMessage(evRes.error)||("이력을 불러오지 못했습니다: "+(evRes.error.message||"오류")))}</div>`;ecEvents=[]}
+  else{
+    ecEvents=evRes.data||[];$("ecTimelineCount").textContent=`${ecEvents.length}건`;
+    box.innerHTML=ecEvents.length?ecEvents.map(ev=>ecEventRow(ev,item,false)).join(""):`<div class="empty">아직 이력이 없습니다.</div>`;
+    ecBindPhotos(box);
+    box.querySelectorAll("[data-ec-ev-edit]").forEach(b=>b.onclick=()=>ecEditEventRow(b.dataset.ecEvEdit));
+    box.querySelectorAll("[data-ec-ev-del]").forEach(b=>b.onclick=()=>ecDeleteEvent(b.dataset.ecEvDel));
+  }
+  const loans=loanRes.error?[]:(loanRes.data||[]);
+  if(!loans.length)return;
+  toggle.classList.remove("hidden");toggle.textContent=`불출 · 반납 기록 ${loans.length}건 보기`;
+  toggle.onclick=()=>{
+    const show=loansBox.classList.contains("hidden");
+    if(show&&!loansBox.innerHTML){loansBox.innerHTML=loans.map(l=>matHistoryRow(l,item,false)).join("");bindMaterialPhotoButtons(loansBox)}
+    loansBox.classList.toggle("hidden",!show);toggle.textContent=show?"불출 · 반납 기록 접기":`불출 · 반납 기록 ${loans.length}건 보기`;
+  };
+}
+async function ecRefreshItem(id){
+  const {data,error}=await supabase.from("equipment_items").select(EC_ITEM_COLS).eq("id",id).maybeSingle();
+  if(error||!data)return;
+  const i=ecItems.findIndex(x=>x.id===id);if(i>=0)ecItems[i]=data;else ecItems.push(data);
+}
+function ecCloseForms(){
+  $("ecEventForm").classList.add("hidden");$("ecEditForm").classList.add("hidden");ecFormMode=null;
+  ecPhotos.forEach(p=>URL.revokeObjectURL(p.url));ecPhotos=[];$("ecPhotoPreview").innerHTML="";
+}
+function ecRenderPhotos(){
+  const box=$("ecPhotoPreview");
+  box.innerHTML=ecPhotos.map((p,i)=>`<div><img src="${escapeHtml(p.url)}" alt="사진 ${i+1}"><button type="button" data-ec-photo-del="${i}" aria-label="사진 빼기">×</button></div>`).join("");
+  box.querySelectorAll("[data-ec-photo-del]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.ecPhotoDel);URL.revokeObjectURL(ecPhotos[i].url);ecPhotos.splice(i,1);ecRenderPhotos()});
+}
+async function ecAddPhotos(input){
+  const files=[...(input.files||[])];input.value="";if(!files.length)return;
+  const st=$("ecEventStatus");
+  try{const list=await normalizeSelectedImages(files,st);list.forEach(f=>ecPhotos.push({file:f,url:URL.createObjectURL(f)}));st.textContent="";ecRenderPhotos()}
+  catch(e){st.textContent=e?.message||"사진을 읽지 못했습니다."}
+}
+function ecContentLabel(){
+  const f=EC_FORM[ecFormMode];if(!f)return;
+  const need=ecFormMode==="이상"||ecFormMode==="폐기"||(ecFormMode==="점검"&&ecSegValue("ecResultSeg")==="불량");
+  $("ecEventContentLabel").innerHTML=escapeHtml(f.content)+(need?`<span class="mat-req">*</span>`:" (선택)");
+}
+function openEcEventForm(mode){
+  const item=ecItem(ecCurrent);if(!item||ecBusy)return;
+  if(mode==="폐기"&&ecOpen.has(item.id)){$("ecDetailStatus").textContent="불출중인 자재는 폐기할 수 없습니다. 먼저 자재관리대장에서 반납하세요.";return}
+  ecCloseForms();ecFormMode=mode;
+  const f=EC_FORM[mode],form=$("ecEventForm");
+  form.className="ec-form "+f.cls;
+  $("ecEventFormTitle").textContent=`${f.title} · ${item.code}`;
+  $("ecEventDateLabel").innerHTML=`${mode==="폐기"?"폐기일":(mode==="점검"?"점검일":"날짜")}<span class="mat-req">*</span>`;
+  $("ecEventDate").value=localToday();$("ecEventDate").max=localToday();
+  $("ecResultWrap").classList.toggle("hidden",mode!=="점검");$("ecIssueWrap").classList.toggle("hidden",mode!=="이상");
+  ecSetSeg("ecResultSeg","양호");ecSetSeg("ecIssueSeg","고장");
+  $("ecEventContent").value="";$("ecEventContent").placeholder=f.ph;ecContentLabel();
+  $("ecEventNote").textContent=f.note;
+  $("ecPhotoWrap").classList.toggle("hidden",!f.photo);
+  $("ecEventSave").textContent=f.save;$("ecEventStatus").textContent="";$("ecDetailStatus").textContent="";
+  form.classList.remove("hidden");form.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+async function ecInsertEvent(item,row){
+  const {error}=await supabase.from("equipment_events").insert({item_id:item.id,author_name:currentUserName,created_by:currentUserId,photos:[],...row});
+  if(error)throw error;
+  const before=item.status||"정상";
+  ecRecentRows=null;matLoadedAt=0;
+  await ecRefreshItem(item.id);
+  const now=ecItem(item.id)||item;
+  renderEquipDetail();loadEquipTimeline(now);
+  return {before,now};
+}
+function ecDoneMessage(type,result,before,item){
+  if(type==="점검")return `점검 등록 완료 (${result})`+(item.inspect_cycle_months?` · 다음 점검일 ${ecNextDue(item)}`:"")+(result==="불량"&&item.status==="수리중"&&before!=="수리중"?" · 수리중으로 바뀜(수리 완료 전까지 불출 막힘)":"");
+  if(type==="고장")return "고장 기록 완료"+(item.status==="수리중"?" · 수리중(수리 완료 전까지 불출 막힘)":"");
+  if(type==="수리완료")return "수리 완료 · 다시 불출할 수 있습니다.";
+  if(type==="폐기")return "폐기 완료 · 자재관리대장 목록에서 빠졌습니다.";
+  if(type==="폐기취소")return "폐기 취소 · 자재관리대장 목록에 다시 나옵니다.";
+  return `${type} 기록 완료`;
+}
+async function saveEcEvent(){
+  if(ecBusy)return;
+  const item=ecItem(ecCurrent),mode=ecFormMode,status=$("ecEventStatus"),btn=$("ecEventSave");
+  if(!item||!mode)return;
+  const date=$("ecEventDate").value,content=$("ecEventContent").value.trim();
+  if(!date){status.textContent="날짜를 넣어 주세요.";return}
+  if(date>localToday()){status.textContent="오늘 이후 날짜는 넣을 수 없습니다.";return}
+  let type=mode,result=null;
+  if(mode==="점검"){result=ecSegValue("ecResultSeg")||"양호";if(result==="불량"&&!content){status.textContent="불량이면 어떤 점이 불량인지 적어 주세요.";$("ecEventContent").focus();return}}
+  if(mode==="이상"){type=ecSegValue("ecIssueSeg")||"고장";if(!content){status.textContent="내용을 적어 주세요.";$("ecEventContent").focus();return}}
+  if(mode==="폐기"){
+    if(!content){status.textContent="폐기 사유를 적어 주세요.";$("ecEventContent").focus();return}
+    if(ecOpen.has(item.id)){status.textContent="불출중인 자재는 폐기할 수 없습니다. 먼저 자재관리대장에서 반납하세요.";return}
+    if(!confirm(`${item.code} 을(를) 폐기할까요?\n자재관리대장 목록에서 빠집니다(카드와 이력은 남습니다).`))return;
+  }
+  try{
+    ecBusy=true;btn.disabled=true;
+    let paths=[];
+    if(ecPhotos.length&&EC_FORM[mode].photo){
+      status.textContent=`사진 ${ecPhotos.length}장 올리는 중...`;
+      const files=[];for(const p of ecPhotos)files.push(await shrinkMaterialPhoto(p.file));
+      paths=await uploadFiles(files,`equipment/${item.code}`);
+    }
+    status.textContent="등록 중...";
+    const {before,now}=await ecInsertEvent(item,{event_type:type,event_on:date,result,content:content||null,photos:paths});
+    ecCloseForms();
+    $("ecDetailStatus").textContent=ecDoneMessage(type,result,before,now);
+  }catch(e){status.textContent="등록 실패: "+ecErrorMessage(e)}finally{ecBusy=false;btn.disabled=false}
+}
+async function restoreEquip(){
+  const item=ecItem(ecCurrent);if(!item||ecBusy)return;
+  if(!confirm(`${item.code} 폐기를 취소할까요?\n상태가 정상으로 돌아가고 자재관리대장 목록에 다시 나옵니다.`))return;
+  const st=$("ecDetailStatus");
+  try{ecBusy=true;st.textContent="처리 중...";const {before,now}=await ecInsertEvent(item,{event_type:"폐기취소",event_on:localToday(),content:"폐기 취소"});st.textContent=ecDoneMessage("폐기취소",null,before,now)}
+  catch(e){st.textContent="처리 실패: "+ecErrorMessage(e)}finally{ecBusy=false}
+}
+function ecFieldText(f,v){if(f.t==="bool")return v?"예":"아니오";if(v==null||v==="")return "없음";if(f.t==="cycle")return `${v}개월`;return String(v)}
+function openEcEditForm(){
+  const item=ecItem(ecCurrent);if(!item||!ecCanEdit||ecBusy)return;
+  ecCloseForms();
+  $("ecEditFields").innerHTML=EC_EDIT_FIELDS.map(f=>{
+    const id="ecF_"+f.k;
+    if(f.t==="bool")return `<div><label for="${id}">${f.l}</label><select id="${id}"><option value="0">아니오</option><option value="1">예 (하루 지나면 빨간색)</option></select></div>`;
+    if(f.t==="cycle")return `<div><label for="${id}">${f.l}</label><input id="${id}" type="number" inputmode="numeric" min="1" max="120" placeholder="예: 6 (비우면 미설정)"></div>`;
+    return `<div${f.wide?' class="ec-wide"':""}><label for="${id}">${f.l}</label><input id="${id}" type="${f.t}" autocomplete="off"${f.t==="date"?` max="${localToday()}"`:""}></div>`;
+  }).join("");
+  EC_EDIT_FIELDS.forEach(f=>{const v=item[f.k];$("ecF_"+f.k).value=f.t==="bool"?(v?"1":"0"):(f.t==="date"?ecDate(v):(v??""))});
+  const same=ecItems.filter(i=>i.category===item.category&&i.id!==item.id&&i.status!=="폐기").length;
+  $("ecFCycleAll").checked=false;$("ecFCycleAllText").textContent=`같은 품목(${item.category}) ${same}개에도 이 점검주기 적용`;
+  $("ecFCycleAll").closest("label").classList.toggle("hidden",!same);
+  $("ecEditStatus").textContent="";$("ecDetailStatus").textContent="";
+  $("ecEditForm").classList.remove("hidden");$("ecEditForm").scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+async function saveEcEdit(){
+  const item=ecItem(ecCurrent),status=$("ecEditStatus"),btn=$("ecEditSave");if(!item||ecBusy)return;
+  const patch={},changes=[];let cycleVal=null;
+  for(const f of EC_EDIT_FIELDS){
+    const raw=$("ecF_"+f.k).value;let v;
+    if(f.t==="bool")v=raw==="1";
+    else if(f.t==="cycle"){const t=String(raw).trim();if(t===""){v=null}else{v=Number(t);if(!Number.isInteger(v)||v<1||v>120){status.textContent="점검주기는 1 ~ 120 사이 개월 수로 넣어 주세요.";return}}cycleVal=v}
+    else if(f.t==="date"){v=raw||null;if(v&&v>localToday()){status.textContent=`${f.l}은(는) 오늘 이후 날짜를 넣을 수 없습니다.`;return}}
+    else{v=normalizeName(raw);if(f.k!=="spec"&&!v)v=null}
+    const old=f.t==="bool"?!!item[f.k]:(f.t==="date"?(ecDate(item[f.k])||null):(f.k==="spec"?(item.spec||""):(item[f.k]??null)));
+    if(String(old??"")!==String(v??"")){patch[f.k]=v;changes.push(`${f.l.replace(" (개월)","")}: ${ecFieldText(f,old)} → ${ecFieldText(f,v)}`)}
+  }
+  const cycleAll=$("ecFCycleAll").checked&&!$("ecFCycleAll").closest("label").classList.contains("hidden");
+  if(cycleAll&&cycleVal==null){status.textContent="같은 품목에 적용하려면 점검주기를 넣어 주세요.";return}
+  const targets=cycleAll?ecItems.filter(i=>i.category===item.category&&i.id!==item.id&&i.status!=="폐기"&&(i.inspect_cycle_months??null)!==cycleVal):[];
+  if(!changes.length&&!targets.length){status.textContent=cycleAll?"같은 품목이 모두 이미 같은 점검주기입니다.":"바뀐 내용이 없습니다.";return}
+  try{
+    ecBusy=true;btn.disabled=true;status.textContent="저장 중...";
+    const stamp={updated_name:currentUserName,updated_at:new Date().toISOString()};
+    if(changes.length){
+      const {data,error}=await supabase.from("equipment_items").update({...patch,...stamp}).eq("id",item.id).select("id");
+      if(error)throw error;if(!data||!data.length)throw {code:"42501",message:"row-level security"};
+    }
+    let others=[];
+    if(targets.length){
+      const {data,error}=await supabase.from("equipment_items").update({inspect_cycle_months:cycleVal,...stamp}).in("id",targets.map(i=>i.id)).select("id");
+      if(error)throw error;
+      const done=new Set((data||[]).map(d=>d.id));others=targets.filter(t=>done.has(t.id));
+    }
+    const cyc={t:"cycle"},evRows=[];
+    const mine=[...changes];if(others.length)mine.push(`같은 품목 ${others.length}개에도 점검주기 ${ecFieldText(cyc,cycleVal)} 적용`);
+    evRows.push({item_id:item.id,event_type:"정보수정",event_on:localToday(),content:mine.join("\n"),author_name:currentUserName,created_by:currentUserId});
+    others.forEach(o=>evRows.push({item_id:o.id,event_type:"정보수정",event_on:localToday(),content:`점검주기: ${ecFieldText(cyc,o.inspect_cycle_months)} → ${ecFieldText(cyc,cycleVal)} (${item.code} 카드에서 같은 품목 일괄 적용)`,author_name:currentUserName,created_by:currentUserId}));
+    const {error:evErr}=await supabase.from("equipment_events").insert(evRows);
+    if(evErr)console.warn("정보수정 이력 저장 실패",evErr);
+    ecCloseForms();ecRecentRows=null;matLoadedAt=0;
+    if(others.length)await loadEquipCardData(false);else await ecRefreshItem(item.id);
+    const now=ecItem(item.id)||item;renderEquipDetail();loadEquipTimeline(now);
+    $("ecDetailStatus").textContent=`수정 완료${changes.length?` · ${changes.length}개 항목`:""}${others.length?` · 같은 품목 ${others.length}개 점검주기 적용`:""}`;
+  }catch(e){status.textContent="저장 실패: "+ecErrorMessage(e)}finally{ecBusy=false;btn.disabled=false}
+}
+function ecEditEventRow(id){
+  const ev=ecEvents.find(x=>x.id===id),row=[...document.querySelectorAll("#ecTimeline [data-ec-ev]")].find(r=>r.dataset.ecEv===id);
+  if(!ev||!row||row.querySelector(".ec-ev-edit"))return;
+  const wrap=document.createElement("div");wrap.className="ec-ev-edit";
+  wrap.innerHTML=`<div class="ec-form-grid"><div><label>날짜</label><input type="date" class="ecx-date" max="${localToday()}"></div>${ev.event_type==="점검"?`<div><label>결과</label><select class="ecx-result"><option value="양호">양호</option><option value="불량">불량</option></select></div>`:""}</div><label>내용</label><textarea class="ecx-content ec-textarea"></textarea><div class="ec-form-btns"><button type="button" class="secondary ecx-cancel">취소</button><button type="button" class="primary ecx-save">수정 저장</button></div><div class="status ecx-status"></div>`;
+  row.appendChild(wrap);
+  wrap.querySelector(".ecx-date").value=ecDate(ev.event_on);wrap.querySelector(".ecx-content").value=ev.content||"";
+  if(ev.event_type==="점검")wrap.querySelector(".ecx-result").value=ev.result||"양호";
+  wrap.querySelector(".ecx-cancel").onclick=()=>wrap.remove();
+  wrap.querySelector(".ecx-save").onclick=async()=>{
+    const st=wrap.querySelector(".ecx-status"),date=wrap.querySelector(".ecx-date").value,content=wrap.querySelector(".ecx-content").value.trim();
+    const result=ev.event_type==="점검"?wrap.querySelector(".ecx-result").value:null;
+    if(!date||date>localToday()){st.textContent="날짜를 확인해 주세요(오늘 이후 안 됨).";return}
+    if(["고장","문제","특이사항"].includes(ev.event_type)&&!content){st.textContent="내용을 적어 주세요.";return}
+    if(ecBusy)return;
+    try{
+      ecBusy=true;st.textContent="저장 중...";
+      const {data,error}=await supabase.from("equipment_events").update({event_on:date,result,content:content||null,updated_at:new Date().toISOString()}).eq("id",ev.id).select("id");
+      if(error)throw error;if(!data||!data.length)throw {code:"42501",message:"row-level security"};
+      ecRecentRows=null;matLoadedAt=0;await ecRefreshItem(ev.item_id);
+      const item=ecItem(ev.item_id);renderEquipDetail();if(item)loadEquipTimeline(item);
+      $("ecDetailStatus").textContent="이력을 고쳤습니다.";
+    }catch(e){st.textContent="저장 실패: "+ecErrorMessage(e)}finally{ecBusy=false}
+  };
+}
+async function ecDeleteEvent(id){
+  const ev=ecEvents.find(x=>x.id===id);if(!ev||ecBusy)return;
+  const warn=(ev.event_type==="고장"||(ev.event_type==="점검"&&ev.result==="불량"))?"\n(상태는 그대로입니다. 수리중이면 '수리 완료'로 바꿔 주세요.)":(ev.event_type==="수리완료"?"\n(상태는 그대로입니다.)":"");
+  if(!confirm(`${ecDate(ev.event_on)} ${ecEventLabel(ev)} 이력을 지울까요?${warn}`))return;
+  const st=$("ecDetailStatus");
+  try{
+    ecBusy=true;st.textContent="지우는 중...";
+    const {data,error}=await supabase.from("equipment_events").delete().eq("id",ev.id).select("id");
+    if(error)throw error;if(Array.isArray(data)&&!data.length)throw {code:"42501",message:"row-level security"};
+    ecRecentRows=null;matLoadedAt=0;await ecRefreshItem(ev.item_id);
+    const item=ecItem(ev.item_id);renderEquipDetail();if(item)loadEquipTimeline(item);
+    st.textContent="이력을 지웠습니다.";
+  }catch(e){st.textContent="삭제 실패: "+ecErrorMessage(e)}finally{ecBusy=false}
+}
+async function ecOpenLedger(){
+  const item=ecItem(ecCurrent);if(!item)return;
+  matLoadedAt=Date.now();
+  showMaterial(ecOpen.has(item.id)?"out":"free",true);
+  await loadMaterialData();
+  if(matItems.some(i=>i.id===item.id))openMaterialSheet(item.id);
+}
+
+/* ----- 자재 등록(수정 권한자) → equipment_items 에 들어가 자재관리대장에 바로 나옴 ----- */
+async function showEquipRegister(push=true){
+  hideAllMain();showHeader();$("equipCardApp").classList.remove("hidden");
+  if(!ecLoadedAt)await loadEquipCardData(false);
+  if(!ecCanEdit){
+    ecSetView("list");if(push)pushState({screen:"equip-cards",tab:ecTab,admin:isAdmin});else replaceState({screen:"equip-cards",tab:ecTab,admin:isAdmin});
+    renderEquipCards();$("ecStatus").textContent=ecLoadError||`자재 등록은 ${ecEditorNames()}만 할 수 있습니다.`;return;
+  }
+  ecSetView("register");
+  if(push)pushState({screen:"equip-register",admin:isAdmin});
+  ["ecRCategory","ecRPrefix","ecRNumbers","ecRSpec","ecRMaker","ecRModel","ecRSerial","ecRLocation","ecRPurchase","ecRCycle","ecRLast","ecRNote"].forEach(id=>$(id).value="");
+  $("ecRPrefix").readOnly=false;$("ecRSameDay").checked=false;$("ecRNextNo").textContent="";$("ecRStatus").textContent="";
+  $("ecRPurchase").max=localToday();$("ecRLast").max=localToday();
+  ecRenderRegisterPreview();
+}
+function ecRegisterCategoryInfo(){
+  const cat=normalizeName($("ecRCategory").value),items=ecItems.filter(i=>i.category===cat);
+  return {cat,items,prefix:items.length?String(items[0].code).split("-")[0]:""};
+}
+function ecOnRegisterCategory(){
+  const {cat,items,prefix}=ecRegisterCategoryInfo(),pre=$("ecRPrefix");
+  if(items.length){
+    pre.value=prefix;pre.readOnly=true;
+    $("ecRSameDay").checked=items.some(i=>i.same_day_return);
+    const cycles=items.map(i=>i.inspect_cycle_months).filter(Boolean);
+    if(cycles.length&&!$("ecRCycle").value){const cnt={};cycles.forEach(c=>cnt[c]=(cnt[c]||0)+1);$("ecRCycle").value=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0][0]}
+    const nums=items.map(i=>parseInt(i.item_no,10)).filter(n=>!isNaN(n));
+    $("ecRNextNo").textContent=`지금 ${cat} ${items.length}개${nums.length?` · 다음 번호 ${Math.max(...nums)+1}`:""}`;
+  }else{
+    if(pre.readOnly){pre.value="";$("ecRSameDay").checked=false}
+    pre.readOnly=false;$("ecRNextNo").textContent=cat?"새 품목입니다. 품목약호(영문 대문자)를 정해 주세요.":"";
+  }
+  ecRenderRegisterPreview();
+}
+function ecParseNumbers(text){
+  const t=String(text||"").replace(/\s+/g,"");if(!t)return {list:[],error:""};
+  const list=[];
+  for(const part of t.split(/[,，]/)){
+    if(!part)continue;
+    const m=part.match(/^(\d{1,4})[-~](\d{1,4})$/);
+    if(m){let a=Number(m[1]),b=Number(m[2]);if(a>b)[a,b]=[b,a];if(b-a>=50)return {list:[],error:"한 번에 50개까지 등록할 수 있습니다."};for(let n=a;n<=b;n++)list.push(n);continue}
+    if(/^\d{1,4}$/.test(part)){list.push(Number(part));continue}
+    return {list:[],error:"기존번호는 숫자로 적어 주세요 (예: 13, 13-15, 13,15)."};
+  }
+  const uniq=[...new Set(list)];
+  if(uniq.length>50)return {list:[],error:"한 번에 50개까지 등록할 수 있습니다."};
+  if(uniq.some(n=>n<1))return {list:[],error:"기존번호는 1 이상이어야 합니다."};
+  return {list:uniq,error:""};
+}
+function ecRegisterPlan(){
+  const {cat,items,prefix:fixed}=ecRegisterCategoryInfo();
+  const prefix=fixed||String($("ecRPrefix").value||"").trim().toUpperCase();
+  const nums=ecParseNumbers($("ecRNumbers").value),errors=[];
+  if(!cat)errors.push("품목을 적어 주세요.");
+  if(!fixed){
+    if(!prefix)errors.push("품목약호를 적어 주세요 (영문 대문자, 예: WH).");
+    else if(!/^[A-Z][A-Z0-9]{0,5}$/.test(prefix))errors.push("품목약호는 영문 대문자로 시작하는 6자 이내로 적어 주세요.");
+    else{const other=ecItems.find(i=>String(i.code).split("-")[0]===prefix&&i.category!==cat);if(other)errors.push(`품목약호 ${prefix} 은(는) 이미 '${other.category}' 품목이 쓰고 있습니다.`)}
+  }
+  if(nums.error)errors.push(nums.error);else if(!nums.list.length)errors.push("기존번호를 적어 주세요.");
+  const codes=prefix?nums.list.map(n=>({n,code:`${prefix}-${String(n).padStart(2,"0")}`})):[];
+  const taken=new Set(ecItems.map(i=>i.code)),dup=codes.filter(c=>taken.has(c.code));
+  return {cat,prefix,items,codes,dup,errors};
+}
+function ecRenderRegisterPreview(){
+  const p=ecRegisterPlan(),box=$("ecRPreview");
+  if(!p.codes.length){box.innerHTML=`<span class="hint" style="margin:0">품목 · 품목약호 · 기존번호를 넣으면 만들어질 고유번호가 여기에 나옵니다.</span>`;return}
+  const ok=p.codes.filter(c=>!p.dup.includes(c));
+  box.innerHTML=(ok.length?`고유번호 <b>${ok.slice(0,12).map(c=>escapeHtml(c.code)).join(" · ")}${ok.length>12?` 외 ${ok.length-12}개`:""}</b> (${ok.length}개)`:"")+(p.dup.length?`<div class="dup">이미 있는 번호: ${p.dup.map(c=>escapeHtml(c.code)).join(", ")}</div>`:"");
+}
+async function saveEquipRegister(){
+  if(ecBusy)return;
+  const status=$("ecRStatus"),btn=$("ecRSave"),p=ecRegisterPlan();
+  if(p.errors.length){status.textContent=p.errors[0];return}
+  if(p.dup.length){status.textContent=`이미 있는 고유번호입니다: ${p.dup.map(c=>c.code).join(", ")}. 번호를 바꿔 주세요.`;return}
+  const cycleText=String($("ecRCycle").value||"").trim();let cycle=null;
+  if(cycleText){cycle=Number(cycleText);if(!Number.isInteger(cycle)||cycle<1||cycle>120){status.textContent="점검주기는 1 ~ 120 사이 개월 수로 넣어 주세요.";return}}
+  const purchase=$("ecRPurchase").value||null,last=$("ecRLast").value||null;
+  if((purchase&&purchase>localToday())||(last&&last>localToday())){status.textContent="구매일 · 최근 점검일은 오늘 이후 날짜를 넣을 수 없습니다.";return}
+  const serial=normalizeName($("ecRSerial").value)||null;
+  if(serial&&p.codes.length>1){status.textContent="제조번호는 1개씩 등록할 때만 적을 수 있습니다.";return}
+  const orders=p.items.map(i=>Number(i.sort_order)||0);
+  const catIndex=p.items.length?Math.floor(Math.min(...orders)/10000):Math.floor(Math.max(0,...ecItems.map(i=>Number(i.sort_order)||0))/10000)+1;
+  const base={category:p.cat,spec:normalizeName($("ecRSpec").value),same_day_return:$("ecRSameDay").checked,active:true,status:"정상",note:normalizeName($("ecRNote").value)||null,
+    purchase_date:purchase,maker:normalizeName($("ecRMaker").value)||null,model:normalizeName($("ecRModel").value)||null,serial_no:serial,location:normalizeName($("ecRLocation").value)||null,
+    inspect_cycle_months:cycle,last_inspected_on:last,updated_name:currentUserName};
+  const rows=p.codes.map(c=>({...base,code:c.code,item_no:String(c.n),sort_order:catIndex*10000+c.n}));
+  if(rows.length>1&&!confirm(`${p.cat} ${rows.length}개를 등록할까요?\n${rows.map(r=>r.code).join(", ")}`))return;
+  try{
+    ecBusy=true;btn.disabled=true;status.textContent="등록 중...";
+    const {data,error}=await supabase.from("equipment_items").insert(rows).select("id,code");
+    if(error){
+      if(error.code==="23505"||/duplicate|unique/i.test(error.message||"")){status.textContent="이미 있는 고유번호가 있어 등록하지 못했습니다. 목록을 새로 불러왔으니 다시 확인해 주세요.";await loadEquipCardData(false);ecRenderRegisterPreview();return}
+      throw error;
+    }
+    const created=data||[];
+    const summary=["자재 등록",purchase&&`구매일 ${purchase}`,cycle&&`점검주기 ${cycle}개월`,last&&`최근 점검일 ${last}`].filter(Boolean).join(" · ");
+    if(created.length){const {error:evErr}=await supabase.from("equipment_events").insert(created.map(r=>({item_id:r.id,event_type:"등록",event_on:localToday(),content:summary,photos:[],author_name:currentUserName,created_by:currentUserId})));if(evErr)console.warn("등록 이력 저장 실패",evErr)}
+    matLoadedAt=0;ecRecentRows=null;await loadEquipCardData(false);
+    const msg=`${created.length===1?created[0].code:`${created[0].code} ~ ${created[created.length-1].code} ${created.length}개`} 등록 완료 · 자재관리대장 '불출가능'에 바로 나옵니다.`;
+    if(created.length===1&&ecItem(created[0].id)){
+      replaceState({screen:"equip-card",id:created[0].id,admin:isAdmin});
+      ecSetView("detail");ecCurrent=created[0].id;ecCloseForms();renderEquipDetail();loadEquipTimeline(ecItem(created[0].id));$("ecDetailStatus").textContent=msg;
+    }else{
+      replaceState({screen:"equip-cards",tab:"cards",admin:isAdmin});
+      ecTab="cards";ecCategoryFilter=p.cat;$("ecCategory").value=p.cat;ecStatusFilter="use";$("ecStatusFilter").value="use";$("ecSearch").value="";ecListScroll=0;
+      ecSetView("list");renderEquipCards();$("ecStatus").textContent=msg;
+    }
+  }catch(e){status.textContent="등록 실패: "+ecErrorMessage(e)}finally{ecBusy=false;btn.disabled=false}
+}
+
+$("openEquipCardBtn").onclick=()=>showEquipCards("cards",true);
+$("ecCardsTab").onclick=()=>setEcTab("cards");
+$("ecDueTab").onclick=()=>setEcTab("due");
+$("ecRecentTab").onclick=()=>setEcTab("recent");
+$("ecRefreshBtn").onclick=()=>{ecRecentRows=null;loadEquipCardData(true)};
+$("ecRegisterBtn").onclick=()=>showEquipRegister(true);
+$("ecSearch").addEventListener("input",()=>renderEquipCards());
+$("ecCategory").onchange=()=>{ecCategoryFilter=$("ecCategory").value;renderEquipCards()};
+$("ecStatusFilter").onchange=()=>{ecStatusFilter=$("ecStatusFilter").value;renderEquipCards()};
+$("ecInspectBtn").onclick=()=>openEcEventForm("점검");
+$("ecIssueBtn").onclick=()=>openEcEventForm("이상");
+$("ecRepairBtn").onclick=()=>openEcEventForm("수리완료");
+$("ecDisposeBtn").onclick=()=>openEcEventForm("폐기");
+$("ecRestoreBtn").onclick=restoreEquip;
+$("ecEditBtn").onclick=openEcEditForm;
+$("ecLedgerBtn").onclick=ecOpenLedger;
+$("ecEventCancel").onclick=ecCloseForms;
+$("ecEventSave").onclick=saveEcEvent;
+$("ecEditCancel").onclick=ecCloseForms;
+$("ecEditSave").onclick=saveEcEdit;
+$("ecPhotoCamera").onchange=e=>ecAddPhotos(e.target);
+$("ecPhotoAlbum").onchange=e=>ecAddPhotos(e.target);
+$("ecResultSeg").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;ecSetSeg("ecResultSeg",b.dataset.v);ecContentLabel()});
+$("ecIssueSeg").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;ecSetSeg("ecIssueSeg",b.dataset.v)});
+$("matReturnCond").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;matSetCond(b.dataset.v);if(!matBusy)$("matSheetStatus").textContent=""});
+$("matCardLink").onclick=()=>{const id=matSheetItem?.id;closeMaterialSheet();if(id)showEquipCard(id,true)};
+$("ecRCategory").addEventListener("input",ecOnRegisterCategory);
+$("ecRPrefix").addEventListener("input",()=>{const el=$("ecRPrefix"),v=el.value.toUpperCase();if(el.value!==v)el.value=v;ecRenderRegisterPreview()});
+$("ecRNumbers").addEventListener("input",ecRenderRegisterPreview);
+$("ecRSave").onclick=saveEquipRegister;
+$("ecRCancel").onclick=()=>{if(history.state?.screen==="equip-register")history.back();else showEquipCards(ecTab,true)};
+["ecRCategory","ecRPrefix","ecRNumbers","ecRCycle","ecRSerial"].forEach(id=>$(id).addEventListener("input",()=>{if(!ecBusy)$("ecRStatus").textContent=""}));
+["ecEventContent","ecEventDate"].forEach(id=>$(id).addEventListener("input",()=>{if(!ecBusy)$("ecEventStatus").textContent=""}));
+["input","change"].forEach(ev=>$("ecEditForm").addEventListener(ev,()=>{if(!ecBusy)$("ecEditStatus").textContent=""}));
 $("boardWriteBtn").onclick=openBoardForm;
 $("refreshBoardBtn").onclick=()=>loadBoardList();
 $("boardSaveBtn").onclick=saveBoardPost;
@@ -3913,7 +4791,7 @@ $("notificationBtn").onclick=()=>showMyWork(true);
 $("refreshMyWorkBtn").onclick=loadMyWork;
 
 /* ---------- 브라우저 뒤로가기 ---------- */
-async function renderHistoryState(state){const t=state||{screen:"auth"};if(t.screen!=="image")hideImageModalOnly();if(t.screen!=="log"&&t.screen!=="image")hideHistoryModalOnly();if(t.screen==="auth"){showAuth();return}if(t.admin){if(!await checkCurrentUserAdmin()){showAuth();replaceState({screen:"auth"});return}isAdmin=true;currentUserName="관리자"}showHeader();if(t.screen==="home"){showHome(false);return}if(t.screen==="mywork"){showMyWork(false);return}if(t.screen==="schedule-tab"){showScheduleTab(t.tab||"register");return}if(t.screen==="production-dashboard"){showProductionDashboard(false);return}if(t.screen==="board"){showBoard(false);return}if(t.screen==="material"){showMaterial(t.tab||"out",false);return}if(t.screen==="bhd-tab"){showBhdTab(t.tab||"register");return}if(t.screen==="bhd-edit"){const r=await fetchRecordById(t.recordId);if(r)await loadForEdit(r,false);else showBhdTab("list");return}if(t.screen==="bhd-detail"){const r=await fetchRecordById(t.recordId);if(r)await renderRecordDetail(r,false);else showBhdTab("list");return}if(t.screen==="request-tab"){showRequestTab(t.tab||"register");return}if(t.screen==="request-detail"){const r=await fetchRequestById(t.recordId);if(r)await renderRequestDetail(r,false);else showRequestTab("list");return}if(t.screen==="log"){const r=await fetchRecordById(t.recordId);if(r)await openHistoryModal(r,Number(t.logIndex||0),false);return}if(t.screen==="image"){showImageModalOnly(t.url,t.filename||"HWDK-photo.jpg",!!t.mirror)}}
+async function renderHistoryState(state){const t=state||{screen:"auth"};if(t.screen!=="image")hideImageModalOnly();if(t.screen!=="log"&&t.screen!=="image")hideHistoryModalOnly();if(t.screen==="auth"){showAuth();return}if(t.admin){if(!await checkCurrentUserAdmin()){showAuth();replaceState({screen:"auth"});return}isAdmin=true;currentUserName="관리자"}showHeader();if(t.screen==="home"){showHome(false);return}if(t.screen==="mywork"){showMyWork(false);return}if(t.screen==="schedule-tab"){showScheduleTab(t.tab||"register");return}if(t.screen==="production-dashboard"){showProductionDashboard(false);return}if(t.screen==="board"){showBoard(false);return}if(t.screen==="material"){showMaterial(t.tab||"out",false);return}if(t.screen==="equip-cards"){showEquipCards(t.tab||"cards",false);return}if(t.screen==="equip-card"){showEquipCard(t.id,false);return}if(t.screen==="equip-register"){showEquipRegister(false);return}if(t.screen==="bhd-tab"){showBhdTab(t.tab||"register");return}if(t.screen==="bhd-edit"){const r=await fetchRecordById(t.recordId);if(r)await loadForEdit(r,false);else showBhdTab("list");return}if(t.screen==="bhd-detail"){const r=await fetchRecordById(t.recordId);if(r)await renderRecordDetail(r,false);else showBhdTab("list");return}if(t.screen==="request-tab"){showRequestTab(t.tab||"register");return}if(t.screen==="request-detail"){const r=await fetchRequestById(t.recordId);if(r)await renderRequestDetail(r,false);else showRequestTab("list");return}if(t.screen==="log"){const r=await fetchRecordById(t.recordId);if(r)await openHistoryModal(r,Number(t.logIndex||0),false);return}if(t.screen==="image"){showImageModalOnly(t.url,t.filename||"HWDK-photo.jpg",!!t.mirror)}}
 addEventListener("popstate",e=>{updateAppBackButton();renderHistoryState(e.state)});
 
 /* ---------- 초기 실행 ---------- */
