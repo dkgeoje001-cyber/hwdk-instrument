@@ -44,7 +44,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .schedule-row-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
 .schedule-row-grid label{height:18px;line-height:18px}
 .schedule-row-grid select:disabled{background:#f3f5f7;color:#8a9199}
-.schedule-row-grid .schedule-wide-field,.schedule-row-grid .multi-panel{grid-column:1/-1}
+.schedule-row-grid .schedule-wide-field,.schedule-row-grid .multi-panel,.schedule-row-grid .sys-panel{grid-column:1/-1}
 .schedule-field-note{margin-top:4px;color:#64748b;font-size:12px;line-height:1.4}
 /* 투입 인원: 이름을 넣으면 인원 수가 자동으로 맞춰짐 */
 .people-field{margin-top:4px;padding:10px;border:1px solid #dbe2e8;border-radius:10px;background:#f8fafc}
@@ -111,7 +111,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .multi-box:not(:disabled) .multi-text.placeholder{color:#555}
 .multi-count{flex:0 0 auto;padding:2px 7px;border-radius:999px;background:#16324f;color:#fff;font-size:11px;font-weight:800}
 .multi-caret{flex:0 0 auto;color:#334155;font-size:13px}
-.multi-panel{border:1px solid #16324f;border-radius:10px;background:#fff;overflow:hidden;box-shadow:0 6px 16px rgba(22,50,79,.16)}
+.multi-panel,.sys-panel{border:1px solid #16324f;border-radius:10px;background:#fff;overflow:hidden;box-shadow:0 6px 16px rgba(22,50,79,.16)}
 .multi-list{max-height:270px;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .multi-group{padding:6px 12px;background:#eef3f7;color:#16324f;font-size:12px;font-weight:900}
 .multi-row{-webkit-tap-highlight-color:transparent;display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:8px 12px;border-radius:0;border-top:1px solid #edf0f3;background:#fff;color:#334155;font-size:16px;font-weight:700;text-align:left}
@@ -377,6 +377,53 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 @media(max-width:720px){
 #ecIssueWrap{grid-column:1/-1}
 }
+/* 일일작업등록 SYSTEM */
+.multi-row .multi-label{flex:1 1 auto;min-width:0}
+.multi-sys{flex:0 1 auto;max-width:58%;margin-left:auto;padding:3px 8px;border-radius:7px;background:#eef2f6;color:#3b4e66;font-size:12px;font-weight:700;line-height:1.4;text-align:right;overflow-wrap:break-word}
+.multi-row.on .multi-sys{background:#dbe7f3;color:#16324f}
+.rate-sys{margin-top:2px;color:#3b4e66;font-size:12px;font-weight:700;overflow-wrap:break-word}
+.rate-sys.warn{color:#b42318}
+.schedule-sys-note{margin-top:5px;color:#8a5700;font-size:12px;font-weight:700;line-height:1.45}
+.schedule-sys-note:empty{display:none}
+.multi-group.sys-group{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.multi-group .sys-group-sub{font-weight:600;color:#5b6b7b}
+.multi-row.sys-all{min-height:40px;font-size:14px;color:#16324f;background:#f8fafc}
+.multi-row.sys-all.on{background:#e4eef8}
+.sys-done{color:#167148;font-weight:900}
+.sys-todo{color:#8a9199;font-weight:600}
+.edit-sys{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.edit-sys button{padding:7px 11px;border-radius:999px;border:1px solid #c6d3df;background:#fff;color:#33404d;font-size:13px;font-weight:800}
+.edit-sys button.on{background:#16324f;border-color:#16324f;color:#fff}
+/* SYSTEM 항목별 공정률 */
+.rate-row.rate-row-sys{display:block}
+.rate-sys-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.rate-overall{flex:0 0 auto;padding:4px 10px;border-radius:999px;background:#e8eef4;color:#16324f;font-size:13px;font-weight:900;white-space:nowrap}
+.rate-overall.full{background:#dcefe5;color:#16603c}
+.rate-items{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.rate-item{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:8px;align-items:center;padding:7px 10px;border:1px solid #e1e7ed;border-radius:8px;background:#f8fafc}
+.rate-item.done{background:#e3f4ea;border-color:#8fd0a8}
+.rate-item-name{font-size:14px;font-weight:800;color:#33404d;overflow-wrap:break-word}
+.rate-item.done .rate-item-name{color:#16603c}
+.rate-item-prev{display:block;margin-top:1px;font-size:12px;font-weight:600;color:#64748b}
+.rate-item-prev.warn{color:#b42318;font-weight:800}
+.rate-item.done .rate-item-prev{color:#16603c;font-weight:800}
+.schedule-row-grid .rate-item input{margin:0;padding:9px;text-align:right;font-weight:700}
+.rate-item.done input{border-color:#5fb383;color:#16603c;background:#f6fcf8}
+.rate-calc{margin-top:6px;color:#64748b;font-size:12px;line-height:1.5;overflow-wrap:break-word}
+.sys-rate{flex:0 0 auto;margin-left:auto;padding:2px 8px;border-radius:999px;background:#eef2f6;color:#3b4e66;font-size:12px;font-weight:800;white-space:nowrap}
+.sys-rate.full{background:#dcefe5;color:#16603c}
+.multi-row.sys-full .multi-label{color:#16603c}
+.sys-ok{color:#16603c;font-weight:800}
+.edit-sys-rows{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.edit-sys-row{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:8px;align-items:center}
+.edit-sys-row button{justify-self:start;padding:7px 12px;border-radius:999px;border:1px solid #c6d3df;background:#fff;color:#33404d;font-size:13px;font-weight:800}
+.edit-sys-row button.on{background:#16324f;border-color:#16324f;color:#fff}
+.edit-sys-row input{margin:0;padding:8px;text-align:right}
+.edit-sys-row input:disabled{background:#f3f5f7}
+.edit-sys-row.done button.on{background:#167148;border-color:#167148}
+.edit-sys-row.done input{border-color:#5fb383;color:#16603c}
+.schedule-card-sys{margin-top:5px;color:#3b4e66;font-size:13px;font-weight:700}
+.production-work-sys{display:block;margin-top:2px;color:#5b6b7b;font-size:12px;font-weight:700}
 /* 로그인: 비밀번호 칸 안내(사번)는 회색 작은 글씨 */
 #loginPassword::placeholder{color:#9aa3ad;font-size:13px;font-weight:400}
 </style>
@@ -530,7 +577,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
   <section id="scheduleRegisterSection">
     <div class="card">
       <h2>일일작업등록</h2>
-      <div class="hint">선종 → 호선 → STAGE → 구역 순서로 고른 뒤, 작업구분과 작업방식은 눌러서 펼친 목록에서 여러 개를 체크할 수 있습니다. 투입 인원은 고른 작업 전체에 한 번, 반장 이름을 눌러 펼친 목록에서 체크해 고르고(이름 없이 인원 수만 적어도 됩니다), 공정률은 작업마다 숫자로 입력합니다. 한 사람은 같은 작업일에 한 작업에만 넣을 수 있습니다. 같은 작업을 다시 등록하면 공정률은 높은 쪽 값으로 지표에 남습니다.</div>
+      <div class="hint">선종 → 호선 → STAGE → 구역 순서로 고른 뒤, 작업구분과 작업방식은 눌러서 펼친 목록에서 여러 개를 체크할 수 있습니다. SYSTEM 칸을 누르면 고른 작업방식의 SYSTEM 이 항목별(VRC · RS · GAS …)로 나오고, 그날 한 SYSTEM 을 여러 개 체크해 항목마다 공정률을 적습니다(100% 는 초록). 작업 전체 공정률은 SYSTEM 항목 수 기준으로 나눠 계산합니다(예: 3개 중 2개 100% → 66.7%). 투입 인원은 고른 작업 전체에 한 번, 반장 이름을 눌러 펼친 목록에서 체크해 고르고(이름 없이 인원 수만 적어도 됩니다), 공정률은 작업마다 숫자로 입력합니다. 한 사람은 같은 작업일에 한 작업에만 넣을 수 있습니다. 같은 작업을 다시 등록하면 공정률은 높은 쪽 값으로 지표에 남습니다.</div>
       <div id="scheduleSetupNotice" class="schedule-setup-notice hidden"></div>
 
       <div class="schedule-form-head" style="margin-top:14px">
@@ -1416,6 +1463,8 @@ let scheduleMaster=[];
 let scheduleSetupError="";
 /* 작업(호선 · STAGE · 구역 · 작업구분 · 작업방식)별로 지금까지 입력된 공정률 중 가장 높은 값 */
 let scheduleProgressMap=new Map();
+/* SYSTEM 항목별 지금까지 가장 높은 공정률: 작업 열쇠 → {system, items} */
+let scheduleItemProgress=new Map();
 let schedulePeopleCandidates=[];
 /* 투입 인원 드롭다운용 조직도 명단: [{key, leader, team, people:[이름…]}]. 반장 본인이 people 맨 앞. */
 let scheduleCrews=[];
@@ -1441,7 +1490,7 @@ function productionSchemaMessage(error){
   return "";
 }
 function productionNormalize(v){return String(v||"").trim().toLowerCase().replace(/\s+/g," ")}
-function productionWorkKey(ship,stage,area,type,method){return [ship,stage,area,type,method].map(productionNormalize).join("|||")}
+function productionWorkKey(ship,stage,area,type,method,system=""){return [ship,stage,area,type,method,system].map(productionNormalize).join("|||")}
 function productionNumber(v){
   if(v===null||v===undefined||v==="")return null;
   const n=Number(v);
@@ -1449,9 +1498,9 @@ function productionNumber(v){
 }
 function productionPercentLabel(v){return v===null||v===undefined?"-":Number(Number(v).toFixed(1))+"%"}
 function productionBarHtml(v){return `<div class="production-progress-track"><div class="production-progress-fill" style="width:${Math.min(100,Math.max(0,Number(v)||0))}%"></div></div>`}
-function productionMasterQuery(){return supabase.from(MASTER_TABLE).select("id,ship_type,ship_no,kl_date,lc_date,st_date,dl_date,stage,area,work_type,work_method,milestone,due_date,sort_order,active").eq("active",true).order("ship_no",{ascending:true}).order("sort_order",{ascending:true}).order("id",{ascending:true})}
+function productionMasterQuery(){return supabase.from(MASTER_TABLE).select("id,ship_type,ship_no,kl_date,lc_date,st_date,dl_date,stage,area,work_type,work_method,system,milestone,due_date,sort_order,active").eq("active",true).order("ship_no",{ascending:true}).order("sort_order",{ascending:true}).order("id",{ascending:true})}
 function productionCleanMaster(rows){
-  return (rows||[]).map(m=>({...m,ship_type:normalizeName(m.ship_type),ship_no:normalizeName(m.ship_no),stage:normalizeName(m.stage),area:normalizeName(m.area),work_type:normalizeName(m.work_type),work_method:normalizeName(m.work_method)})).filter(m=>m.ship_type&&m.ship_no&&m.stage&&m.area&&m.work_type&&m.work_method);
+  return (rows||[]).map(m=>({...m,ship_type:normalizeName(m.ship_type),ship_no:normalizeName(m.ship_no),stage:normalizeName(m.stage),area:normalizeName(m.area),work_type:normalizeName(m.work_type),work_method:normalizeName(m.work_method),system:normalizeName(m.system)})).filter(m=>m.ship_type&&m.ship_no&&m.stage&&m.area&&m.work_type&&m.work_method);
 }
 
 /* 마스터 베이스와, 작업별 현재 공정률(가장 높은 값)을 불러옵니다. */
@@ -1462,7 +1511,7 @@ async function loadScheduleData(force=false){
   scheduleDataLoading=(async()=>{
     const [masterResult,scheduleResult,profileResult,crewResult]=await Promise.all([
       fetchAllRows(productionMasterQuery),
-      fetchAllRows(()=>supabase.from("production_schedules").select("id,ship_no,stage,area,work_type,work_method,progress_rate,worker_names,created_at").order("created_at",{ascending:true}).order("id",{ascending:true})),
+      fetchAllRows(()=>supabase.from("production_schedules").select("id,ship_no,stage,area,work_type,work_method,system,system_rates,progress_rate,worker_names,created_at").order("created_at",{ascending:true}).order("id",{ascending:true})),
       supabase.from("user_profiles").select("name").order("name",{ascending:true}),
       fetchAllRows(()=>supabase.from("production_crews").select("id,team_order,team_name,leader_name,member_name,is_leader,member_order").eq("active",true).order("team_order",{ascending:true}).order("member_order",{ascending:true}).order("id",{ascending:true}))
     ]);
@@ -1473,9 +1522,12 @@ async function loadScheduleData(force=false){
     (scheduleResult.data||[]).forEach(r=>{
       const progress=productionNumber(r.progress_rate);
       if(progress===null||!r.stage)return;
-      const key=productionWorkKey(r.ship_no,r.stage,r.area,r.work_type,r.work_method);
+      const key=productionWorkKey(r.ship_no,r.stage,r.area,r.work_type,r.work_method,r.system);
       if(!map.has(key)||progress>map.get(key))map.set(key,progress);
     });
+    /* SYSTEM 항목별 공정률이 있는 작업은 항목 수 기준 비례 공정률로 */
+    scheduleItemProgress=collectItemProgress(scheduleResult.data);
+    scheduleItemProgress.forEach((v,key)=>{const o=systemOverall(v.system,v.items);if(o!==null)map.set(key,o)});
     scheduleProgressMap=map;
     /* 투입 인원 이름 후보: 앱에 가입한 사람 + 지금까지 투입 인원으로 적힌 이름(많이 적힌 순). */
     const people=new Map();
@@ -1520,12 +1572,59 @@ function refreshScheduleCascade(card,fromIndex=0,reset=false){
     select.innerHTML=`<option value="">${escapeHtml(placeholder)}</option>`+options.map(v=>`<option value="${escapeHtml(v)}"${v===value?" selected":""}>${escapeHtml(v)}</option>`).join("");
     select.disabled=parentMissing||!options.length;
   }
-  if(reset){card._types=[];card._works=new Set();card._rates=new Map();card._open=""}
+  if(reset){card._types=[];card._works=new Set();card._rates=new Map();card._sys=new Map();card._open=""}
   syncScheduleWorkPicks(card);
 }
 
 /* ----- 작업구분 · 작업방식: 드롭다운을 펼쳐 여러 개 체크 ----- */
-function scheduleWorkKey(type,method){return type+"|||"+method}
+function scheduleWorkKey(type,method,system=""){return type+"|||"+method+(system?"|||"+system:"")}
+/* SYSTEM 을 화면에 쓸 때: '/' 뒤에서만 줄을 바꾸고, 항목 이름(PUMP CONTROL · AIR HORN) 안에서는 끊지 않습니다(저장 값은 그대로). */
+function systemHtml(text){return String(text||"").split("/").map(item=>escapeHtml(item).replace(/ /g,"&nbsp;")).join("/<wbr>")}
+/* 마스터 SYSTEM 을 '/' 기준 항목으로 나눔: "VRC/RS/PUMP CONTROL" → ["VRC","RS","PUMP CONTROL"] */
+function systemItems(system){return String(system||"").split("/").map(normalizeName).filter(Boolean).filter((x,i,a)=>a.indexOf(x)===i)}
+/* 기록들에서 SYSTEM 항목별 가장 높은 공정률을 모읍니다: 작업 열쇠 → {system, items: Map(항목 → 공정률)} */
+function collectItemProgress(records,skipId=null){
+  const map=new Map();
+  (records||[]).forEach(r=>{
+    if((skipId&&r.id===skipId)||!r.stage||!r.system)return;
+    const rates=r.system_rates&&typeof r.system_rates==="object"?r.system_rates:null;if(!rates)return;
+    const key=productionWorkKey(r.ship_no,r.stage,r.area,r.work_type,r.work_method,r.system);
+    const v=map.get(key)||{system:r.system,items:new Map()};
+    Object.entries(rates).forEach(([item,val])=>{const x=normalizeName(item),n=productionNumber(val);if(!x||n===null)return;if(!v.items.has(x)||n>v.items.get(x))v.items.set(x,n)});
+    map.set(key,v);
+  });
+  return map;
+}
+/* 작업 전체 공정률 = SYSTEM 항목마다(가장 높은 값) 합 ÷ 항목 수(항목 수 기준 100%). today 는 지금 적는 값. 아무 값도 없으면 null */
+function systemOverall(system,items,today=null){
+  const all=systemItems(system);if(!all.length)return null;
+  let any=false,sum=0;
+  all.forEach(x=>{let v=items?.get(x);const t=today?.get(x);if(t!==undefined&&t!==null&&(v===undefined||t>v))v=t;if(v!==undefined&&v!==null){any=true;sum+=Math.min(100,Math.max(0,v))}});
+  return any?Math.round(sum/all.length*10)/10:null;
+}
+function systemItemsLabel(items,rates){return items.map(x=>{const n=productionNumber(rates?.[x]);return n===null?x:`${x} ${Number(n.toFixed(1))}%`}).join(" · ")}
+/* 그 작업에서 체크한 SYSTEM 항목(마스터 순서) */
+function scheduleSysChecked(card,m){const set=card._sys.get(scheduleWorkKey(m.work_type,m.work_method,m.system));return systemItems(m.system).filter(x=>set&&set.has(x))}
+function scheduleWorkProgressKey(card,m){const sel=readScheduleSelection(card);return productionWorkKey(sel.ship_no,sel.stage,sel.area,m.work_type,m.work_method,m.system)}
+function scheduleItemPrev(card,m,x){return scheduleItemProgress.get(scheduleWorkProgressKey(card,m))?.items.get(x)}
+function scheduleItemToday(card,m,x){const set=card._sys.get(scheduleWorkKey(m.work_type,m.work_method,m.system));if(!set||!set.has(x))return null;return productionNumber(card._rates.get(scheduleWorkKey(m.work_type,m.work_method,m.system)+"::"+x))}
+function scheduleItemNow(card,m,x){const p=scheduleItemPrev(card,m,x),t=scheduleItemToday(card,m,x);if(t===null||t===undefined)return p??null;return p!==undefined&&p>t?p:t}
+function scheduleTodayMap(card,m){const map=new Map();scheduleSysChecked(card,m).forEach(x=>{const t=scheduleItemToday(card,m,x);if(t!==null&&t!==undefined)map.set(x,t)});return map}
+/* 고른 작업이 바뀌면 체크 상태를 맞춤: 빠진 작업은 지우고, 항목이 하나뿐인 SYSTEM 은 바로 체크 */
+function syncScheduleSystems(card){
+  const keys=new Set();
+  scheduleSelectedWorks(card).forEach(m=>{
+    const k=scheduleWorkKey(m.work_type,m.work_method,m.system),items=systemItems(m.system);keys.add(k);
+    if(!card._sys.has(k))card._sys.set(k,new Set(items.length===1?items:[]));
+    else{const set=card._sys.get(k);[...set].forEach(x=>{if(!items.includes(x))set.delete(x)})}
+  });
+  [...card._sys.keys()].forEach(k=>{if(!keys.has(k))card._sys.delete(k)});
+}
+/* 작업방식 이름. 같은 구역에 작업방식이 같고 SYSTEM 만 다른 줄이 있으면 SYSTEM 을 괄호로 붙여 구분합니다. */
+function scheduleMethodLabel(m,works){
+  const twin=m.system&&works.some(x=>x!==m&&x.work_type===m.work_type&&x.work_method===m.work_method);
+  return twin?`${m.work_method}(${m.system})`:m.work_method;
+}
 /* 고른 구역에 있는 마스터 작업 전체(엑셀 순서) */
 function scheduleAreaWorks(card){
   const selected=readScheduleSelection(card);
@@ -1534,7 +1633,7 @@ function scheduleAreaWorks(card){
 }
 /* 체크한 작업(작업구분 · 작업방식)만, 엑셀 순서대로 */
 function scheduleSelectedWorks(card){
-  return scheduleAreaWorks(card).filter(m=>card._types.includes(m.work_type)&&card._works.has(scheduleWorkKey(m.work_type,m.work_method)));
+  return scheduleAreaWorks(card).filter(m=>card._types.includes(m.work_type)&&card._works.has(scheduleWorkKey(m.work_type,m.work_method,m.system)));
 }
 function toggleScheduleType(card,type){
   const works=scheduleAreaWorks(card);
@@ -1545,7 +1644,7 @@ function toggleScheduleType(card,type){
     card._types.push(type);
     /* 작업방식이 하나뿐인 작업구분은 바로 체크해 둡니다. */
     const methods=works.filter(m=>m.work_type===type);
-    if(methods.length===1)card._works.add(scheduleWorkKey(type,methods[0].work_method));
+    if(methods.length===1)card._works.add(scheduleWorkKey(type,methods[0].work_method,methods[0].system));
   }
 }
 function toggleScheduleWork(card,key){if(card._works.has(key))card._works.delete(key);else card._works.add(key)}
@@ -1555,7 +1654,7 @@ function syncScheduleWorkPicks(card){
   if(!card.querySelector(".schedule-type-box"))return;
   const works=scheduleAreaWorks(card),types=[...new Set(works.map(m=>m.work_type))];
   card._types=types.filter(type=>card._types.includes(type));
-  const valid=new Set(works.filter(m=>card._types.includes(m.work_type)).map(m=>scheduleWorkKey(m.work_type,m.work_method)));
+  const valid=new Set(works.filter(m=>card._types.includes(m.work_type)).map(m=>scheduleWorkKey(m.work_type,m.work_method,m.system)));
   card._works=new Set([...card._works].filter(key=>valid.has(key)));
   if(!works.length)card._open="";
   renderScheduleWorkBoxes(card);renderSchedulePanel(card);renderScheduleRates(card);updateScheduleSaveLabel();
@@ -1571,20 +1670,66 @@ function renderScheduleWorkBoxes(card){
     box.querySelector(".multi-caret").textContent=open?"▴":"▾";
   };
   paint(card.querySelector(".schedule-type-box"),!works.length?"구역 먼저 선택":(card._types.length?card._types.join(", "):"작업구분 선택"),!card._types.length,card._types.length,!works.length,card._open==="type");
-  const summary=card._types.map(type=>{const methods=selectedWorks.filter(m=>m.work_type===type).map(m=>m.work_method);return methods.length?`${type} ${methods.join("·")}`:""}).filter(Boolean).join(" / ");
+  const summary=card._types.map(type=>{const methods=selectedWorks.filter(m=>m.work_type===type).map(m=>scheduleMethodLabel(m,works));return methods.length?`${type} ${methods.join("·")}`:""}).filter(Boolean).join(" / ");
   paint(card.querySelector(".schedule-method-box"),!card._types.length?"작업구분 먼저 선택":(summary||"작업방식 선택"),!summary,selectedWorks.length,!card._types.length,card._open==="method");
+  /* SYSTEM: 고른 작업 중 SYSTEM 이 있는 것만 */
+  const withSys=selectedWorks.filter(m=>systemItems(m.system).length);
+  const sysSummary=withSys.map(m=>{const c=scheduleSysChecked(card,m);return c.length?`${m.work_type} ${scheduleMethodLabel(m,works)}: ${c.join("·")}`:""}).filter(Boolean).join(" / ");
+  const sysCount=withSys.reduce((n,m)=>n+scheduleSysChecked(card,m).length,0);
+  paint(card.querySelector(".schedule-sys-box"),!selectedWorks.length?"작업방식 먼저 선택":(!withSys.length?"SYSTEM 없음":(sysSummary||"SYSTEM 체크")),!sysSummary,sysCount,!withSys.length,card._open==="system");
+  if(sysSummary){
+    const label=card.querySelector(".schedule-sys-box .multi-text");
+    label.innerHTML=withSys.map(m=>{const c=scheduleSysChecked(card,m);return c.length?`${escapeHtml(m.work_type)} ${escapeHtml(scheduleMethodLabel(m,works))}: ${c.map(x=>(scheduleItemNow(card,m,x)??0)>=100?`<span class="sys-ok">${escapeHtml(x)}✓</span>`:escapeHtml(x)).join("·")}`:""}).filter(Boolean).join(" / ");
+  }
+  const missing=withSys.filter(m=>!scheduleSysChecked(card,m).length).map(m=>`${m.work_type} ${scheduleMethodLabel(m,works)}`);
+  card.querySelector(".schedule-sys-note").textContent=missing.length&&card._open!=="system"?`SYSTEM 을 체크하세요: ${missing.join(", ")}`:"";
 }
 
+/* SYSTEM 체크 목록(작업마다 묶음, 맨 위 '전체') */
+function renderScheduleSysPanel(card){
+  const panel=card.querySelector(".sys-panel");
+  if(card._open!=="system"){panel.classList.add("hidden");panel.innerHTML="";return}
+  const area=scheduleAreaWorks(card),works=scheduleSelectedWorks(card).filter(m=>systemItems(m.system).length);
+  let rows="";
+  works.forEach(m=>{
+    const k=scheduleWorkKey(m.work_type,m.work_method,m.system),items=systemItems(m.system);
+    rows+=`<div class="multi-group sys-group"><span>${escapeHtml(m.work_type)} ${escapeHtml(scheduleMethodLabel(m,area))}</span><span class="sys-group-sub">${items.length}개 중 선택</span></div>`;
+    if(items.length>1)rows+=`<button type="button" role="checkbox" class="multi-row sys-all" data-kind="sysall" data-key="${escapeHtml(k)}"><span class="multi-check"></span><span class="multi-label">전체</span></button>`;
+    items.forEach(x=>{rows+=`<button type="button" role="checkbox" class="multi-row" data-kind="sys" data-key="${escapeHtml(k)}" data-item="${escapeHtml(x)}"><span class="multi-check"></span><span class="multi-label">${escapeHtml(x)}</span><span class="sys-rate hidden"></span></button>`});
+  });
+  panel.innerHTML=`<div class="multi-list">${rows}</div><div class="multi-foot"><span class="multi-foot-count"></span><button type="button" class="multi-done">선택 완료</button></div>`;
+  panel.classList.remove("hidden");
+  syncScheduleSysPanel(card);
+}
+function syncScheduleSysPanel(card){
+  const panel=card.querySelector(".sys-panel");let total=0;
+  panel.querySelectorAll(".multi-row").forEach(row=>{
+    const set=card._sys.get(row.dataset.key)||new Set();
+    let on;
+    if(row.dataset.kind==="sysall"){const m=scheduleSelectedWorks(card).find(w=>scheduleWorkKey(w.work_type,w.work_method,w.system)===row.dataset.key);on=!!m&&systemItems(m.system).every(x=>set.has(x))}
+    else{
+      on=set.has(row.dataset.item);if(on)total++;
+      const m=scheduleSelectedWorks(card).find(w=>scheduleWorkKey(w.work_type,w.work_method,w.system)===row.dataset.key),tag=row.querySelector(".sys-rate");
+      const now=m?scheduleItemNow(card,m,row.dataset.item):null;
+      if(tag){tag.classList.toggle("hidden",now===null||now===undefined);tag.classList.toggle("full",(now??0)>=100);tag.textContent=(now??0)>=100?"100% 완료":(now!==null&&now!==undefined?productionPercentLabel(now):"")}
+      row.classList.toggle("sys-full",(now??0)>=100);
+    }
+    row.classList.toggle("on",on);row.setAttribute("aria-checked",on?"true":"false");
+    row.querySelector(".multi-check").textContent=on?"✓":"";
+  });
+  const count=panel.querySelector(".multi-foot-count");if(count)count.textContent=`${total}개 선택`;
+}
 function renderSchedulePanel(card){
+  renderScheduleSysPanel(card);
   const panel=card.querySelector(".multi-panel");
-  if(!card._open){panel.classList.add("hidden");panel.innerHTML="";return}
+  if(card._open!=="type"&&card._open!=="method"){panel.classList.add("hidden");panel.innerHTML="";return}
   const works=scheduleAreaWorks(card);
-  const rowHtml=(kind,value,label)=>`<button type="button" role="checkbox" class="multi-row" data-kind="${kind}" data-value="${escapeHtml(value)}"><span class="multi-check"></span><span>${escapeHtml(label)}</span></button>`;
+  const rowHtml=(kind,value,label,system="")=>`<button type="button" role="checkbox" class="multi-row" data-kind="${kind}" data-value="${escapeHtml(value)}"><span class="multi-check"></span><span class="multi-label">${escapeHtml(label)}</span>${system?`<span class="multi-sys">${systemHtml(system)}</span>`:""}</button>`;
   let rows="";
   if(card._open==="type")[...new Set(works.map(m=>m.work_type))].forEach(type=>{rows+=rowHtml("type",type,type)});
   else card._types.forEach(type=>{
     rows+=`<div class="multi-group">${escapeHtml(type)}</div>`;
-    works.filter(m=>m.work_type===type).forEach(m=>{rows+=rowHtml("work",scheduleWorkKey(type,m.work_method),m.work_method)});
+    works.filter(m=>m.work_type===type).forEach(m=>{rows+=rowHtml("work",scheduleWorkKey(type,m.work_method,m.system),m.work_method,m.system)});
   });
   panel.innerHTML=`<div class="multi-list">${rows}</div><div class="multi-foot"><span class="multi-foot-count"></span><button type="button" class="multi-done">선택 완료</button></div>`;
   panel.classList.remove("hidden");
@@ -1602,28 +1747,63 @@ function syncSchedulePanel(card){
   if(count)count.textContent=`${card._open==="type"?card._types.length:scheduleSelectedWorks(card).length}개 선택`;
 }
 
+/* SYSTEM 칸: 체크 상태를 맞추고 상자를 다시 그립니다. */
+function renderScheduleSystem(card){syncScheduleSystems(card);renderScheduleWorkBoxes(card)}
 /* 체크한 작업마다 공정률 입력칸을 한 줄씩 만듭니다. 이미 입력한 값은 유지합니다. */
 function renderScheduleRates(card){
+  renderScheduleSystem(card);
   const wrap=card.querySelector(".schedule-rate-list"),works=scheduleSelectedWorks(card);
   card.querySelector(".schedule-rate-same").classList.toggle("hidden",works.length<2);
   card.querySelector(".schedule-rate-msg").textContent="";
   wrap.innerHTML="";
   if(!works.length){wrap.innerHTML='<div class="rate-empty">작업방식을 고르면 작업별 공정률 입력칸이 나옵니다.</div>';return}
   works.forEach(m=>{
-    const key=scheduleWorkKey(m.work_type,m.work_method);
+    const key=scheduleWorkKey(m.work_type,m.work_method,m.system);
+    if(systemItems(m.system).length){wrap.appendChild(scheduleSysRateBlock(card,m,key));return}
     const row=document.createElement("div");row.className="rate-row";row.dataset.key=key;
-    row.innerHTML=`<div><div class="rate-name">${escapeHtml(m.work_type)} · ${escapeHtml(m.work_method)}</div><div class="rate-prev"></div></div><input class="schedule-rate-input" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100" aria-label="${escapeHtml(m.work_type)} ${escapeHtml(m.work_method)} 공정률">`;
+    row.innerHTML=`<div><div class="rate-name">${escapeHtml(m.work_type)} · ${escapeHtml(m.work_method)}</div>${systemItems(m.system).length?(()=>{const c=scheduleSysChecked(card,m);return `<div class="rate-sys${c.length?"":" warn"}">SYSTEM ${c.length?c.map(x=>escapeHtml(x).replace(/ /g,"&nbsp;")).join(" · "):"체크 필요"}</div>`})():""}<div class="rate-prev"></div></div><input class="schedule-rate-input" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100" aria-label="${escapeHtml(m.work_type)} ${escapeHtml(m.work_method)} 공정률">`;
     const input=row.querySelector("input");
     input.value=card._rates.get(key)||"";
     input.addEventListener("input",()=>{card._rates.set(key,input.value);card.querySelector(".schedule-rate-msg").textContent="";updateScheduleRateHint(card,row,m)});
     wrap.appendChild(row);
     updateScheduleRateHint(card,row,m);
   });
+  card.querySelector(".schedule-rate-same").classList.toggle("hidden",wrap.querySelectorAll("input").length<2);
+}
+/* SYSTEM 있는 작업의 공정률 칸: 체크한 항목마다 입력, 위에 작업 전체(항목 수 기준 비례) */
+function scheduleSysRateBlock(card,m,key){
+  const block=document.createElement("div");block.className="rate-row rate-row-sys";block.dataset.key=key;
+  const checked=scheduleSysChecked(card,m),all=systemItems(m.system);
+  block.innerHTML=`<div class="rate-sys-head"><div><div class="rate-name">${escapeHtml(m.work_type)} · ${escapeHtml(m.work_method)}</div><div class="rate-prev"></div></div><div class="rate-overall"></div></div>`
+    +(checked.length?`<div class="rate-items">${checked.map(x=>`<div class="rate-item" data-item="${escapeHtml(x)}"><div class="rate-item-name">${escapeHtml(x).replace(/ /g,"&nbsp;")}<span class="rate-item-prev"></span></div><input class="schedule-rate-input" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100" aria-label="${escapeHtml(m.work_type)} ${escapeHtml(m.work_method)} ${escapeHtml(x)} 공정률"></div>`).join("")}</div>`:`<div class="rate-sys warn">SYSTEM 체크 필요</div>`)
+    +`<div class="rate-calc"></div>`;
+  block.querySelectorAll(".rate-item").forEach(item=>{
+    const x=item.dataset.item,input=item.querySelector("input"),rk=key+"::"+x;
+    input.value=card._rates.get(rk)||"";
+    input.addEventListener("input",()=>{card._rates.set(rk,input.value);card.querySelector(".schedule-rate-msg").textContent="";updateScheduleSysRates(card,block,m);syncScheduleSysPanel(card);renderScheduleWorkBoxes(card)});
+  });
+  updateScheduleSysRates(card,block,m);
+  return block;
+}
+function updateScheduleSysRates(card,block,m){
+  const all=systemItems(m.system),prevItems=scheduleItemProgress.get(scheduleWorkProgressKey(card,m))?.items;
+  block.querySelectorAll(".rate-item").forEach(item=>{
+    const x=item.dataset.item,t=scheduleItemToday(card,m,x),p=prevItems?.get(x),hint=item.querySelector(".rate-item-prev");
+    item.classList.toggle("done",(t??0)>=100);
+    hint.classList.toggle("warn",p!==undefined&&t!==null&&t<p);
+    hint.textContent=t!==null&&t>=100?"완료 ✓":(p!==undefined&&t!==null&&t<p?`기존 ${productionPercentLabel(p)}보다 낮음(높은 값 유지)`:(p!==undefined?`현재 ${productionPercentLabel(p)}`:"처음 등록"));
+  });
+  const overall=systemOverall(m.system,prevItems,scheduleTodayMap(card,m)),badge=block.querySelector(".rate-overall");
+  badge.textContent=`전체 ${overall===null?"0%":productionPercentLabel(overall)}`;badge.classList.toggle("full",(overall??0)>=100);
+  block.querySelector(".rate-calc").innerHTML=`작업 전체 = SYSTEM ${all.length}개 기준(항목당 ${Number((100/all.length).toFixed(1))}%) · `+all.map(x=>{const v=scheduleItemNow(card,m,x);return (v??0)>=100?`<span class="sys-ok">${escapeHtml(x).replace(/ /g,"&nbsp;")}&nbsp;100</span>`:`${escapeHtml(x).replace(/ /g,"&nbsp;")}&nbsp;${v===null||v===undefined?0:Number(v.toFixed(1))}`}).join(" + ")+` ÷ ${all.length}`;
+  const due=m.due_date||m.milestone?`완료 일정 ${[m.due_date,m.milestone?`(${m.milestone})`:""].filter(Boolean).map(part=>`<span class="rate-nowrap">${escapeHtml(part)}</span>`).join(" ")}`:"";
+  const prevAll=systemOverall(m.system,prevItems);
+  block.querySelector(".rate-prev").innerHTML=[prevAll===null?"처음 등록":`현재 전체 ${productionPercentLabel(prevAll)}`,due].filter(Boolean).join(" · ");
 }
 /* 작업별로 지금까지의 공정률과 완료 일정을 알려 줍니다. 지표에는 항상 가장 높은 공정률이 남습니다. */
 function updateScheduleRateHint(card,row,m){
   const selected=readScheduleSelection(card),hint=row.querySelector(".rate-prev"),value=productionNumber(row.querySelector("input").value);
-  const prev=scheduleProgressMap.get(productionWorkKey(selected.ship_no,selected.stage,selected.area,m.work_type,m.work_method));
+  const prev=scheduleProgressMap.get(productionWorkKey(selected.ship_no,selected.stage,selected.area,m.work_type,m.work_method,m.system));
   const due=m.due_date||m.milestone?`완료 일정 ${[m.due_date,m.milestone?`(${m.milestone})`:""].filter(Boolean).map(part=>`<span class="rate-nowrap">${escapeHtml(part)}</span>`).join(" ")}`:"";
   hint.classList.remove("warn");
   if(prev!==undefined&&value!==null&&value<prev){
@@ -1699,12 +1879,13 @@ function suggestPeople(text,isExcluded,limit=6){
 
 /* 작업일별로 이미 투입 인원에 들어 있는 이름. 한 사람은 같은 작업일에 한 작업(함께 등록한 묶음)에만 넣을 수 있습니다. */
 const scheduleDayPeopleCache=new Map();
-function scheduleRecordLabel(r){return [[r.ship_no,r.area].filter(Boolean).join(" / "),[r.work_type,r.work_method].filter(Boolean).join(" ")||r.work_name||""].filter(Boolean).join(" · ")||"다른 작업"}
+function scheduleRecordSystem(r){return Array.isArray(r.system_items)&&r.system_items.length?r.system_items.join("/"):(r.system||"")}
+function scheduleRecordLabel(r){const sys=scheduleRecordSystem(r);return [[r.ship_no,r.area].filter(Boolean).join(" / "),[r.work_type,r.work_method,sys?`(${sys})`:""].filter(Boolean).join(" ")||r.work_name||""].filter(Boolean).join(" · ")||"다른 작업"}
 async function loadDayPeople(date,force=false){
   if(!date)return new Map();
   const cached=scheduleDayPeopleCache.get(date);
   if(!force&&cached&&Date.now()-cached.at<20000)return cached.map;
-  const {data,error}=await supabase.from("production_schedules").select("id,batch_id,ship_no,area,work_type,work_method,work_name,worker_names,author_name").eq("work_date",date).limit(2000);
+  const {data,error}=await supabase.from("production_schedules").select("id,batch_id,ship_no,area,work_type,work_method,system,system_items,work_name,worker_names,author_name").eq("work_date",date).limit(2000);
   if(error)throw error;
   const map=new Map();
   (data||[]).forEach(r=>{
@@ -1946,7 +2127,7 @@ async function refreshScheduleDayPeople(force=false){
 function readScheduleCard(card){
   const people=card._people.read();
   return {...readScheduleSelection(card),types:[...card._types],manpower:people.manpower,worker_names:people.names,peoplePending:people.pending,
-    works:scheduleSelectedWorks(card).map(m=>({work_type:m.work_type,work_method:m.work_method,progress_rate:productionNumber(card._rates.get(scheduleWorkKey(m.work_type,m.work_method)))}))};
+    works:scheduleSelectedWorks(card).map(m=>({work_type:m.work_type,work_method:m.work_method,system:m.system||"",system_items:scheduleSysChecked(card,m),sys_total:systemItems(m.system).length,item_rates:Object.fromEntries(scheduleSysChecked(card,m).map(x=>[x,productionNumber(card._rates.get(scheduleWorkKey(m.work_type,m.work_method,m.system)+"::"+x))])),progress_rate:productionNumber(card._rates.get(scheduleWorkKey(m.work_type,m.work_method,m.system)))}))};
 }
 
 function refreshScheduleRowHeads(){
@@ -1961,13 +2142,15 @@ function refreshScheduleRowHeads(){
 function scheduleRowTemplate(prefill={}){
   scheduleRowSeq++;
   const card=document.createElement("div");card.className="schedule-row-card";card.dataset.seq=String(scheduleRowSeq);
-  card._types=[];card._works=new Set();card._rates=new Map();card._open="";
+  card._types=[];card._works=new Set();card._rates=new Map();card._sys=new Map();card._open="";
   const boxHtml=cls=>`<button type="button" class="multi-box ${cls}" aria-haspopup="true"><span class="multi-text"></span><span class="multi-count hidden"></span><span class="multi-caret">▾</span></button>`;
   card.innerHTML=`<div class="schedule-row-head"><span class="schedule-row-title">작업</span><button type="button" class="schedule-remove-btn">작업 삭제</button></div><div class="schedule-row-grid">`
     +SCHEDULE_LEVELS.map(def=>`<div><label>${escapeHtml(def.label)}</label><select class="${def.cls}"></select></div>`).join("")
     +`<div><label>작업구분</label>${boxHtml("schedule-type-box")}</div>
     <div><label>작업방식</label>${boxHtml("schedule-method-box")}</div>
     <div class="multi-panel hidden"></div>
+    <div class="schedule-wide-field"><label>SYSTEM <span class="rate-sub">· 여러 개 체크</span></label>${boxHtml("schedule-sys-box")}<div class="schedule-sys-note"></div></div>
+    <div class="sys-panel hidden"></div>
     <div class="schedule-wide-field schedule-people-slot"><label>오늘 투입 인원</label><div class="schedule-field-note">반장 이름을 누르면 그 반 인원(반장 포함)이 펼쳐지고, 체크한 인원 수만큼 인원 수가 맞춰집니다. 명단에 없는 사람은 목록 맨 아래에 직접 적습니다. 같은 작업일에 이미 다른 작업에 넣은 사람은 고를 수 없습니다. 그 인원만으로 한 작업이면 인원 수를 0으로 적으세요.</div></div>
     <div class="schedule-wide-field"><div class="rate-head"><label>현재 공정률(%) <span class="rate-sub">· 작업별 입력</span></label><button type="button" class="schedule-rate-same hidden">모두 같은 값</button></div><div class="schedule-rate-list"></div><div class="schedule-rate-msg"></div></div>
   </div>`;
@@ -1984,11 +2167,24 @@ function scheduleRowTemplate(prefill={}){
   const openPanel=kind=>{card._open=card._open===kind?"":kind;renderSchedulePanel(card);renderScheduleWorkBoxes(card)};
   card.querySelector(".schedule-type-box").onclick=()=>openPanel("type");
   card.querySelector(".schedule-method-box").onclick=()=>openPanel("method");
+  card.querySelector(".schedule-sys-box").onclick=()=>openPanel("system");
+  card.querySelector(".sys-panel").addEventListener("click",e=>{
+    if(e.target.closest(".multi-done")){card._open="";renderSchedulePanel(card);renderScheduleWorkBoxes(card);return}
+    const row=e.target.closest(".multi-row");if(!row)return;
+    const k=row.dataset.key,set=card._sys.get(k)||new Set();card._sys.set(k,set);card._sysTouched=true;
+    if(row.dataset.kind==="sysall"){
+      const m=scheduleSelectedWorks(card).find(w=>scheduleWorkKey(w.work_type,w.work_method,w.system)===k),items=m?systemItems(m.system):[];
+      if(items.every(x=>set.has(x)))set.clear();else items.forEach(x=>set.add(x));
+    }else if(set.has(row.dataset.item))set.delete(row.dataset.item);else set.add(row.dataset.item);
+    syncScheduleSysPanel(card);renderScheduleWorkBoxes(card);renderScheduleRates(card);
+  });
   card.querySelector(".multi-panel").addEventListener("click",e=>{
     if(e.target.closest(".multi-done")){
       /* 작업구분을 고르고 닫으면, 아직 작업방식을 안 고른 작업구분이 있을 때 작업방식 목록을 바로 엽니다. */
       const needMethod=card._open==="type"&&card._types.some(type=>!scheduleSelectedWorks(card).some(m=>m.work_type===type));
-      card._open=needMethod?"method":"";
+      /* 작업방식을 고르고 닫으면, SYSTEM 을 아직 체크하지 않은 작업이 있을 때 SYSTEM 목록을 바로 엽니다. */
+      const needSys=!needMethod&&scheduleSelectedWorks(card).some(m=>systemItems(m.system).length>1&&!scheduleSysChecked(card,m).length);
+      card._open=needMethod?"method":(needSys?"system":"");
       renderSchedulePanel(card);renderScheduleWorkBoxes(card);
       return;
     }
@@ -2041,8 +2237,14 @@ async function saveProductionSchedule(){
     if(noMethod){status.textContent=`작업 ${i+1}의 ${noMethod} 작업방식을 선택하세요.`;return}
     if(r.peoplePending){status.textContent=`작업 ${i+1}: ${r.peoplePending}`;return}
     if(r.manpower===null||!Number.isInteger(r.manpower)||r.manpower<0){status.textContent=`작업 ${i+1}의 오늘 투입 인원을 입력하세요. 이름을 넣거나 인원 수를 숫자로 적으면 됩니다. 같은 작업일에 이미 다른 작업에 넣은 인원만으로 한 작업이면 0을 적습니다.`;return}
-    const badRate=r.works.find(w=>w.progress_rate===null||w.progress_rate<0||w.progress_rate>100);
-    if(badRate){status.textContent=`작업 ${i+1}의 ${badRate.work_type} · ${badRate.work_method} 공정률을 0 ~ 100 사이 숫자로 입력하세요.`;return}
+    const noSys=r.works.find(w=>w.sys_total&&!w.system_items.length);
+    if(noSys){status.textContent=`작업 ${i+1}의 ${noSys.work_type} ${noSys.work_method} SYSTEM 을 체크하세요(SYSTEM 칸을 눌러 여러 개 고를 수 있습니다).`;return}
+    for(const w of r.works.filter(w=>w.sys_total)){
+      const bad=w.system_items.find(x=>{const v=w.item_rates[x];return v===null||v===undefined||v<0||v>100});
+      if(bad){status.textContent=`작업 ${i+1}의 ${w.work_type} ${w.work_method} · ${bad} 공정률을 0 ~ 100 사이 숫자로 입력하세요.`;return}
+    }
+    const badRate=r.works.find(w=>!w.sys_total&&(w.progress_rate===null||w.progress_rate<0||w.progress_rate>100));
+    if(badRate){status.textContent=`작업 ${i+1}의 ${badRate.work_type} · ${badRate.work_method}${badRate.system?`(${badRate.system})`:""} 공정률을 0 ~ 100 사이 숫자로 입력하세요.`;return}
   }
   try{
     btn.disabled=true;status.textContent="일일작업 등록 중...";
@@ -2058,9 +2260,16 @@ async function saveProductionSchedule(){
       }
     }
     const now=new Date().toISOString(),payload=[];
+    /* SYSTEM 항목별 공정률: 지금까지 기록(가장 높은 값)과 합쳐 작업 전체 공정률(항목 수 기준)을 계산 */
+    const ships=[...new Set(rows.map(r=>r.ship_no))];
+    const {data:prevRecords,error:prevError}=await supabase.from("production_schedules").select("id,ship_no,stage,area,work_type,work_method,system,system_rates").in("ship_no",ships);
+    if(prevError)throw prevError;
+    const itemMap=collectItemProgress(prevRecords);
     rows.forEach(r=>{
       const batchId=newScheduleBatchId();
-      r.works.forEach(w=>payload.push({work_date:workDate,ship_type:r.ship_type,ship_no:r.ship_no,stage:r.stage,area:r.area,work_type:w.work_type,work_method:w.work_method,work_name:`${w.work_type} ${w.work_method}`,manpower:r.manpower,worker_names:r.worker_names,progress_rate:w.progress_rate,batch_id:batchId,author_name:currentUserName,created_by:currentUserId,updated_at:now}));
+      r.works.forEach(w=>payload.push({work_date:workDate,ship_type:r.ship_type,ship_no:r.ship_no,stage:r.stage,area:r.area,work_type:w.work_type,work_method:w.work_method,system:w.system||null,system_items:w.system_items,system_rates:w.sys_total?w.item_rates:{},work_name:`${w.work_type} ${w.work_method}${w.system_items.length?` (${systemItemsLabel(w.system_items,w.item_rates)})`:""}`,manpower:r.manpower,worker_names:r.worker_names,progress_rate:w.sys_total?(()=>{
+        const key=productionWorkKey(r.ship_no,r.stage,r.area,w.work_type,w.work_method,w.system),prev=itemMap.get(key)||{system:w.system,items:new Map()},today=new Map(Object.entries(w.item_rates));
+        const o=systemOverall(w.system,prev.items,today);today.forEach((v,x)=>{if(!prev.items.has(x)||v>prev.items.get(x))prev.items.set(x,v)});itemMap.set(key,prev);return o??0})():w.progress_rate,batch_id:batchId,author_name:currentUserName,created_by:currentUserId,updated_at:now}));
     });
     const {error}=await supabase.from("production_schedules").insert(payload);if(error)throw error;
     status.textContent=`등록 완료 · 작업 ${payload.length}건 · 투입 인원 ${rows.reduce((sum,r)=>sum+r.manpower,0)}명`;
@@ -2085,8 +2294,15 @@ function toggleScheduleEdit(card,record,batchSize=1){
   const isStageRecord=!!(record.stage||record.work_type||record.work_method);
   const names=Array.isArray(record.worker_names)?record.worker_names.filter(Boolean):[];
   const box=document.createElement("div");box.className="schedule-edit-box";
-  box.innerHTML=`<div class="schedule-edit-title">기록 수정</div><div class="schedule-edit-grid"><div><label>작업일</label><input class="schedule-edit-date" type="date"></div>${isStageRecord?`<div><label>공정률(%)</label><input class="schedule-edit-rate" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100"></div>`:""}</div><label>투입 인원</label><div class="schedule-edit-people"></div><div class="schedule-edit-note"></div><div class="schedule-edit-actions"><button type="button" class="secondary schedule-edit-cancel">취소</button><button type="button" class="primary schedule-edit-save" style="margin-top:0">수정 저장</button></div><div class="status schedule-edit-status"></div>`;
+  const sysAll=systemItems(record.system),sysOn=new Set(Array.isArray(record.system_items)?record.system_items:[]);
+  box.innerHTML=`<div class="schedule-edit-title">기록 수정</div><div class="schedule-edit-grid"><div><label>작업일</label><input class="schedule-edit-date" type="date"></div>${isStageRecord&&!sysAll.length?`<div><label>공정률(%)</label><input class="schedule-edit-rate" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100"></div>`:""}</div>${sysAll.length?`<label>SYSTEM · 공정률(%) <span class="rate-sub">· 체크한 항목만</span></label><div class="edit-sys-rows">${sysAll.map(x=>{const n=productionNumber(record.system_rates?.[x]);return `<div class="edit-sys-row${n!==null&&n>=100&&sysOn.has(x)?" done":""}"><button type="button" class="${sysOn.has(x)?"on":""}" data-sys="${escapeHtml(x)}">${escapeHtml(x)}</button><input type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100" value="${n===null?"":escapeHtml(String(n))}"${sysOn.has(x)?"":" disabled"} aria-label="${escapeHtml(x)} 공정률"></div>`}).join("")}</div>`:""}<label>투입 인원</label><div class="schedule-edit-people"></div><div class="schedule-edit-note"></div><div class="schedule-edit-actions"><button type="button" class="secondary schedule-edit-cancel">취소</button><button type="button" class="primary schedule-edit-save" style="margin-top:0">수정 저장</button></div><div class="status schedule-edit-status"></div>`;
   box.querySelector(".schedule-edit-date").value=record.work_date||"";
+  box.querySelectorAll(".edit-sys-row").forEach(row=>{
+    const b=row.querySelector("button"),input=row.querySelector("input");
+    const paint=()=>row.classList.toggle("done",b.classList.contains("on")&&(productionNumber(input.value)??0)>=100);
+    b.onclick=()=>{b.classList.toggle("on");input.disabled=!b.classList.contains("on");paint()};
+    input.addEventListener("input",paint);
+  });
   const rateInput=box.querySelector(".schedule-edit-rate"),rate=productionNumber(record.progress_rate);
   if(rateInput&&rate!==null)rateInput.value=String(rate);
   /* 수정 중인 기록(함께 등록한 묶음) 자신은 빼고, 같은 작업일의 다른 등록과 이름이 겹치면 막습니다. */
@@ -2100,6 +2316,7 @@ function toggleScheduleEdit(card,record,batchSize=1){
   if(record.batch_id&&batchSize>1)notes.push(`함께 등록한 작업 ${batchSize}건에 작업일과 투입 인원이 같이 바뀝니다.${isStageRecord?" 공정률은 이 작업만 바뀝니다.":""}`);
   if(isStageRecord)notes.push("지표에는 같은 작업의 기록 중 가장 높은 공정률이 남습니다.");
   notes.push(PEOPLE_ONE_WORK_RULE);
+  if(sysAll.length)notes.push("SYSTEM 체크 · 항목별 공정률은 이 작업만 바뀝니다. 작업 전체 공정률은 SYSTEM 항목 수 기준으로 다시 계산합니다.");
   notes.push("호선 · 구역 · 작업을 바꾸려면 삭제한 뒤 다시 등록하세요.");
   box.querySelector(".schedule-edit-note").innerHTML=notes.map(escapeHtml).join("<br>");
   box.querySelector(".schedule-edit-cancel").onclick=()=>box.remove();
@@ -2116,6 +2333,16 @@ async function saveScheduleEdit(record,box){
   if(people.manpower===null||!Number.isInteger(people.manpower)||people.manpower<0){status.textContent="투입 인원을 입력하세요. 이름을 넣거나 인원 수를 숫자로 적으면 됩니다. 같은 작업일에 이미 다른 작업에 넣은 인원만으로 한 작업이면 0을 적습니다.";return}
   let rate=null;
   if(rateInput){rate=productionNumber(rateInput.value);if(rate===null||rate<0||rate>100){status.textContent="공정률을 0 ~ 100 사이 숫자로 입력하세요.";return}}
+  const sysRows=[...box.querySelectorAll(".edit-sys-row")],sysItems=sysRows.filter(row=>row.querySelector("button").classList.contains("on")).map(row=>row.querySelector("button").dataset.sys);
+  if(sysRows.length&&!sysItems.length){status.textContent="SYSTEM 을 하나 이상 체크하세요.";return}
+  const sysRates={};
+  for(const row of sysRows){
+    const x=row.querySelector("button").dataset.sys;if(!sysItems.includes(x))continue;
+    const v=productionNumber(row.querySelector("input").value);
+    if(v===null||v<0||v>100){status.textContent=`${x} 공정률을 0 ~ 100 사이 숫자로 입력하세요.`;return}
+    sysRates[x]=v;
+  }
+  const sysChanged=sysRows.length>0;
   try{
     btn.disabled=true;status.textContent="수정 저장 중...";
     const dayPeople=await loadDayPeople(workDate,true),ownGroup=record.batch_id||record.id;
@@ -2124,11 +2351,21 @@ async function saveScheduleEdit(record,box){
       if(hit){status.textContent=`${name} 님은 ${dayPeopleReason(workDate,hit)}. ${PEOPLE_ONE_WORK_RULE}`;box._people.recheck();btn.disabled=false;return}
     }
     const now=new Date().toISOString(),shared={work_date:workDate,manpower:people.manpower,worker_names:people.names,updated_at:now};
+    const sysFields={};
+    if(sysChanged){
+      /* 작업 전체 공정률: 이 기록을 뺀 같은 작업의 기록(항목별 가장 높은 값) + 고친 값 */
+      const {data:others,error:oErr}=await supabase.from("production_schedules").select("id,ship_no,stage,area,work_type,work_method,system,system_rates").eq("ship_no",record.ship_no);
+      if(oErr)throw oErr;
+      const prev=collectItemProgress(others,record.id).get(productionWorkKey(record.ship_no,record.stage,record.area,record.work_type,record.work_method,record.system));
+      Object.assign(sysFields,{system_items:sysItems,system_rates:sysRates,progress_rate:systemOverall(record.system,prev?.items,new Map(Object.entries(sysRates)))??0,work_name:`${record.work_type} ${record.work_method} (${systemItemsLabel(sysItems,sysRates)})`});
+    }
     if(record.batch_id){
       const {error}=await supabase.from("production_schedules").update(shared).eq("batch_id",record.batch_id);if(error)throw error;
-      if(rateInput){const {error:rateError}=await supabase.from("production_schedules").update({progress_rate:rate,updated_at:now}).eq("id",record.id);if(rateError)throw rateError}
+      if(rateInput||sysChanged){const own={updated_at:now,...sysFields};if(rateInput)own.progress_rate=rate;
+        const {error:rateError}=await supabase.from("production_schedules").update(own).eq("id",record.id);if(rateError)throw rateError}
     }else{
-      const {error}=await supabase.from("production_schedules").update(rateInput?{...shared,progress_rate:rate}:shared).eq("id",record.id);if(error)throw error;
+      const one={...shared,...sysFields};if(rateInput)one.progress_rate=rate;
+      const {error}=await supabase.from("production_schedules").update(one).eq("id",record.id);if(error)throw error;
     }
     scheduleDataLoadedAt=0;scheduleDayPeopleCache.clear();
     await loadProductionScheduleList();
@@ -2145,7 +2382,7 @@ function scheduleCard(record,batchSize=1){
     const progress=productionNumber(record.progress_rate);
     if(record.stage)badge=`<span class="schedule-major-badge">${escapeHtml(record.stage)}</span>`;
     const unnamed=Math.max(0,displayCount-workerNames.length);
-    body=`<div class="schedule-card-work">${escapeHtml([record.work_type,record.work_method].filter(Boolean).join(" · ")||record.work_name||"-")}</div>`+(progress===null?"":`<div class="schedule-worker-list"><strong>공정률 ${productionPercentLabel(progress)}</strong>${productionBarHtml(progress)}</div>`)+(workerNames.length?`<div class="schedule-worker-list"><strong>투입자</strong><br>${workerNames.map(escapeHtml).join(" · ")}${unnamed?` 외 ${unnamed}명`:""}</div>`:"");
+    body=`<div class="schedule-card-work">${escapeHtml([record.work_type,record.work_method].filter(Boolean).join(" · ")||record.work_name||"-")}${Array.isArray(record.system_items)&&record.system_items.length?`<div class="schedule-card-sys">SYSTEM ${record.system_items.map(x=>{const n=productionNumber(record.system_rates?.[x]);const t=escapeHtml(x).replace(/ /g,"&nbsp;");return n===null?t:(n>=100?`<span class="sys-done">${t}&nbsp;100%&nbsp;✓</span>`:`${t}&nbsp;${Number(n.toFixed(1))}%`)}).join(" · ")}</div>`:(record.system?`<div class="schedule-card-sys">SYSTEM ${systemHtml(record.system)}</div>`:"")}</div>`+(progress===null?"":`<div class="schedule-worker-list"><strong>${record.system_rates&&Object.keys(record.system_rates).length?"작업 전체 공정률":"공정률"} ${productionPercentLabel(progress)}</strong>${productionBarHtml(progress)}</div>`)+(workerNames.length?`<div class="schedule-worker-list"><strong>투입자</strong><br>${workerNames.map(escapeHtml).join(" · ")}${unnamed?` 외 ${unnamed}명`:""}</div>`:"");
   }else{
     /* 이전 방식(작업명 · 투입자 이름)으로 등록된 기록은 당시 내용 그대로 보여 줍니다. */
     if(record.major_category)badge=`<span class="schedule-major-badge">${escapeHtml(record.major_category)}</span>`;
@@ -2185,7 +2422,7 @@ document.addEventListener("click",e=>{
   const path=e.composedPath?e.composedPath():[];
   $("scheduleRows").querySelectorAll(".schedule-row-card").forEach(card=>{
     if(!card._open)return;
-    if(path.some(el=>el.classList&&(el.classList.contains("multi-panel")||el.classList.contains("multi-box"))&&card.contains(el)))return;
+    if(path.some(el=>el.classList&&(el.classList.contains("multi-panel")||el.classList.contains("sys-panel")||el.classList.contains("multi-box"))&&card.contains(el)))return;
     card._open="";renderSchedulePanel(card);renderScheduleWorkBoxes(card);
   });
 });
@@ -2339,7 +2576,7 @@ function productionStageDetailHtml(stage){
       const badge=progress>=100?'<span class="badge badge-completed">완료</span>':(registered?`<strong>${productionPercentLabel(progress)}</strong>`:'<span class="production-no-target">미등록</span>');
       const due=row.due_date||row.milestone?`완료 일정 ${escapeHtml([row.due_date,row.milestone?`(${row.milestone})`:""].filter(Boolean).join(" "))}`:"";
       const meta=[registered?`등록 ${row.record_count}건`:"",row.last_work_date?`최근작업 ${escapeHtml(row.last_work_date)}`:"",registered?`투입 ${row.manpower}명`:"",due].filter(Boolean).join(" · ");
-      html+=`<div class="production-work-item"><div class="production-work-head"><div class="production-work-name">${escapeHtml([row.work_type,row.work_method].filter(Boolean).join(" · ")||"-")}</div><div>${badge}</div></div>${registered?productionBarHtml(progress):""}<div class="production-work-meta">${meta}</div></div>`;
+      html+=`<div class="production-work-item"><div class="production-work-head"><div class="production-work-name">${escapeHtml([row.work_type,row.work_method].filter(Boolean).join(" · ")||"-")}${row.system?`<span class="production-work-sys">SYSTEM ${systemItems(row.system).map(x=>{const t=escapeHtml(x).replace(/ /g,"&nbsp;"),n=row.sys_rates?.get(x);if(n!==undefined)return n>=100?`<span class="sys-done">${t}&nbsp;100%&nbsp;✓</span>`:`<span>${t}&nbsp;${Number(n.toFixed(1))}%</span>`;return row.sys_done&&row.sys_done.has(x)?`<span class="sys-done">${t}&nbsp;✓</span>`:`<span class="sys-todo">${t}</span>`}).join(" · ")}${row.sys_rates&&row.sys_rates.size?` <span class="sys-todo">(${systemItems(row.system).length}개 기준)</span>`:""}</span>`:""}</div><div>${badge}</div></div>${registered?productionBarHtml(progress):""}<div class="production-work-meta">${meta}</div></div>`;
     });
     html+="</div>";
   });
@@ -2393,7 +2630,7 @@ async function loadProductionDashboard(){
   const seq=++productionDashboardSeq;
   status.textContent="생산 데이터 집계 중...";summary.innerHTML="";content.innerHTML="";
   const [scheduleResult,masterResult]=await Promise.all([
-    fetchAllRows(()=>{let q=supabase.from("production_schedules").select("id,work_date,ship_type,ship_no,stage,area,work_type,work_method,manpower,progress_rate,batch_id,created_at").order("created_at",{ascending:true}).order("id",{ascending:true});if(shipFilter)q=q.ilike("ship_no",`%${shipFilter}%`);return q}),
+    fetchAllRows(()=>{let q=supabase.from("production_schedules").select("id,work_date,ship_type,ship_no,stage,area,work_type,work_method,system,system_items,system_rates,manpower,progress_rate,batch_id,created_at").order("created_at",{ascending:true}).order("id",{ascending:true});if(shipFilter)q=q.ilike("ship_no",`%${shipFilter}%`);return q}),
     fetchAllRows(productionMasterQuery)
   ]);
   if(seq!==productionDashboardSeq)return;
@@ -2416,8 +2653,8 @@ async function loadProductionDashboard(){
     ["kl_date","lc_date","st_date","dl_date"].forEach(f=>{if(!ship[f]&&m[f])ship[f]=m[f]});
     const stageKey=productionNormalize(m.stage);
     if(!ship.stages.has(stageKey))ship.stages.set(stageKey,{name:m.stage,record_count:0,manpower:0,last_work_date:"",batches:new Set(),items:new Map()});
-    const stage=ship.stages.get(stageKey),itemKey=productionWorkKey("","",m.area,m.work_type,m.work_method);
-    if(!stage.items.has(itemKey))stage.items.set(itemKey,{area:m.area,work_type:m.work_type,work_method:m.work_method,milestone:m.milestone||"",due_date:m.due_date?productionDateOnly(m.due_date):"",progress:null,record_count:0,manpower:0,last_work_date:""});
+    const stage=ship.stages.get(stageKey),itemKey=productionWorkKey("","",m.area,m.work_type,m.work_method,m.system);
+    if(!stage.items.has(itemKey))stage.items.set(itemKey,{area:m.area,work_type:m.work_type,work_method:m.work_method,system:m.system||"",sys_done:new Set(),sys_rates:new Map(),milestone:m.milestone||"",due_date:m.due_date?productionDateOnly(m.due_date):"",progress:null,record_count:0,manpower:0,last_work_date:""});
   });
   /* ② 일일작업 등록을 얹습니다. 같은 작업의 공정률은 입력된 값 중 가장 높은 값(축적식). */
   /* 함께 등록한 묶음(batch_id)의 투입 인원은 합계에 한 번만 더합니다. */
@@ -2427,16 +2664,20 @@ async function loadProductionDashboard(){
     ship.record_count++;
     if(!r.batch_id||!countedBatches.has(r.batch_id)){manpowerTotal+=manpower;if(r.batch_id)countedBatches.add(r.batch_id)}
     if(!ship.first_created)ship.first_created=r.created_at||r.work_date||"";
-    const stage=ship.stages.get(productionNormalize(r.stage)),item=stage?stage.items.get(productionWorkKey("","",r.area,r.work_type,r.work_method)):null;
+    const stage=ship.stages.get(productionNormalize(r.stage)),item=stage?stage.items.get(productionWorkKey("","",r.area,r.work_type,r.work_method,r.system)):null;
     if(!item){ship.unmatched_count++;return}
     stage.record_count++;
     if(!r.batch_id||!stage.batches.has(r.batch_id)){stage.manpower+=manpower;if(r.batch_id)stage.batches.add(r.batch_id)}
     if(workDate>stage.last_work_date)stage.last_work_date=workDate;
     item.record_count++;item.manpower+=manpower;
+    (Array.isArray(r.system_items)?r.system_items:[]).forEach(x=>item.sys_done.add(normalizeName(x)));
+    if(r.system_rates&&typeof r.system_rates==="object")Object.entries(r.system_rates).forEach(([x,v])=>{const k=normalizeName(x),n=productionNumber(v);if(k&&n!==null&&(!item.sys_rates.has(k)||n>item.sys_rates.get(k)))item.sys_rates.set(k,n)});
     if(workDate>item.last_work_date)item.last_work_date=workDate;
     const progress=productionNumber(r.progress_rate);
     if(progress!==null&&(item.progress===null||progress>item.progress))item.progress=progress;
   });
+  /* SYSTEM 항목별 공정률이 있는 작업: 작업 공정률 = 항목마다(가장 높은 값) 합 ÷ 항목 수 */
+  ships.forEach(ship=>ship.stages.forEach(stage=>stage.items.forEach(item=>{if(item.sys_rates&&item.sys_rates.size){const o=systemOverall(item.system,item.sys_rates);if(o!==null)item.progress=o}})));
   /* 호선 표시 순서: 일일작업이 처음 등록된 순서, 아직 등록이 없는 호선은 그 뒤에 마스터 순서대로 */
   const shipList=[...ships.values()].sort((a,b)=>{
     if(a.first_created&&b.first_created)return String(a.first_created)<String(b.first_created)?-1:String(a.first_created)>String(b.first_created)?1:a.order-b.order;
