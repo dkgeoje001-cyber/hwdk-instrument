@@ -153,6 +153,22 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .production-detail-title{padding:12px 12px 0;font-size:15px;font-weight:900;color:#16324f}
 .production-detail-sub{color:#7a8794;font-size:11px;font-weight:700}
 .production-major-detail .production-area:first-of-type{border-top:0}
+/* 세부 현황 작업 칸 → 일일작업등록 */
+.production-detail-hint{padding:3px 12px 0;color:#64748b;font-size:12px;font-weight:700}
+.production-work-item.go{cursor:pointer;transition:border-color .15s,background .15s}
+.production-work-item.go:hover{border-color:#315f8c;background:#f2f7fb}
+.production-work-item.go:focus-visible{outline:2px solid #315f8c;outline-offset:2px}
+.production-work-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.production-work-foot .production-work-meta{min-width:0}
+.production-work-meta .pw-part,.production-work-sys .sys-basis{white-space:nowrap}
+.schedule-from-dash{scroll-margin-top:10px}
+.production-work-go{flex:none;margin-top:7px;padding:3px 8px;border-radius:999px;background:#e6eef6;color:#315f8c;font-size:11px;font-weight:900;white-space:nowrap}
+.production-work-item.go:hover .production-work-go{background:#315f8c;color:#fff}
+.production-work-item.flash{animation:prodWorkFlash 1.8s ease}
+@keyframes prodWorkFlash{0%,45%{border-color:#278159;box-shadow:0 0 0 3px rgba(39,129,89,.28)}100%{box-shadow:0 0 0 0 rgba(39,129,89,0)}}
+.schedule-from-dash{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;padding:10px 12px;background:#eef4fa;border:1px solid #bfd3e6;border-radius:9px;color:#16324f;font-size:13px;font-weight:700;line-height:1.55}
+.schedule-from-dash-label{display:block;color:#5b7186;font-size:11px;font-weight:800}
+.schedule-from-dash .secondary{flex:none;padding:8px 10px;font-size:12px;white-space:nowrap}
 @media(max-width:720px){.schedule-form-head{grid-template-columns:repeat(2,minmax(0,1fr))}.schedule-row-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.production-major-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:10px}.production-major-card{padding:10px}.production-major-pct{font-size:23px}.production-major-meta{font-size:11px}}
 /* ===== 게시판(공지사항) ===== */
 .home-board{padding:12px 14px;background:#fffaf0;border:1px solid #e3c66f;border-radius:14px}
@@ -579,6 +595,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
       <h2>일일작업등록</h2>
       <div class="hint">선종 → 호선 → STAGE → 구역 순서로 고른 뒤, 작업구분과 작업방식은 눌러서 펼친 목록에서 여러 개를 체크할 수 있습니다. SYSTEM 칸을 누르면 고른 작업방식의 SYSTEM 이 항목별(VRC · RS · GAS …)로 나오고, 그날 한 SYSTEM 을 여러 개 체크해 항목마다 공정률을 적습니다(100% 는 초록). 작업 전체 공정률은 SYSTEM 항목 수 기준으로 나눠 계산합니다(예: 3개 중 2개 100% → 66.7%). 투입 인원은 고른 작업 전체에 한 번, 반장 이름을 눌러 펼친 목록에서 체크해 고르고(이름 없이 인원 수만 적어도 됩니다), 공정률은 작업마다 숫자로 입력합니다. 한 사람은 같은 작업일에 한 작업에만 넣을 수 있습니다. 같은 작업을 다시 등록하면 공정률은 높은 쪽 값으로 지표에 남습니다.</div>
       <div id="scheduleSetupNotice" class="schedule-setup-notice hidden"></div>
+      <div id="scheduleFromDash" class="schedule-from-dash hidden"><div><span class="schedule-from-dash-label">생산통합지표에서 고른 작업</span><span class="schedule-from-dash-text"></span></div><button id="scheduleBackDashBtn" type="button" class="secondary">← 생산통합지표</button></div>
 
       <div class="schedule-form-head" style="margin-top:14px">
         <div><label>작업일</label><input id="scheduleWorkDate" type="date"></div>
@@ -650,7 +667,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
       <h2>생산통합지표</h2>
       <button id="refreshProductionDashboardBtn" class="refresh" type="button">새로고침</button>
     </div>
-    <div class="hint">마스터 베이스의 전체 작업을 기준으로 호선별 · STAGE별 공정률을 자동 집계합니다. 같은 작업을 여러 번 등록하면 입력된 공정률 중 가장 높은 값이 그 작업의 공정률이 되고, 아직 등록이 없는 작업은 0%로 계산합니다. STAGE 카드의 공정률은 그 STAGE 전체 작업의 평균이며, 카드를 누르면 구역 · 작업별 세부 현황이 열립니다.</div>
+    <div class="hint">마스터 베이스의 전체 작업을 기준으로 호선별 · STAGE별 공정률을 자동 집계합니다. 같은 작업을 여러 번 등록하면 입력된 공정률 중 가장 높은 값이 그 작업의 공정률이 되고, 아직 등록이 없는 작업은 0%로 계산합니다. STAGE 카드의 공정률은 그 STAGE 전체 작업의 평균이며, 카드를 누르면 구역 · 작업별 세부 현황이 열립니다. 세부 현황에서 작업을 누르면 그 작업이 미리 골라진 일일작업등록 화면으로 이어집니다.</div>
 
     <div class="production-dashboard-filter">
       <div>
@@ -2215,7 +2232,7 @@ function addScheduleRow(){
   $("scheduleRows").appendChild(scheduleRowTemplate(prefill));
   refreshScheduleRowHeads();
 }
-function resetScheduleForm(){$("scheduleWorkDate").value=localToday();$("scheduleAuthor").value=currentUserName;$("scheduleSaveStatus").textContent="";$("scheduleRows").innerHTML="";scheduleRowSeq=0;addScheduleRow();resetMissingPanel()}
+function resetScheduleForm(){$("scheduleFromDash").classList.add("hidden");$("scheduleWorkDate").value=localToday();$("scheduleAuthor").value=currentUserName;$("scheduleSaveStatus").textContent="";$("scheduleRows").innerHTML="";scheduleRowSeq=0;addScheduleRow();resetMissingPanel()}
 function collectScheduleRows(){return [...$("scheduleRows").querySelectorAll(".schedule-row-card")].map(readScheduleCard)}
 /* 함께 등록한 작업 묶음 번호. 같은 묶음의 투입 인원은 합계에 한 번만 반영합니다. */
 function newScheduleBatchId(){
@@ -2549,6 +2566,54 @@ $("scheduleFilterAuthor").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.
    작업 1건 = 호선 · STAGE · 구역 · 작업구분 · 작업방식. 같은 작업을 여러 번 등록하면 입력된 공정률 중 가장 높은 값이 그 작업의 공정률입니다.
    아직 등록이 없는 작업은 0%로 계산합니다. */
 let productionDashboardSeq=0;
+/* 세부 현황에서 작업을 눌러 등록 화면으로 갔을 때, 지표로 돌아오면 다시 열어 줄 호선 · STAGE · 작업 */
+let productionDashboardReopen=null;
+
+/* 세부 현황의 작업을 누르면: 일일작업등록을 열고 선종 · 호선 · STAGE · 구역 · 작업을 미리 골라 둡니다.
+   투입 인원과 공정률만 적어 등록하면 됩니다. SYSTEM 이 여러 개면 SYSTEM 체크 목록을 바로 펼칩니다. */
+async function openScheduleFromDashboard(ship,stage,row){
+  const pick={ship_type:ship.ship_type,ship_no:ship.ship_no,stage:stage.name,area:row.area,work_type:row.work_type,work_method:row.work_method,system:row.system||""};
+  productionDashboardReopen={ship:productionNormalize(ship.ship_no),stage:productionNormalize(stage.name),key:productionWorkKey("","",row.area,row.work_type,row.work_method,row.system),scroll:true};
+  resetScheduleForm();showScheduleTab("register");pushState({screen:"schedule-tab",tab:"register",admin:isAdmin});
+  window.scrollTo(0,0);
+  const banner=$("scheduleFromDash"),text=banner.querySelector(".schedule-from-dash-text");
+  const label=`${[pick.ship_type,pick.ship_no].filter(Boolean).join(" ")} · ${pick.stage} · ${pick.area} · ${pick.work_type} ${pick.work_method}`;
+  text.textContent=label+" (불러오는 중...)";banner.classList.remove("hidden");
+  await loadScheduleData();
+  /* 누른 동작이 다 끝난 뒤에 고릅니다(바깥을 누르면 목록을 닫는 동작과 겹치지 않게). */
+  await new Promise(resolve=>setTimeout(resolve,0));
+  const card=$("scheduleRows").querySelector(".schedule-row-card");
+  if(!card||banner.classList.contains("hidden"))return;
+  const ok=applySchedulePick(card,pick);
+  text.textContent=ok?label:`${label} · 이 작업을 마스터 목록에서 찾지 못했습니다. 아래에서 직접 골라 주세요.`;
+  banner.scrollIntoView({block:"start"});
+}
+function applySchedulePick(card,pick){
+  for(let i=0;i<SCHEDULE_LEVELS.length;i++){
+    const def=SCHEDULE_LEVELS[i],select=card.querySelector("."+def.cls);
+    if(![...select.options].some(o=>o.value===pick[def.field]))return false;
+    select.value=pick[def.field];refreshScheduleCascade(card,i+1,true);
+  }
+  const m=scheduleAreaWorks(card).find(w=>w.work_type===pick.work_type&&w.work_method===pick.work_method&&(w.system||"")===pick.system);
+  if(!m)return false;
+  card._types=[m.work_type];card._works=new Set([scheduleWorkKey(m.work_type,m.work_method,m.system)]);
+  card._open=systemItems(m.system).length>1?"system":"";
+  syncScheduleWorkPicks(card);
+  return true;
+}
+/* 지표로 돌아왔을 때 그 호선의 STAGE 세부 현황을 다시 열고, 처음 한 번은 그 작업 칸으로 이동합니다. */
+function reopenProductionDetail(content){
+  const r=productionDashboardReopen;if(!r)return;
+  const card=[...content.querySelectorAll(".production-ship-card")].find(c=>c.dataset.ship===r.ship);if(!card)return;
+  const btn=[...card.querySelectorAll(".production-major-card")].find(b=>b.dataset.stageKey===r.stage);if(!btn)return;
+  if(!btn.classList.contains("active"))btn.click();
+  if(!r.scroll)return;
+  r.scroll=false;
+  const item=[...card.querySelectorAll(".production-work-item")].find(el=>el.dataset.workKey===r.key);
+  if(!item)return;
+  item.scrollIntoView({block:"center"});
+  item.classList.add("flash");setTimeout(()=>item.classList.remove("flash"),1900);
+}
 
 function productionDateOnly(v){
   if(!v)return "";
@@ -2567,7 +2632,7 @@ function productionItemsStats(items){
 function productionStageDetailHtml(stage){
   const areas=new Map();
   stage.items.forEach(item=>{const key=productionNormalize(item.area);if(!areas.has(key))areas.set(key,{area:item.area,rows:[]});areas.get(key).rows.push(item)});
-  let html=`<div class="production-detail-title">${escapeHtml(stage.name)} 세부 현황 <span class="production-detail-sub">구역 · 작업별 공정률</span></div>`;
+  let html=`<div class="production-detail-title">${escapeHtml(stage.name)} 세부 현황 <span class="production-detail-sub">구역 · 작업별 공정률</span></div><div class="production-detail-hint">작업을 누르면 일일작업등록으로 이어집니다.</div>`;
   areas.forEach(group=>{
     const stats=productionItemsStats(group.rows);
     html+=`<div class="production-area"><div class="production-area-title"><span>${escapeHtml(group.area||"-")}</span><span>${productionPercentLabel(stats.avg)} · 완료 ${stats.done} / ${stats.total}</span></div>`;
@@ -2575,8 +2640,9 @@ function productionStageDetailHtml(stage){
       const registered=row.record_count>0,progress=row.progress||0;
       const badge=progress>=100?'<span class="badge badge-completed">완료</span>':(registered?`<strong>${productionPercentLabel(progress)}</strong>`:'<span class="production-no-target">미등록</span>');
       const due=row.due_date||row.milestone?`완료 일정 ${escapeHtml([row.due_date,row.milestone?`(${row.milestone})`:""].filter(Boolean).join(" "))}`:"";
-      const meta=[registered?`등록 ${row.record_count}건`:"",row.last_work_date?`최근작업 ${escapeHtml(row.last_work_date)}`:"",registered?`투입 ${row.manpower}명`:"",due].filter(Boolean).join(" · ");
-      html+=`<div class="production-work-item"><div class="production-work-head"><div class="production-work-name">${escapeHtml([row.work_type,row.work_method].filter(Boolean).join(" · ")||"-")}${row.system?`<span class="production-work-sys">SYSTEM ${systemItems(row.system).map(x=>{const t=escapeHtml(x).replace(/ /g,"&nbsp;"),n=row.sys_rates?.get(x);if(n!==undefined)return n>=100?`<span class="sys-done">${t}&nbsp;100%&nbsp;✓</span>`:`<span>${t}&nbsp;${Number(n.toFixed(1))}%</span>`;return row.sys_done&&row.sys_done.has(x)?`<span class="sys-done">${t}&nbsp;✓</span>`:`<span class="sys-todo">${t}</span>`}).join(" · ")}${row.sys_rates&&row.sys_rates.size?` <span class="sys-todo">(${systemItems(row.system).length}개 기준)</span>`:""}</span>`:""}</div><div>${badge}</div></div>${registered?productionBarHtml(progress):""}<div class="production-work-meta">${meta}</div></div>`;
+      const meta=[registered?`등록 ${row.record_count}건`:"",row.last_work_date?`최근작업 ${escapeHtml(row.last_work_date)}`:"",registered?`투입 ${row.manpower}명`:"",due].filter(Boolean).map(x=>`<span class="pw-part">${x}</span>`).join(" · ");
+      const workKey=productionWorkKey("","",row.area,row.work_type,row.work_method,row.system);
+      html+=`<div class="production-work-item go" role="button" tabindex="0" data-work-key="${escapeHtml(workKey)}" aria-label="${escapeHtml(`${row.area} ${row.work_type} ${row.work_method} 일일작업등록`)}"><div class="production-work-head"><div class="production-work-name">${escapeHtml([row.work_type,row.work_method].filter(Boolean).join(" · ")||"-")}${row.system?`<span class="production-work-sys">SYSTEM ${systemItems(row.system).map(x=>{const t=escapeHtml(x).replace(/ /g,"&nbsp;"),n=row.sys_rates?.get(x);if(n!==undefined)return n>=100?`<span class="sys-done">${t}&nbsp;100%&nbsp;✓</span>`:`<span>${t}&nbsp;${Number(n.toFixed(1))}%</span>`;return row.sys_done&&row.sys_done.has(x)?`<span class="sys-done">${t}&nbsp;✓</span>`:`<span class="sys-todo">${t}</span>`}).join(" · ")}${row.sys_rates&&row.sys_rates.size?` <span class="sys-todo sys-basis">(${systemItems(row.system).length}개 기준)</span>`:""}</span>`:""}</div><div>${badge}</div></div>${registered?productionBarHtml(progress):""}<div class="production-work-foot"><div class="production-work-meta">${meta}</div><span class="production-work-go">작업등록 ›</span></div></div>`;
     });
     html+="</div>";
   });
@@ -2584,7 +2650,7 @@ function productionStageDetailHtml(stage){
 }
 
 function productionShipCard(ship){
-  const card=document.createElement("div");card.className="production-ship-card";
+  const card=document.createElement("div");card.className="production-ship-card";card.dataset.ship=productionNormalize(ship.ship_no);
   const stages=[...ship.stages.values()];
   const shipStats=productionItemsStats(stages.flatMap(stage=>[...stage.items.values()]));
   const dates=[["K/L",ship.kl_date],["L/C",ship.lc_date],["S/T",ship.st_date],["D/L",ship.dl_date]].filter(x=>x[1]).map(x=>`${x[0]} ${escapeHtml(productionDateOnly(x[1]))}`).join(" · ");
@@ -2594,7 +2660,7 @@ function productionShipCard(ship){
     html+='<div class="production-major-grid">';
     stages.forEach((stage,index)=>{
       const stats=productionItemsStats([...stage.items.values()]);
-      html+=`<button type="button" class="production-major-card" data-stage-index="${index}">
+      html+=`<button type="button" class="production-major-card" data-stage-index="${index}" data-stage-key="${escapeHtml(productionNormalize(stage.name))}">
         <div class="production-major-name">${escapeHtml(stage.name)}</div>
         <div class="production-major-pct">${productionPercentLabel(stats.avg)}</div>${productionBarHtml(stats.avg)}
         <div class="production-major-count">완료 ${stats.done} / ${stats.total}건</div>
@@ -2618,8 +2684,14 @@ function productionShipCard(ship){
       card.querySelectorAll(".production-major-card").forEach(x=>x.classList.remove("active"));
       if(opened){detail.classList.add("hidden");detail.innerHTML="";return}
       btn.classList.add("active");
-      detail.innerHTML=productionStageDetailHtml(stages[Number(btn.dataset.stageIndex)]);
+      const stage=stages[Number(btn.dataset.stageIndex)];
+      detail.innerHTML=productionStageDetailHtml(stage);
       detail.classList.remove("hidden");
+      detail.querySelectorAll(".production-work-item.go").forEach(el=>{
+        const go=()=>{const row=stage.items.get(el.dataset.workKey);if(row)openScheduleFromDashboard(ship,stage,row)};
+        el.onclick=go;
+        el.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}};
+      });
     };
   });
   return card;
@@ -2691,10 +2763,12 @@ async function loadProductionDashboard(){
   if(!shipList.length){status.textContent="";content.innerHTML='<div class="empty">등록된 생산 데이터가 없습니다.</div>';return}
   shipList.forEach(ship=>content.appendChild(productionShipCard(ship)));
   status.textContent=`호선 ${shipList.length}척 · 마스터 작업 ${overall.total}건 중 완료 ${overall.done}건 · 누적 등록 ${schedules.length}건`;
+  reopenProductionDetail(content);
 }
 
 function showProductionDashboard(push=true){hideAllMain();showHeader();$("productionDashboardApp").classList.remove("hidden");loadProductionDashboard();if(push)pushState({screen:"production-dashboard",admin:isAdmin})}
-$("openProductionDashboardBtn").onclick=()=>showProductionDashboard(true);
+$("openProductionDashboardBtn").onclick=()=>{productionDashboardReopen=null;showProductionDashboard(true)};
+$("scheduleBackDashBtn").onclick=()=>showProductionDashboard(true);
 $("refreshProductionDashboardBtn").onclick=loadProductionDashboard;
 $("productionDashboardSearchBtn").onclick=loadProductionDashboard;
 $("productionDashboardShip").addEventListener("keydown",e=>{if(e.key==="Enter")loadProductionDashboard()});
