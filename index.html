@@ -178,6 +178,89 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .prod-hull-detail .production-ship-card{margin-top:12px}
 .prod-hull-empty{margin-top:12px;padding:12px;border:1px dashed #cfd8df;border-radius:10px;color:#64748b;font-size:13px;text-align:center}
 @media(max-width:720px){.prod-type-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.prod-type-tab{padding:10px}.prod-type-name{font-size:16px}.prod-type-sub{font-size:11px}.prod-hull-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.prod-hull-chip{padding:8px}.prod-hull-no{font-size:15px}.prod-hull-pct{font-size:12px}.prod-hull-meta{font-size:10px}}
+.module-weekly{background:#2f6e73;color:#fff}
+/* ===== 주간계획입력 ===== */
+.wk-head{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.wk-head label{margin-top:0}
+.wk-ref{margin-top:12px;padding:10px 11px;border:1px solid #bfd3e6;background:#eef4fa;border-radius:10px}
+.wk-ref-t{font-size:13px;font-weight:900;color:#16324f}.wk-ref-t span{font-size:11px;color:#64748b;font-weight:700}
+.wk-ref-w{margin:8px 0 4px;font-size:11px;font-weight:900;color:#315f8c}
+.wk-ref-none{margin-top:6px;font-size:12px;color:#64748b}
+.wk-mls{background:#fff;border:1px solid #dbe5ef;border-radius:8px}
+.wk-ml{display:grid;grid-template-columns:minmax(76px,auto) 40px 1fr auto;align-items:center;gap:8px;min-height:32px;padding:3px 9px;border-top:1px solid #edf1f5;font-size:13px}.wk-ml:first-child{border-top:0}
+.wk-ml b{color:#16324f;white-space:nowrap}.wk-dt{color:#334155;font-weight:700}
+.wk-ev{display:flex;align-items:center;justify-content:center;height:19px;border-radius:5px;font-size:11px;font-weight:900;color:#fff}
+.wk-ev.kl{background:#2e6b22}.wk-ev.lc{background:#1d4f86}.wk-ev.st{background:#7c3aed}.wk-ev.dl{background:#b45309}
+.wk-dd{background:#fde8e8;color:#b91c1c;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:900;white-space:nowrap}.wk-dd.far{background:#eef1f4;color:#475569}
+.wk-card{margin-top:12px;border:1px solid #d5dde4;border-radius:11px;padding:12px;background:#f9fbfc}
+.wk-card-head{display:flex;justify-content:space-between;align-items:center}
+.wk-card-title{font-size:15px;font-weight:900;color:#16324f}
+.wk-card-head .wk-remove{padding:6px 10px;font-size:12px}
+.wk-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.wk-grid label,.wk-grid2 label{height:18px;line-height:18px;font-size:12px;color:#52606d}
+.wk-grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.wk-card>label,.wk-sys>label{font-size:12px;color:#52606d}
+.wk-sub{color:#7a8794;font-weight:700}
+.wk-works{display:grid;gap:7px}
+.wk-type{border:1px solid #e0e5e9;border-radius:9px;background:#fff;padding:8px}
+.wk-type-name{font-size:12px;font-weight:900;color:#16324f;margin-bottom:5px}
+.wk-chips{display:flex;flex-wrap:wrap;gap:6px}
+.wk-chip{margin:0;padding:7px 11px;border:1px solid #cfd8df;border-radius:999px;background:#fff;color:#334155;font-size:13px;font-weight:800;line-height:1.3;text-align:left}
+.wk-chip.sm{padding:5px 10px;font-size:12px}
+.wk-chip.on{background:#16324f;border-color:#16324f;color:#fff}
+.wk-chip.on::before{content:"✓ "}
+.wk-empty{padding:10px;border:1px dashed #cfd8df;border-radius:9px;color:#64748b;font-size:13px;background:#fff}
+.wk-sys-row{margin-top:6px;padding:8px;border:1px solid #e0e5e9;border-radius:9px;background:#fff}
+.wk-sys-name{font-size:12px;font-weight:900;color:#16324f;margin-bottom:5px}
+.wk-days{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+.wk-day{margin:0;padding:10px 0;border:1px solid #cfd8df;border-radius:8px;background:#fff;color:#475569;font-size:15px;font-weight:900}
+.wk-day.on{background:#16324f;border-color:#16324f;color:#fff}
+.wk-day,.wk-chip,.wk-d,.wk-who button{-webkit-tap-highlight-color:transparent}
+.wk-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.wk-actions button{margin:0}
+.wk-add{background:#fff;border:1px dashed #94a3b8;color:#315f8c}
+.wk-miss-btn{background:#fff8e7;color:#664c00;border:1px solid #e3c66f}
+.wk-miss-btn.open{background:#664c00;color:#fff;border-color:#664c00}
+.wk-miss-days{margin-top:4px}
+.wk-link{margin-left:6px;padding:5px 10px;font-size:12px;background:#e8edf2;color:#16324f}
+.wk-mtag{display:inline-block;margin-right:4px;padding:0 7px;border-radius:999px;background:#fff0c9;color:#8a5700;font-size:11px;font-weight:900;line-height:18px;vertical-align:1px}
+.wk-wsel{display:grid;grid-template-columns:44px 1fr 44px;gap:8px;align-items:center}
+.wk-wsel button{margin:0;padding:9px 0;background:#e8edf2;color:#16324f}
+.wk-wlabel{text-align:center;font-size:16px;font-weight:900;color:#16324f}.wk-wlabel span{display:block;font-size:12px;color:#64748b;font-weight:700}
+.wk-sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:10px}
+.wk-sum div{padding:8px 9px;background:#f7f9fb;border:1px solid #dbe2e8;border-radius:9px;font-size:11px;color:#64748b}
+.wk-sum b{display:block;margin-top:2px;font-size:19px;color:#16324f}.wk-sum small{display:block;font-size:10px;color:#8a5700;font-weight:800}
+.wk-dbar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:10px}
+.wk-d{margin:0;padding:6px 0 5px;display:flex;flex-direction:column;align-items:center;gap:1px;border:1px solid #cfd8df;border-radius:10px;background:#fff;color:#64748b;font-size:11px;font-weight:700}
+.wk-d b{font-size:16px;color:#16324f}.wk-d .n{font-size:11px;font-weight:900;color:#334155}
+.wk-d.on{background:#16324f;border-color:#16324f;color:#c9d6e3}.wk-d.on b,.wk-d.on .n{color:#fff}
+.wk-d i{font-style:normal;min-height:14px;line-height:14px;padding:0 4px;border-radius:4px;font-size:10px;font-weight:900;color:#fff}
+.wk-d i.kl{background:#2e6b22}.wk-d i.lc{background:#1d4f86}.wk-d i.st{background:#7c3aed}.wk-d i.dl{background:#b45309}
+.wk-dhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px;margin-top:10px;padding:9px 11px;border-radius:9px;background:#eef4fa;border:1px solid #bfd3e6;font-size:14px;font-weight:900;color:#16324f}
+.wk-dhead .ms{display:flex;flex-wrap:wrap;gap:4px}.wk-dhead .ms span{font-size:11px;color:#fff;border-radius:5px;padding:1px 6px}
+.wk-dhead .ms .kl{background:#2e6b22}.wk-dhead .ms .lc{background:#1d4f86}.wk-dhead .ms .st{background:#7c3aed}.wk-dhead .ms .dl{background:#b45309}
+.wk-who{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.wk-who button{margin:0;padding:6px 12px;border:1px solid #cfd8df;border-radius:999px;background:#fff;color:#475569;font-size:13px;font-weight:800}
+.wk-who button.on{background:#16324f;border-color:#16324f;color:#fff}
+.wk-grp,.wk-dsec{margin-top:10px;border:1px solid #cfd8df;border-radius:11px;overflow:hidden;background:#fff}
+.wk-grp-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;background:#16324f;color:#fff;font-size:15px;font-weight:900}
+.wk-grp-h span{font-size:12px;color:#c9d6e3;font-weight:700;text-align:right}
+.wk-ahead{margin-top:10px;padding:11px 13px;border-radius:11px;background:#16324f;color:#fff;font-size:14px}.wk-ahead b{font-size:18px}.wk-ahead div{margin-top:2px;font-size:12px;color:#c9d6e3}
+.wk-dsec-h{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:8px 12px;background:#eef4fa;border-bottom:1px solid #dbe5ef;font-size:13px;color:#16324f}.wk-dsec-h b{font-size:15px}
+.wk-dsec-h .ms{font-size:11px;font-weight:900;color:#fff;border-radius:5px;padding:1px 6px}.wk-dsec-h .ms.kl{background:#2e6b22}.wk-dsec-h .ms.lc{background:#1d4f86}.wk-dsec-h .ms.st{background:#7c3aed}.wk-dsec-h .ms.dl{background:#b45309}
+.wk-dsec-h .c{margin-left:auto;font-size:12px;font-weight:800;color:#475569}
+.wk-none{padding:10px 12px;font-size:13px;color:#94a3b8}
+.wk-it{padding:9px 12px;border-top:1px solid #edf1f5}.wk-it:first-of-type{border-top:0}.wk-it.miss{background:#fffdf6}
+.wk-it-t{display:flex;align-items:flex-start;gap:6px;font-size:14px;font-weight:800;color:#1f2933;line-height:1.45}
+.wk-ship{flex:none;padding:0 7px;border-radius:5px;background:#eef1f4;color:#16324f;font-size:12px;font-weight:900;line-height:20px}
+.wk-work{flex:1;min-width:0;overflow-wrap:anywhere}
+.wk-stg{flex:none;font-size:11px;padding:0 7px;border-radius:999px;font-weight:900;line-height:19px}.wk-stg.dock{background:#e3eef8;color:#1d4f86}.wk-stg.pe{background:#e3f1dd;color:#2e6b22}.wk-stg.an{background:#fbe7d9;color:#9a4a12}.wk-stg.etc{background:#eef1f4;color:#475569}
+.wk-it-m{margin-top:3px;color:#64748b;font-size:12.5px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.wk-it-m em{font-style:normal;color:#16324f;background:#fde68a;border-radius:4px;padding:0 3px;font-weight:900}
+.wk-it-m .del{margin-left:auto;padding:4px 9px;font-size:12px;background:#e8edf2;color:#222}
+.wk-it-n{margin-top:2px;font-size:12.5px;color:#334155;overflow-wrap:anywhere}
+.wk-excel{margin-top:12px;padding:9px 11px;border:1px solid #e7cc7a;background:#fff8e7;border-radius:9px;color:#664c00;font-size:12px;line-height:1.55}
+@media(max-width:720px){.wk-head{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}.wk-grid2{grid-template-columns:minmax(0,1fr) minmax(0,1.7fr)}.wk-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.wk-sum{grid-template-columns:repeat(2,minmax(0,1fr))}.wk-dbar{gap:3px}.wk-d{font-size:10px;padding:5px 0 4px}.wk-d b{font-size:14px}.wk-d i{font-size:9px;padding:0 2px}.wk-ml{grid-template-columns:auto 38px 1fr auto;gap:6px;font-size:12.5px}.wk-it-t{font-size:13.5px}}
 .production-detail-hint{padding:3px 12px 0;color:#64748b;font-size:12px;font-weight:700}
 .production-work-item.go{cursor:pointer;transition:border-color .15s,background .15s}
 .production-work-item.go:hover{border-color:#315f8c;background:#f2f7fb}
@@ -561,9 +644,9 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
             <span class="module-name">생산통합지표</span>
             <span class="module-sub">호선 · STAGE별 공정률</span>
           </button>
-          <button class="module-btn module-dev" disabled>
-            <span class="module-name">호선일정관리</span>
-            <span class="module-sub">개발중</span>
+          <button id="openWeeklyBtn" class="module-btn module-weekly" type="button">
+            <span class="module-name">주간계획입력</span>
+            <span class="module-sub">다음 주 계획 · 요일별 · 작성자별</span>
           </button>
           <button class="module-btn module-dev" disabled>
             <span class="module-name">우선작업순위</span>
@@ -680,6 +763,65 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
       <div id="scheduleListSummary" class="schedule-summary hidden"></div>
       <div id="scheduleListStatus" class="status"></div>
       <div id="scheduleList"></div>
+    </div>
+  </section>
+</div>
+
+<!-- 주간계획입력 모듈 -->
+<div id="weeklyApp" class="container hidden">
+  <div class="tabs" style="grid-template-columns:repeat(2,1fr)">
+    <button id="weeklyInputTab" class="active" type="button">계획 입력</button>
+    <button id="weeklyListTab" type="button">계획 목록</button>
+  </div>
+  <section id="weeklyInputSection">
+    <div class="card">
+      <h2>주간계획입력</h2>
+      <div class="hint">다음 주 계획을 선종 → 호선 → STAGE → 구역 → 작업 순서로 골라 적습니다(일일작업등록과 같은 방식). 작업은 여러 개 고를 수 있고, 작업 요일 · 계획 인원 · 담당 반장 · 비고를 함께 적습니다. 목록(데이터베이스)에 없는 작업은 [누락 작업 추가]에 적습니다.</div>
+      <div id="weeklySetupNotice" class="schedule-setup-notice hidden"></div>
+      <div class="wk-head">
+        <div><label for="weeklyWeek">계획 주</label><select id="weeklyWeek"></select></div>
+        <div><label for="weeklyAuthor">작성자</label><input id="weeklyAuthor" readonly></div>
+      </div>
+      <div id="weeklyMilestones" class="wk-ref"></div>
+      <div id="weeklyRows"></div>
+      <div class="wk-actions">
+        <button id="weeklyAddRowBtn" class="wk-add" type="button">＋ 계획 추가</button>
+        <button id="weeklyOpenMissingBtn" class="wk-miss-btn" type="button">누락 작업 추가</button>
+      </div>
+      <div id="weeklyMissingPanel" class="missing-panel hidden">
+        <div class="missing-head">
+          <div class="missing-title">누락 작업 추가</div>
+          <button id="weeklyMissCloseBtn" class="missing-close" type="button" aria-label="누락 작업 닫기">×</button>
+        </div>
+        <div class="hint">데이터베이스(드롭다운)에 아직 없는 작업을 직접 적습니다. 계획 주는 위 계획 주로 들어갑니다. 적은 작업은 계획 목록의 요일별 작업에 <span class="wk-mtag">누락</span> 표시로 바로 나오고, 엑셀에는 '주간계획 누락 작업' 시트에 따로 모입니다(나중에 데이터베이스에 추가할 때 참고).</div>
+        <div class="missing-grid">
+          <div><label for="weeklyMissShipType">선종<span class="missing-req">*</span></label><input id="weeklyMissShipType" list="weeklyMissShipTypeList" autocomplete="off" placeholder="예: LNG"></div>
+          <div><label for="weeklyMissShipNo">호선<span class="missing-req">*</span></label><input id="weeklyMissShipNo" list="weeklyMissShipNoList" autocomplete="off" placeholder="예: 2590"></div>
+          <div><label for="weeklyMissStage">STAGE<span class="missing-req">*</span></label><input id="weeklyMissStage" list="weeklyMissStageList" autocomplete="off" placeholder="예: DOCK"></div>
+          <div><label for="weeklyMissArea">구역<span class="missing-req">*</span></label><input id="weeklyMissArea" list="weeklyMissAreaList" autocomplete="off" placeholder="예: NO.2 C/D 하부"></div>
+          <div><label for="weeklyMissWorkType">작업구분<span class="missing-req">*</span></label><input id="weeklyMissWorkType" list="weeklyMissWorkTypeList" autocomplete="off" placeholder="예: TUBE"></div>
+          <div><label for="weeklyMissWorkMethod">작업방식<span class="missing-req">*</span></label><input id="weeklyMissWorkMethod" list="weeklyMissWorkMethodList" autocomplete="off" placeholder="예: SUPPORT 보강"></div>
+          <div class="missing-wide"><label>작업 요일<span class="missing-req">*</span></label><div id="weeklyMissDays" class="wk-days wk-miss-days"></div></div>
+          <div><label for="weeklyMissManpower">계획 인원(명)</label><input id="weeklyMissManpower" type="number" inputmode="numeric" min="0" step="1" placeholder="비워도 됩니다"></div>
+          <div><label for="weeklyMissLeader">담당 반장</label><select id="weeklyMissLeader"></select></div>
+          <div class="missing-wide"><label for="weeklyMissNote">비고</label><input id="weeklyMissNote" autocomplete="off" placeholder="예: 구역 이름이 목록에 없음"></div>
+        </div>
+        <datalist id="weeklyMissShipTypeList"></datalist><datalist id="weeklyMissShipNoList"></datalist><datalist id="weeklyMissStageList"></datalist>
+        <datalist id="weeklyMissAreaList"></datalist><datalist id="weeklyMissWorkTypeList"></datalist><datalist id="weeklyMissWorkMethodList"></datalist>
+        <button id="weeklyMissSaveBtn" class="primary" type="button">누락 작업 저장</button>
+        <div id="weeklyMissStatus" class="status"></div>
+        <div id="weeklyMissList" class="missing-list"></div>
+      </div>
+      <button id="weeklySaveBtn" class="primary" type="button">주간계획 등록</button>
+      <div id="weeklySaveStatus" class="status"></div>
+    </div>
+  </section>
+  <section id="weeklyListSection" class="hidden">
+    <div class="card">
+      <div class="wk-wsel"><button id="weeklyPrevWeek" type="button" aria-label="앞 주">◀</button><div id="weeklyListWeekLabel" class="wk-wlabel"></div><button id="weeklyNextWeek" type="button" aria-label="다음 주">▶</button></div>
+      <div id="weeklyListStatus" class="status"></div>
+      <div id="weeklyListContent"></div>
+      <div class="wk-excel">등록한 주간계획은 엑셀 '주간계획' 시트에, 누락 작업은 '주간계획 누락 작업' 시트에 따로 모입니다(파일을 열 때 자동으로 새로 고침).</div>
     </div>
   </section>
 </div>
@@ -1281,7 +1423,7 @@ async function nameToSyntheticEmail(name){
   return `u_${hex.slice(0,40)}@hwdk-bhd.com`;
 }
 
-function hideAllMain(){authScreen.classList.add("hidden");moduleHome.classList.add("hidden");scheduleApp.classList.add("hidden");$("productionDashboardApp")?.classList.add("hidden");$("boardApp")?.classList.add("hidden");$("materialApp")?.classList.add("hidden");$("equipCardApp")?.classList.add("hidden");if($("matSheet")&&!$("matSheet").classList.contains("hidden"))closeMaterialSheet();bhdApp.classList.add("hidden");requestApp.classList.add("hidden");myWorkApp.classList.add("hidden")}
+function hideAllMain(){authScreen.classList.add("hidden");moduleHome.classList.add("hidden");scheduleApp.classList.add("hidden");$("productionDashboardApp")?.classList.add("hidden");$("boardApp")?.classList.add("hidden");$("materialApp")?.classList.add("hidden");$("equipCardApp")?.classList.add("hidden");$("weeklyApp")?.classList.add("hidden");if($("matSheet")&&!$("matSheet").classList.contains("hidden"))closeMaterialSheet();bhdApp.classList.add("hidden");requestApp.classList.add("hidden");myWorkApp.classList.add("hidden")}
 function updateHeader(){
   $("userBadge").textContent=isAdmin?`관리자 · ${currentUserName||"관리자"}`:currentUserName;
   $("userBadge").className=isAdmin?"user-badge admin":"user-badge";
@@ -2842,6 +2984,357 @@ $("scheduleBackDashBtn").onclick=()=>showProductionDashboard(true);
 $("refreshProductionDashboardBtn").onclick=loadProductionDashboard;
 $("productionDashboardSearchBtn").onclick=loadProductionDashboard;
 $("productionDashboardShip").addEventListener("keydown",e=>{if(e.key==="Enter")loadProductionDashboard()});
+
+/* ---------- 주간계획입력 ---------- */
+/* 표 production_weekly_plans: 한 줄 = 계획 주(월요일) · 작업 하나 · 작업 요일 · 계획 인원 · 담당 반장.
+   누락 작업(데이터베이스 마스터에 없는 작업)은 같은 표에 is_missing=true 로 저장. 함께 등록한 작업 묶음(batch_id)의 인원은 합계에 한 번만 셉니다. */
+const WEEKLY_TABLE="production_weekly_plans";
+const WEEK_DAYS=["월","화","수","목","금","토"];
+const WK_DOW=["일","월","화","수","목","금","토"];
+let weeklyRowSeq=0,weeklyListWeek="",weeklyListDay="",weeklyListAuthor="",weeklyListRows=[],weeklyListSeq=0,weeklyMissRows=[];
+function wkParse(v){const [y,m,d]=String(v).slice(0,10).split("-").map(Number);return new Date(y,m-1,d)}
+function wkIso(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function wkAdd(v,days){const d=wkParse(v);d.setDate(d.getDate()+days);return wkIso(d)}
+function wkMonday(v){const d=wkParse(v);d.setDate(d.getDate()-((d.getDay()+6)%7));return wkIso(d)}
+function wkThis(){return wkMonday(localToday())}
+function wkMD(v){const d=wkParse(v);return `${d.getMonth()+1}/${d.getDate()}`}
+function wkMDW(v){const d=wkParse(v);return `${d.getMonth()+1}/${d.getDate()}(${WK_DOW[d.getDay()]})`}
+function wkRange(w){return `${wkMDW(w)} ~ ${wkMDW(wkAdd(w,6))}`}
+function wkRel(w){const n=Math.round((wkParse(w)-wkParse(wkThis()))/604800000);return n===0?"이번 주":n===1?"다음 주":n===2?"다다음 주":n<0?`${-n}주 전`:`${n}주 뒤`}
+function wkDayDate(w,day){return wkAdd(w,WEEK_DAYS.indexOf(day))}
+function wkEvClass(ev){return {"K/L":"kl","L/C":"lc","S/T":"st","D/L":"dl"}[ev]||""}
+function wkStageClass(stage){return {"DOCK":"dock","P.E":"pe","안벽":"an"}[stage]||"etc"}
+function weeklySchemaMessage(error){
+  const text=`${error?.code||""} ${error?.message||""}`;
+  if(/PGRST204|PGRST205|42703|42P01|schema cache|does not exist/i.test(text))return "주간계획 표가 아직 없습니다. 제공된 주간계획 SQL(hwdk_weekly_plans_2026-10-31.sql)을 Supabase SQL Editor 에서 먼저 실행하세요.";
+  return "";
+}
+/* 마스터(진행 중 호선)의 절점 중 기간 안의 것: 호선 · 절점마다 한 번 */
+function wkMilestones(from,to){
+  const seen=new Set(),out=[];
+  scheduleMaster.forEach(m=>{[["K/L","kl_date"],["L/C","lc_date"],["S/T","st_date"],["D/L","dl_date"]].forEach(([ev,f])=>{
+    const d=productionDateOnly(m[f]);if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d<from||d>to)return;
+    const k=m.ship_no+"|"+ev;if(seen.has(k))return;seen.add(k);out.push({ship_type:m.ship_type,ship_no:m.ship_no,ev,date:d});
+  })});
+  return out.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true}));
+}
+function wkDday(d){const n=Math.round((wkParse(d)-wkParse(localToday()))/86400000);return {n,text:n>0?`D-${n}`:n===0?"D-day":`D+${-n}`}}
+function renderWeeklyMilestones(){
+  const box=$("weeklyMilestones"),week=$("weeklyWeek").value;
+  if(!week){box.innerHTML="";return}
+  const list=wkMilestones(week,wkAdd(week,13));
+  const part=(from,to,title)=>{
+    const l=list.filter(x=>x.date>=from&&x.date<=to);if(!l.length)return "";
+    return `<div class="wk-ref-w">${title} ${wkMD(from)} ~ ${wkMD(to)}</div><div class="wk-mls">${l.map(x=>{const dd=wkDday(x.date);return `<div class="wk-ml"><b>${escapeHtml(x.ship_type)} ${escapeHtml(x.ship_no)}</b><span class="wk-ev ${wkEvClass(x.ev)}">${x.ev}</span><span class="wk-dt">${wkMDW(x.date)}</span><span class="wk-dd${dd.n>7?" far":""}">${dd.text}</span></div>`}).join("")}</div>`;
+  };
+  box.innerHTML=`<div class="wk-ref-t">다가오는 절점 <span>· 2주 전부터 표시 (오늘 ${wkMD(localToday())} 기준)</span></div>`
+    +(list.length?part(week,wkAdd(week,6),"계획 주")+part(wkAdd(week,7),wkAdd(week,13),"그다음 주"):`<div class="wk-ref-none">계획 주와 그다음 주(${wkMD(week)} ~ ${wkMD(wkAdd(week,13))})에 절점이 없습니다.</div>`);
+}
+/* 담당 반장: 조직도 반장 명단(이름 (반)) */
+function weeklyFillLeaders(select,value=""){
+  const cur=value||select.value;
+  const opts=scheduleCrews.map(c=>`<option value="${escapeHtml(c.leader)}" data-team="${escapeHtml(c.team||"")}">${escapeHtml(c.leader)}${c.team?` (${escapeHtml(c.team)})`:""}</option>`);
+  select.innerHTML=`<option value="">반장 선택(비워도 됨)</option>`+opts.join("");
+  if(cur&&[...select.options].some(o=>o.value===cur))select.value=cur;
+}
+function weeklyDefaultLeader(){const me=personKey(currentUserName);const c=scheduleCrews.find(x=>personKey(x.leader)===me);return c?c.leader:""}
+function weeklyPickedLeader(select){const v=select.value;if(!v)return {leader_name:null,team_name:null};return {leader_name:v,team_name:select.selectedOptions[0]?.dataset.team||null}}
+function weeklyDaysHtml(){return WEEK_DAYS.map(d=>`<button type="button" class="wk-day" data-day="${d}" aria-pressed="false">${d}</button>`).join("")}
+function weeklyBindDays(box,set){box.querySelectorAll(".wk-day").forEach(b=>{b.onclick=()=>{const d=b.dataset.day;if(set.has(d))set.delete(d);else set.add(d);b.classList.toggle("on",set.has(d));b.setAttribute("aria-pressed",set.has(d)?"true":"false")}})}
+
+/* ----- 계획 칸 ----- */
+function weeklySelectedWorks(card){return scheduleAreaWorks(card).filter(m=>card._works.has(scheduleWorkKey(m.work_type,m.work_method,m.system)))}
+function renderWeeklyWorks(card){
+  const box=card.querySelector(".wk-works"),works=scheduleAreaWorks(card);
+  const valid=new Set(works.map(m=>scheduleWorkKey(m.work_type,m.work_method,m.system)));
+  card._works=new Set([...card._works].filter(k=>valid.has(k)));
+  if(!works.length){
+    box.innerHTML=`<div class="wk-empty">${readScheduleSelection(card).area?"이 구역에 등록된 작업이 없습니다. 아래 [누락 작업 추가]에 적어 주세요.":"선종 · 호선 · STAGE · 구역을 먼저 고르세요."}</div>`;
+  }else{
+    const types=[...new Set(works.map(m=>m.work_type))];
+    box.innerHTML=types.map(t=>`<div class="wk-type"><div class="wk-type-name">${escapeHtml(t)}</div><div class="wk-chips">${works.filter(m=>m.work_type===t).map(m=>{const k=scheduleWorkKey(m.work_type,m.work_method,m.system);return `<button type="button" class="wk-chip${card._works.has(k)?" on":""}" data-key="${escapeHtml(k)}" aria-pressed="${card._works.has(k)}">${escapeHtml(scheduleMethodLabel(m,works))}</button>`}).join("")}</div></div>`).join("");
+    box.querySelectorAll(".wk-chip").forEach(b=>b.onclick=()=>{
+      const k=b.dataset.key;if(card._works.has(k))card._works.delete(k);else card._works.add(k);
+      b.classList.toggle("on",card._works.has(k));b.setAttribute("aria-pressed",card._works.has(k)?"true":"false");
+      renderWeeklySys(card);updateWeeklySaveLabel();
+    });
+  }
+  renderWeeklySys(card);updateWeeklySaveLabel();
+}
+/* SYSTEM: 고른 작업 중 SYSTEM 이 2개 이상인 것만, 안 고르면 전체 */
+function renderWeeklySys(card){
+  const box=card.querySelector(".wk-sys"),area=scheduleAreaWorks(card),list=weeklySelectedWorks(card).filter(m=>systemItems(m.system).length>1);
+  const keys=new Set(list.map(m=>scheduleWorkKey(m.work_type,m.work_method,m.system)));
+  [...card._sys.keys()].forEach(k=>{if(!keys.has(k))card._sys.delete(k)});
+  if(!list.length){box.innerHTML="";return}
+  box.innerHTML=`<label>SYSTEM <span class="wk-sub">· 안 고르면 전체</span></label>`+list.map(m=>{
+    const k=scheduleWorkKey(m.work_type,m.work_method,m.system),set=card._sys.get(k)||new Set();
+    return `<div class="wk-sys-row"><div class="wk-sys-name">${escapeHtml(m.work_type)} ${escapeHtml(scheduleMethodLabel(m,area))}</div><div class="wk-chips">${systemItems(m.system).map(x=>`<button type="button" class="wk-chip sm${set.has(x)?" on":""}" data-key="${escapeHtml(k)}" data-item="${escapeHtml(x)}">${escapeHtml(x)}</button>`).join("")}</div></div>`;
+  }).join("");
+  box.querySelectorAll(".wk-chip").forEach(b=>b.onclick=()=>{
+    const set=card._sys.get(b.dataset.key)||new Set();card._sys.set(b.dataset.key,set);
+    if(set.has(b.dataset.item))set.delete(b.dataset.item);else set.add(b.dataset.item);
+    b.classList.toggle("on",set.has(b.dataset.item));
+  });
+}
+function weeklyRowTemplate(prefill={}){
+  weeklyRowSeq++;
+  const card=document.createElement("div");card.className="wk-card";
+  card._types=[];card._works=new Set();card._rates=new Map();card._sys=new Map();card._open="";card._days=new Set();
+  card.innerHTML=`<div class="wk-card-head"><span class="wk-card-title">계획</span><button type="button" class="wk-remove secondary">삭제</button></div>
+    <div class="wk-grid">${SCHEDULE_LEVELS.map(def=>`<div><label>${escapeHtml(def.label)}</label><select class="${def.cls}"></select></div>`).join("")}</div>
+    <label>작업 <span class="wk-sub">· 여러 개 고를 수 있음</span></label><div class="wk-works"></div>
+    <div class="wk-sys"></div>
+    <label>작업 요일</label><div class="wk-days">${weeklyDaysHtml()}</div>
+    <div class="wk-grid2"><div><label>계획 인원(명)</label><input class="wk-manpower" type="number" min="0" step="1" inputmode="numeric" placeholder="비워도 됩니다"></div><div><label>담당 반장</label><select class="wk-leader"></select></div></div>
+    <label>비고</label><input class="wk-note" autocomplete="off" placeholder="예) L/C 전 마무리, 자재 확인 필요">`;
+  SCHEDULE_LEVELS.forEach((def,index)=>{
+    const select=card.querySelector("."+def.cls);
+    refreshScheduleCascade(card,index,true);
+    if(prefill[def.field]&&[...select.options].some(o=>o.value===prefill[def.field]))select.value=prefill[def.field];
+    select.onchange=()=>{refreshScheduleCascade(card,index+1,true);renderWeeklyWorks(card)};
+  });
+  refreshScheduleCascade(card,0,false);
+  weeklyBindDays(card.querySelector(".wk-days"),card._days);
+  weeklyFillLeaders(card.querySelector(".wk-leader"),prefill.leader||weeklyDefaultLeader());
+  card.querySelector(".wk-remove").onclick=()=>{card.remove();if(!$("weeklyRows").querySelector(".wk-card"))addWeeklyRow();refreshWeeklyRowHeads()};
+  renderWeeklyWorks(card);
+  return card;
+}
+function refreshWeeklyRowHeads(){
+  const cards=[...$("weeklyRows").querySelectorAll(".wk-card")];
+  cards.forEach((card,i)=>{card.querySelector(".wk-card-title").textContent=`계획 ${i+1}`;card.querySelector(".wk-remove").classList.toggle("hidden",cards.length<=1)});
+  updateWeeklySaveLabel();
+}
+function addWeeklyRow(){
+  const cards=$("weeklyRows").querySelectorAll(".wk-card"),last=cards[cards.length-1],prefill={};
+  if(last){const sel=readScheduleSelection(last);SCHEDULE_LEVELS.forEach(def=>{prefill[def.field]=sel[def.field]});prefill.leader=last.querySelector(".wk-leader").value}
+  $("weeklyRows").appendChild(weeklyRowTemplate(prefill));
+  refreshWeeklyRowHeads();
+}
+function updateWeeklySaveLabel(){
+  const n=[...$("weeklyRows").querySelectorAll(".wk-card")].reduce((sum,card)=>sum+weeklySelectedWorks(card).length,0);
+  $("weeklySaveBtn").textContent=n?`주간계획 등록 (${n}건)`:"주간계획 등록";
+}
+function weeklyWeekOptions(){
+  const sel=$("weeklyWeek"),cur=sel.value,base=wkThis();
+  sel.innerHTML=[0,1,2].map(i=>{const w=wkAdd(base,7*i);return `<option value="${w}">${wkMD(w)}~${wkMD(wkAdd(w,6))} ${wkRel(w)}</option>`}).join("");
+  sel.value=cur&&[...sel.options].some(o=>o.value===cur)?cur:wkAdd(base,7);
+}
+function resetWeeklyForm(){
+  weeklyWeekOptions();$("weeklyAuthor").value=currentUserName;$("weeklySaveStatus").textContent="";
+  $("weeklyRows").innerHTML="";weeklyRowSeq=0;addWeeklyRow();closeWeeklyMissing();
+}
+function weeklyRefreshCards(){
+  /* 반장 명단을 처음 받았을 때만, 비어 있는 칸에 '내가 반장이면 나'를 넣어 둡니다. */
+  const firstCrew=scheduleCrews.length>0;
+  $("weeklyRows").querySelectorAll(".wk-card").forEach(card=>{
+    refreshScheduleCascade(card,0,false);renderWeeklyWorks(card);
+    const sel=card.querySelector(".wk-leader");weeklyFillLeaders(sel,sel.value||(firstCrew&&!card._leaderInit?weeklyDefaultLeader():""));if(firstCrew)card._leaderInit=true;
+  });
+  weeklyFillLeaders($("weeklyMissLeader"));
+  const box=$("weeklySetupNotice"),text=scheduleSetupError||"";box.textContent=text;box.classList.toggle("hidden",!text);
+}
+async function saveWeeklyPlans(){
+  const status=$("weeklySaveStatus"),btn=$("weeklySaveBtn"),week=$("weeklyWeek").value;
+  if(!week){status.textContent="계획 주를 고르세요.";return}
+  const cards=[...$("weeklyRows").querySelectorAll(".wk-card")],payload=[];
+  for(let i=0;i<cards.length;i++){
+    const card=cards[i],sel=readScheduleSelection(card),works=weeklySelectedWorks(card);
+    const blank=!works.length&&!card._days.size&&SCHEDULE_LEVELS.slice(1).every(def=>!sel[def.field]);
+    if(blank&&cards.length>1)continue;
+    const missing=SCHEDULE_LEVELS.find(def=>!sel[def.field]);
+    if(missing){status.textContent=`계획 ${i+1}의 ${missing.label}${missing.particle} 선택하세요.`;return}
+    if(!works.length){status.textContent=`계획 ${i+1}의 작업을 하나 이상 고르세요. 목록에 없는 작업은 [누락 작업 추가]에 적습니다.`;return}
+    if(!card._days.size){status.textContent=`계획 ${i+1}의 작업 요일을 고르세요.`;return}
+    const mpText=card.querySelector(".wk-manpower").value.trim(),mp=mpText===""?null:Number(mpText);
+    if(mp!==null&&(!Number.isInteger(mp)||mp<0)){status.textContent=`계획 ${i+1}의 계획 인원은 0 이상의 정수로 적어 주세요.`;return}
+    const leader=weeklyPickedLeader(card.querySelector(".wk-leader")),note=normalizeName(card.querySelector(".wk-note").value)||null;
+    const batch=newScheduleBatchId(),days=WEEK_DAYS.filter(d=>card._days.has(d));
+    works.forEach(m=>{
+      const k=scheduleWorkKey(m.work_type,m.work_method,m.system),items=systemItems(m.system);
+      const chosen=items.length===1?items:items.filter(x=>card._sys.get(k)?.has(x));
+      payload.push({week_start:week,ship_type:sel.ship_type,ship_no:sel.ship_no,stage:sel.stage,area:sel.area,work_type:m.work_type,work_method:m.work_method,system:m.system||null,system_items:chosen,work_days:days,manpower:mp,...leader,note,is_missing:false,batch_id:batch,author_name:currentUserName,created_by:currentUserId,updated_at:new Date().toISOString()});
+    });
+  }
+  if(!payload.length){status.textContent="등록할 계획을 입력하세요.";return}
+  try{
+    btn.disabled=true;status.textContent="주간계획 등록 중...";
+    const {error}=await supabase.from(WEEKLY_TABLE).insert(payload);if(error)throw error;
+    status.innerHTML=`등록 완료 · ${escapeHtml(wkRange(week))} · ${payload.length}건 <button type="button" class="wk-link" id="weeklyGoListBtn">계획 목록 보기</button>`;
+    $("weeklyGoListBtn").onclick=()=>{weeklyListWeek=week;weeklyListDay="";weeklyListAuthor=currentUserName;showWeekly("list")};
+    $("weeklyRows").innerHTML="";weeklyRowSeq=0;addWeeklyRow();
+  }catch(e){status.textContent="등록 실패: "+(weeklySchemaMessage(e)||e?.message||"오류")}finally{btn.disabled=false}
+}
+
+/* ----- 누락 작업 ----- */
+const WEEKLY_MISS_FIELDS=[
+  {id:"weeklyMissShipType",field:"ship_type",label:"선종",particle:"을"},
+  {id:"weeklyMissShipNo",field:"ship_no",label:"호선",particle:"을"},
+  {id:"weeklyMissStage",field:"stage",label:"STAGE",particle:"를"},
+  {id:"weeklyMissArea",field:"area",label:"구역",particle:"을"},
+  {id:"weeklyMissWorkType",field:"work_type",label:"작업구분",particle:"을"},
+  {id:"weeklyMissWorkMethod",field:"work_method",label:"작업방식",particle:"을"}
+];
+let weeklyMissDays=new Set();
+function readWeeklyMiss(){const v={};WEEKLY_MISS_FIELDS.forEach(f=>{v[f.field]=normalizeName($(f.id).value)});return v}
+function refreshWeeklyMissSuggestions(){
+  const v=readWeeklyMiss(),same=(a,b)=>!b||productionNormalize(a)===productionNormalize(b);
+  const pick=(field,filters)=>{const out=[];scheduleMaster.forEach(m=>{if(filters.every(f=>same(m[f],v[f]))&&m[field]&&!out.includes(m[field]))out.push(m[field])});return out};
+  const fill=(id,values)=>{$(id).innerHTML=values.slice(0,300).map(x=>`<option value="${escapeHtml(x)}"></option>`).join("")};
+  const types=[...SHIP_TYPES];scheduleMaster.forEach(m=>{if(m.ship_type&&!types.includes(m.ship_type))types.push(m.ship_type)});
+  fill("weeklyMissShipTypeList",types);
+  fill("weeklyMissShipNoList",pick("ship_no",["ship_type"]));
+  const stages=pick("stage",["ship_type","ship_no"]);["P.E","DOCK","안벽"].forEach(x=>{if(!stages.includes(x))stages.push(x)});
+  fill("weeklyMissStageList",stages);
+  fill("weeklyMissAreaList",pick("area",["ship_type","ship_no","stage"]));
+  fill("weeklyMissWorkTypeList",pick("work_type",["ship_type","stage"]));
+  fill("weeklyMissWorkMethodList",pick("work_method",["work_type"]));
+}
+function closeWeeklyMissing(){$("weeklyMissingPanel").classList.add("hidden");$("weeklyOpenMissingBtn").classList.remove("open");$("weeklyMissStatus").textContent=""}
+function openWeeklyMissing(){
+  const panel=$("weeklyMissingPanel");
+  if(!panel.classList.contains("hidden")){closeWeeklyMissing();return}
+  const cards=$("weeklyRows").querySelectorAll(".wk-card"),last=cards[cards.length-1];
+  if(last){const sel=readScheduleSelection(last);[["weeklyMissShipType","ship_type"],["weeklyMissShipNo","ship_no"],["weeklyMissStage","stage"],["weeklyMissArea","area"]].forEach(([id,f])=>{if(!$(id).value&&sel[f])$(id).value=sel[f]})}
+  if(!$("weeklyMissLeader").value){const d=last?.querySelector(".wk-leader").value||weeklyDefaultLeader();if(d)$("weeklyMissLeader").value=d}
+  panel.classList.remove("hidden");$("weeklyOpenMissingBtn").classList.add("open");
+  refreshWeeklyMissSuggestions();loadWeeklyMissList();
+  panel.scrollIntoView({behavior:"smooth",block:"start"});
+}
+async function loadWeeklyMissList(){
+  const box=$("weeklyMissList"),week=$("weeklyWeek").value;if(!week){box.innerHTML="";return}
+  const {data,error}=await supabase.from(WEEKLY_TABLE).select("*").eq("week_start",week).eq("is_missing",true).order("created_at",{ascending:true});
+  if(error){box.innerHTML=`<div class="hint">${escapeHtml(weeklySchemaMessage(error)||("누락 작업을 불러오지 못했습니다: "+(error.message||"오류")))}</div>`;return}
+  weeklyMissRows=data||[];
+  if(!weeklyMissRows.length){box.innerHTML=`<div class="hint">${escapeHtml(wkRange(week))} 주에 적은 누락 작업이 아직 없습니다.</div>`;return}
+  box.innerHTML=`<div class="missing-list-title">${escapeHtml(wkRange(week))} 주 누락 작업 ${weeklyMissRows.length}건</div>`+weeklyMissRows.map(r=>{
+    const days=WEEK_DAYS.filter(d=>(r.work_days||[]).includes(d)).join(" · "),extra=[days,r.manpower!==null&&r.manpower!==undefined?`${r.manpower}명`:"",r.leader_name?`반장 ${r.leader_name}`:""].filter(Boolean).join(" · ");
+    const canDelete=isAdmin||r.created_by===currentUserId;
+    return `<div class="missing-item"><div><div class="missing-item-main">${escapeHtml(`${r.ship_type} ${r.ship_no} · ${r.stage} · ${r.area} · ${r.work_type} / ${r.work_method}`)}</div><div class="missing-item-meta">${escapeHtml(extra)} · 작성자 ${escapeHtml(r.author_name||"-")}${r.note?` · ${escapeHtml(r.note)}`:""}</div></div>${canDelete?`<button type="button" class="secondary" data-wk-miss-del="${escapeHtml(r.id)}">삭제</button>`:""}</div>`;
+  }).join("");
+  box.querySelectorAll("[data-wk-miss-del]").forEach(btn=>btn.onclick=async()=>{
+    if(!confirm("이 누락 작업을 삭제할까요?"))return;
+    btn.disabled=true;
+    const {error:delError}=await supabase.from(WEEKLY_TABLE).delete().eq("id",btn.dataset.wkMissDel);
+    if(delError){$("weeklyMissStatus").textContent="삭제 실패: "+(weeklySchemaMessage(delError)||delError.message||"오류");btn.disabled=false;return}
+    $("weeklyMissStatus").textContent="삭제했습니다.";loadWeeklyMissList();
+  });
+}
+async function saveWeeklyMissing(){
+  const status=$("weeklyMissStatus"),btn=$("weeklyMissSaveBtn"),week=$("weeklyWeek").value,v=readWeeklyMiss();
+  if(!week){status.textContent="위 계획 주를 먼저 고르세요.";return}
+  const empty=WEEKLY_MISS_FIELDS.find(f=>!v[f.field]);
+  if(empty){status.textContent=`${empty.label}${empty.particle} 적어 주세요.`;$(empty.id).focus();return}
+  if(!weeklyMissDays.size){status.textContent="작업 요일을 고르세요.";return}
+  const mpText=$("weeklyMissManpower").value.trim(),mp=mpText===""?null:Number(mpText);
+  if(mp!==null&&(!Number.isInteger(mp)||mp<0)){status.textContent="계획 인원은 0 이상의 정수로 적어 주세요.";return}
+  const key=WEEKLY_MISS_FIELDS.map(f=>productionNormalize(v[f.field])).join("|||");
+  if(scheduleMaster.some(m=>WEEKLY_MISS_FIELDS.map(f=>productionNormalize(m[f.field])).join("|||")===key)){status.textContent="이미 목록에 있는 작업입니다. 위 계획 칸에서 골라 등록하세요.";return}
+  try{
+    btn.disabled=true;status.textContent="누락 작업 저장 중...";
+    const row={week_start:week,...v,system:null,system_items:[],work_days:WEEK_DAYS.filter(d=>weeklyMissDays.has(d)),manpower:mp,...weeklyPickedLeader($("weeklyMissLeader")),note:normalizeName($("weeklyMissNote").value)||null,is_missing:true,batch_id:newScheduleBatchId(),author_name:currentUserName,created_by:currentUserId,updated_at:new Date().toISOString()};
+    const {error}=await supabase.from(WEEKLY_TABLE).insert(row);if(error)throw error;
+    status.textContent=`저장했습니다 · ${v.ship_type} ${v.ship_no} ${v.area} ${v.work_type} / ${v.work_method}. 계획 목록 요일별 작업에 '누락'으로 나오고, 엑셀 '주간계획 누락 작업' 시트에 들어갑니다.`;
+    ["weeklyMissWorkType","weeklyMissWorkMethod","weeklyMissManpower","weeklyMissNote"].forEach(id=>{$(id).value=""});
+    weeklyMissDays.clear();$("weeklyMissDays").querySelectorAll(".wk-day").forEach(b=>{b.classList.remove("on");b.setAttribute("aria-pressed","false")});
+    refreshWeeklyMissSuggestions();loadWeeklyMissList();
+  }catch(e){status.textContent="저장 실패: "+(weeklySchemaMessage(e)||e?.message||"오류")}finally{btn.disabled=false}
+}
+
+/* ----- 계획 목록: 요일별 · 작성자별 ----- */
+function wkWho(r){return normalizeName(r.author_name)||"(이름 없음)"}
+function wkManpowerOnce(list){const seen=new Set();let sum=0;list.forEach(r=>{const k=r.batch_id||r.id;if(seen.has(k))return;seen.add(k);sum+=Number(r.manpower||0)||0});return sum}
+function wkSortRows(list){return [...list].sort((a,b)=>String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true})||String(a.stage).localeCompare(String(b.stage))||String(a.area).localeCompare(String(b.area),"ko")||String(a.created_at).localeCompare(String(b.created_at)))}
+function weeklyItemHtml(r,hl=""){
+  const days=WEEK_DAYS.filter(d=>(r.work_days||[]).includes(d));
+  const dayText=days.length===6&&!hl?"월~토":days.map(d=>d===hl?`<em>${d}</em>`:d).join(" · ");
+  const items=Array.isArray(r.system_items)?r.system_items.filter(Boolean):[];
+  const sys=items.length?items.join(" · "):(r.system&&systemItems(r.system).length>1?"SYSTEM 전체":(r.system||""));
+  const meta=[dayText,r.manpower!==null&&r.manpower!==undefined?`${r.manpower}명`:"인원 미정",r.leader_name?`반장 ${escapeHtml(r.leader_name)}${r.team_name?` (${escapeHtml(r.team_name)})`:""}`:""].filter(Boolean).join(" · ");
+  const canDelete=isAdmin||r.created_by===currentUserId;
+  return `<div class="wk-it${r.is_missing?" miss":""}"><div class="wk-it-t"><span class="wk-ship">${escapeHtml(`${r.ship_type||""} ${r.ship_no||""}`.trim())}</span><span class="wk-work">${r.is_missing?'<span class="wk-mtag">누락</span>':""}${escapeHtml(`${r.area} · ${r.work_type} ${r.work_method}`)}${sys?` <span class="wk-sub">(${escapeHtml(sys)})</span>`:""}</span><span class="wk-stg ${wkStageClass(r.stage)}">${escapeHtml(r.stage||"-")}</span></div><div class="wk-it-m"><span>${meta}</span>${canDelete?`<button type="button" class="del" data-wk-del="${escapeHtml(r.id)}">삭제</button>`:""}</div>${r.note?`<div class="wk-it-n">비고 · ${escapeHtml(r.note)}</div>`:""}</div>`;
+}
+function renderWeeklyList(){
+  const box=$("weeklyListContent"),week=weeklyListWeek,rows=weeklyListRows;
+  $("weeklyListWeekLabel").innerHTML=`${escapeHtml(wkRange(week))}<span>${escapeHtml(wkRel(week))}</span>`;
+  if(!rows.length){box.innerHTML=`<div class="empty">${escapeHtml(wkRange(week))} 주에 등록된 계획이 없습니다.</div>`;return}
+  const ms=wkMilestones(week,wkAdd(week,6)),msOf=day=>ms.filter(x=>x.date===wkDayDate(week,day));
+  const onDay=day=>rows.filter(r=>(r.work_days||[]).includes(day));
+  const authors=[...new Set(rows.map(wkWho))].sort((a,b)=>a.localeCompare(b,"ko"));
+  if(weeklyListAuthor&&!authors.includes(weeklyListAuthor))weeklyListAuthor="";
+  const dayRows=weeklyListDay?onDay(weeklyListDay):rows,missN=rows.filter(r=>r.is_missing).length;
+  let html=`<div class="wk-sum"><div>계획<b>${rows.length}건</b>${missN?`<small>누락 ${missN} 포함</small>`:""}</div><div>작성자<b>${authors.length}명</b></div><div>호선<b>${new Set(rows.map(r=>r.ship_no)).size}척</b></div><div>계획 인원<b>${wkManpowerOnce(rows)}명</b></div></div>`;
+  html+=`<div class="wk-dbar"><button type="button" class="wk-d${weeklyListDay?"":" on"}" data-day=""><b>전체</b><span>주간</span><span class="n">${rows.length}건</span><i></i></button>`+WEEK_DAYS.map(d=>{const m=msOf(d);return `<button type="button" class="wk-d${weeklyListDay===d?" on":""}" data-day="${d}"><b>${d}</b><span>${wkMD(wkDayDate(week,d))}</span><span class="n">${onDay(d).length}건</span>${m.length?`<i class="${wkEvClass(m[0].ev)}">${m[0].ev}${m.length>1?`+${m.length-1}`:""}</i>`:"<i></i>"}</button>`}).join("")+`</div>`;
+  if(weeklyListDay){const m=msOf(weeklyListDay);html+=`<div class="wk-dhead"><span>${weeklyListDay}요일 ${wkMD(wkDayDate(week,weeklyListDay))} · ${dayRows.length}건 · ${wkManpowerOnce(dayRows)}명</span>${m.length?`<span class="ms">${m.map(x=>`<span class="${wkEvClass(x.ev)}">${escapeHtml(x.ship_type)} ${escapeHtml(x.ship_no)} ${x.ev}</span>`).join("")}</span>`:""}</div>`}
+  html+=`<div class="wk-who"><button type="button" class="${weeklyListAuthor?"":"on"}" data-who="">전체</button>`+authors.map(a=>`<button type="button" class="${weeklyListAuthor===a?"on":""}" data-who="${escapeHtml(a)}">${escapeHtml(a)} ${dayRows.filter(r=>wkWho(r)===a).length}</button>`).join("")+`</div>`;
+  if(!weeklyListAuthor){
+    let any=false;
+    authors.forEach(a=>{
+      const list=wkSortRows(dayRows.filter(r=>wkWho(r)===a));if(!list.length)return;any=true;
+      const last=list.reduce((t,r)=>String(r.created_at)>t?String(r.created_at):t,"");
+      html+=`<div class="wk-grp"><div class="wk-grp-h">${escapeHtml(a)}<span>${weeklyListDay?weeklyListDay+" ":""}${list.length}건 · ${wkManpowerOnce(list)}명 · ${escapeHtml(formatDateTime(last))} 작성</span></div>${list.map(r=>weeklyItemHtml(r,weeklyListDay)).join("")}</div>`;
+    });
+    if(!any)html+=`<div class="empty">${weeklyListDay}요일 계획이 없습니다.</div>`;
+  }else{
+    const mine=rows.filter(r=>wkWho(r)===weeklyListAuthor),missMine=mine.filter(r=>r.is_missing).length;
+    const last=mine.reduce((t,r)=>String(r.created_at)>t?String(r.created_at):t,"");
+    html+=`<div class="wk-ahead"><b>${escapeHtml(weeklyListAuthor)}</b> · ${escapeHtml(wkMD(week))} 주 계획<div>계획 ${mine.length}건${missMine?`(누락 ${missMine})`:""} · 작업일 ${WEEK_DAYS.filter(d=>mine.some(r=>(r.work_days||[]).includes(d))).length}일 · ${escapeHtml(formatDateTime(last))} 작성</div></div>`;
+    (weeklyListDay?[weeklyListDay]:WEEK_DAYS).forEach(d=>{
+      const list=wkSortRows(mine.filter(r=>(r.work_days||[]).includes(d))),m=msOf(d);
+      html+=`<div class="wk-dsec"><div class="wk-dsec-h"><b>${d}요일</b> ${wkMD(wkDayDate(week,d))}${m.map(x=>`<span class="ms ${wkEvClass(x.ev)}">${escapeHtml(x.ship_type)} ${escapeHtml(x.ship_no)} ${x.ev}</span>`).join("")}<span class="c">${list.length}건 · ${wkManpowerOnce(list)}명</span></div>${list.length?list.map(r=>weeklyItemHtml(r,d)).join(""):'<div class="wk-none">계획 없음</div>'}</div>`;
+    });
+  }
+  box.innerHTML=html;
+  box.querySelectorAll(".wk-d").forEach(b=>b.onclick=()=>{weeklyListDay=b.dataset.day;renderWeeklyList()});
+  box.querySelectorAll("[data-who]").forEach(b=>b.onclick=()=>{weeklyListAuthor=b.dataset.who===weeklyListAuthor?"":b.dataset.who;renderWeeklyList()});
+  box.querySelectorAll("[data-wk-del]").forEach(b=>b.onclick=async()=>{
+    const r=rows.find(x=>x.id===b.dataset.wkDel);
+    if(!r||!confirm(`${r.ship_no} ${r.area} ${r.work_type} ${r.work_method}\n\n이 계획을 삭제하시겠습니까?`))return;
+    b.disabled=true;
+    const {error}=await supabase.from(WEEKLY_TABLE).delete().eq("id",r.id);
+    if(error){$("weeklyListStatus").textContent="삭제 실패: "+(weeklySchemaMessage(error)||error.message);b.disabled=false;return}
+    await loadWeeklyList();$("weeklyListStatus").textContent="삭제했습니다.";
+  });
+}
+async function loadWeeklyList(){
+  if(!weeklyListWeek)weeklyListWeek=$("weeklyWeek").value||wkAdd(wkThis(),7);
+  const seq=++weeklyListSeq,status=$("weeklyListStatus");
+  $("weeklyListWeekLabel").innerHTML=`${escapeHtml(wkRange(weeklyListWeek))}<span>${escapeHtml(wkRel(weeklyListWeek))}</span>`;
+  status.textContent="주간계획 불러오는 중...";
+  const {data,error}=await supabase.from(WEEKLY_TABLE).select("*").eq("week_start",weeklyListWeek).order("created_at",{ascending:true}).order("id",{ascending:true});
+  if(seq!==weeklyListSeq)return;
+  if(error){status.textContent="불러오지 못했습니다: "+(weeklySchemaMessage(error)||error.message);$("weeklyListContent").innerHTML="";return}
+  status.textContent="";weeklyListRows=data||[];renderWeeklyList();
+}
+function setWeeklyTab(tab){
+  const input=tab!=="list";
+  $("weeklyInputTab").classList.toggle("active",input);$("weeklyListTab").classList.toggle("active",!input);
+  $("weeklyInputSection").classList.toggle("hidden",!input);$("weeklyListSection").classList.toggle("hidden",input);
+}
+async function showWeekly(tab="input",push=true){
+  hideAllMain();showHeader();$("weeklyApp").classList.remove("hidden");
+  setWeeklyTab(tab);
+  if(push)pushState({screen:"weekly",tab,admin:isAdmin});
+  if(!$("weeklyRows").querySelector(".wk-card"))resetWeeklyForm();
+  if(tab==="list")loadWeeklyList();
+  await loadScheduleData();
+  weeklyRefreshCards();renderWeeklyMilestones();
+  if(tab==="list"&&weeklyListRows.length)renderWeeklyList();
+}
+$("openWeeklyBtn").onclick=()=>{resetWeeklyForm();weeklyListWeek="";weeklyListDay="";weeklyListAuthor="";showWeekly("input",true)};
+$("weeklyInputTab").onclick=()=>showWeekly("input",true);
+$("weeklyListTab").onclick=()=>{if(!weeklyListWeek)weeklyListWeek=$("weeklyWeek").value;showWeekly("list",true)};
+$("weeklyAddRowBtn").onclick=()=>addWeeklyRow();
+$("weeklySaveBtn").onclick=saveWeeklyPlans;
+$("weeklyWeek").onchange=()=>{renderWeeklyMilestones();if(!$("weeklyMissingPanel").classList.contains("hidden"))loadWeeklyMissList()};
+$("weeklyOpenMissingBtn").onclick=openWeeklyMissing;
+$("weeklyMissCloseBtn").onclick=closeWeeklyMissing;
+$("weeklyMissSaveBtn").onclick=saveWeeklyMissing;
+$("weeklyMissDays").innerHTML=weeklyDaysHtml();weeklyBindDays($("weeklyMissDays"),weeklyMissDays);
+WEEKLY_MISS_FIELDS.forEach(f=>$(f.id).addEventListener("input",refreshWeeklyMissSuggestions));
+$("weeklyPrevWeek").onclick=()=>{weeklyListWeek=wkAdd(weeklyListWeek||wkThis(),-7);weeklyListDay="";loadWeeklyList()};
+$("weeklyNextWeek").onclick=()=>{weeklyListWeek=wkAdd(weeklyListWeek||wkThis(),7);weeklyListDay="";loadWeeklyList()};
 
 /* ---------- 게시판(공지사항) ---------- */
 /* 로그인한 전체 인원이 읽고 쓸 수 있습니다. 수정 · 삭제는 본인이 쓴 글만, 관리자는 모든 글에 대해 할 수 있습니다. */
@@ -5176,7 +5669,7 @@ $("notificationBtn").onclick=()=>showMyWork(true);
 $("refreshMyWorkBtn").onclick=loadMyWork;
 
 /* ---------- 브라우저 뒤로가기 ---------- */
-async function renderHistoryState(state){const t=state||{screen:"auth"};if(t.screen!=="image")hideImageModalOnly();if(t.screen!=="log"&&t.screen!=="image")hideHistoryModalOnly();if(t.screen==="auth"){showAuth();return}if(t.admin){if(!await checkCurrentUserAdmin()){showAuth();replaceState({screen:"auth"});return}isAdmin=true;currentUserName="관리자"}showHeader();if(t.screen==="home"){showHome(false);return}if(t.screen==="mywork"){showMyWork(false);return}if(t.screen==="schedule-tab"){showScheduleTab(t.tab||"register");return}if(t.screen==="production-dashboard"){showProductionDashboard(false);return}if(t.screen==="board"){showBoard(false);return}if(t.screen==="material"){showMaterial(t.tab||"out",false);return}if(t.screen==="equip-cards"){showEquipCards(t.tab||"cards",false);return}if(t.screen==="equip-card"){showEquipCard(t.id,false);return}if(t.screen==="equip-register"){showEquipRegister(false);return}if(t.screen==="bhd-tab"){showBhdTab(t.tab||"register");return}if(t.screen==="bhd-edit"){const r=await fetchRecordById(t.recordId);if(r)await loadForEdit(r,false);else showBhdTab("list");return}if(t.screen==="bhd-detail"){const r=await fetchRecordById(t.recordId);if(r)await renderRecordDetail(r,false);else showBhdTab("list");return}if(t.screen==="request-tab"){showRequestTab(t.tab||"register");return}if(t.screen==="request-detail"){const r=await fetchRequestById(t.recordId);if(r)await renderRequestDetail(r,false);else showRequestTab("list");return}if(t.screen==="log"){const r=await fetchRecordById(t.recordId);if(r)await openHistoryModal(r,Number(t.logIndex||0),false);return}if(t.screen==="image"){showImageModalOnly(t.url,t.filename||"HWDK-photo.jpg",!!t.mirror)}}
+async function renderHistoryState(state){const t=state||{screen:"auth"};if(t.screen!=="image")hideImageModalOnly();if(t.screen!=="log"&&t.screen!=="image")hideHistoryModalOnly();if(t.screen==="auth"){showAuth();return}if(t.admin){if(!await checkCurrentUserAdmin()){showAuth();replaceState({screen:"auth"});return}isAdmin=true;currentUserName="관리자"}showHeader();if(t.screen==="home"){showHome(false);return}if(t.screen==="mywork"){showMyWork(false);return}if(t.screen==="schedule-tab"){showScheduleTab(t.tab||"register");return}if(t.screen==="production-dashboard"){showProductionDashboard(false);return}if(t.screen==="weekly"){showWeekly(t.tab||"input",false);return}if(t.screen==="board"){showBoard(false);return}if(t.screen==="material"){showMaterial(t.tab||"out",false);return}if(t.screen==="equip-cards"){showEquipCards(t.tab||"cards",false);return}if(t.screen==="equip-card"){showEquipCard(t.id,false);return}if(t.screen==="equip-register"){showEquipRegister(false);return}if(t.screen==="bhd-tab"){showBhdTab(t.tab||"register");return}if(t.screen==="bhd-edit"){const r=await fetchRecordById(t.recordId);if(r)await loadForEdit(r,false);else showBhdTab("list");return}if(t.screen==="bhd-detail"){const r=await fetchRecordById(t.recordId);if(r)await renderRecordDetail(r,false);else showBhdTab("list");return}if(t.screen==="request-tab"){showRequestTab(t.tab||"register");return}if(t.screen==="request-detail"){const r=await fetchRequestById(t.recordId);if(r)await renderRequestDetail(r,false);else showRequestTab("list");return}if(t.screen==="log"){const r=await fetchRecordById(t.recordId);if(r)await openHistoryModal(r,Number(t.logIndex||0),false);return}if(t.screen==="image"){showImageModalOnly(t.url,t.filename||"HWDK-photo.jpg",!!t.mirror)}}
 addEventListener("popstate",e=>{updateAppBackButton();renderHistoryState(e.state)});
 
 /* ---------- 초기 실행 ---------- */
