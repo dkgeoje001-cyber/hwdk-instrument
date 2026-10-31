@@ -154,6 +154,30 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .production-detail-sub{color:#7a8794;font-size:11px;font-weight:700}
 .production-major-detail .production-area:first-of-type{border-top:0}
 /* 세부 현황 작업 칸 → 일일작업등록 */
+/* 선종 → 호선 */
+.prod-type-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:14px}
+.prod-type-tab{display:flex;flex-direction:column;align-items:flex-start;gap:3px;width:100%;margin:0;padding:12px 14px;border:1px solid #cfd8df;border-radius:11px;background:#f7f9fb;color:#16324f;text-align:left}
+.prod-type-tab:hover{border-color:#315f8c}
+.prod-type-tab.active{background:#16324f;border-color:#16324f;color:#fff}
+.prod-type-name{font-size:18px;font-weight:900;line-height:1.2}
+.prod-type-sub{font-size:12px;font-weight:700;color:#5b6b7b}
+.prod-type-tab.active .prod-type-sub{color:#c9d6e3}
+.prod-hull-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin-top:16px;color:#16324f;font-size:15px;font-weight:900}
+.prod-hull-head span{color:#64748b;font-size:12px;font-weight:700}
+.prod-hull-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;margin-top:9px}
+.prod-hull-chip{display:flex;flex-direction:column;align-items:stretch;gap:2px;width:100%;min-width:0;margin:0;padding:10px 11px;border:1px solid #d5dde4;border-radius:10px;background:#fff;color:#1f2937;text-align:left}
+.prod-hull-chip:hover{border-color:#315f8c;background:#f2f7fb}
+.prod-hull-chip.active{border-color:#16324f;box-shadow:0 0 0 2px rgba(22,50,79,.22);background:#eef4fa}
+.prod-hull-top{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.prod-hull-no{font-size:17px;font-weight:900;color:#16324f}
+.prod-hull-pct{font-size:14px;font-weight:900;color:#167148}
+.prod-hull-chip .production-progress-track{height:7px;margin-top:5px}
+.prod-hull-meta{margin-top:4px;color:#64748b;font-size:11px;font-weight:700;line-height:1.45}
+.prod-hull-meta .rec{color:#315f8c}
+.prod-hull-meta .nw{white-space:nowrap}
+.prod-hull-detail .production-ship-card{margin-top:12px}
+.prod-hull-empty{margin-top:12px;padding:12px;border:1px dashed #cfd8df;border-radius:10px;color:#64748b;font-size:13px;text-align:center}
+@media(max-width:720px){.prod-type-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.prod-type-tab{padding:10px}.prod-type-name{font-size:16px}.prod-type-sub{font-size:11px}.prod-hull-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.prod-hull-chip{padding:8px}.prod-hull-no{font-size:15px}.prod-hull-pct{font-size:12px}.prod-hull-meta{font-size:10px}}
 .production-detail-hint{padding:3px 12px 0;color:#64748b;font-size:12px;font-weight:700}
 .production-work-item.go{cursor:pointer;transition:border-color .15s,background .15s}
 .production-work-item.go:hover{border-color:#315f8c;background:#f2f7fb}
@@ -667,7 +691,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
       <h2>생산통합지표</h2>
       <button id="refreshProductionDashboardBtn" class="refresh" type="button">새로고침</button>
     </div>
-    <div class="hint">마스터 베이스의 전체 작업을 기준으로 호선별 · STAGE별 공정률을 자동 집계합니다. 같은 작업을 여러 번 등록하면 입력된 공정률 중 가장 높은 값이 그 작업의 공정률이 되고, 아직 등록이 없는 작업은 0%로 계산합니다. STAGE 카드의 공정률은 그 STAGE 전체 작업의 평균이며, 카드를 누르면 구역 · 작업별 세부 현황이 열립니다. 세부 현황에서 작업을 누르면 그 작업이 미리 골라진 일일작업등록 화면으로 이어집니다.</div>
+    <div class="hint">선종(LPG · VLCC · LNG)을 누르면 그 선종 호선이 진수 순으로 나오고, 호선을 누르면 STAGE별 공정률이 열립니다. 마스터 베이스의 전체 작업을 기준으로 호선별 · STAGE별 공정률을 자동 집계합니다. 같은 작업을 여러 번 등록하면 입력된 공정률 중 가장 높은 값이 그 작업의 공정률이 되고, 아직 등록이 없는 작업은 0%로 계산합니다. STAGE 카드의 공정률은 그 STAGE 전체 작업의 평균이며, 카드를 누르면 구역 · 작업별 세부 현황이 열립니다. 세부 현황에서 작업을 누르면 그 작업이 미리 골라진 일일작업등록 화면으로 이어집니다.</div>
 
     <div class="production-dashboard-filter">
       <div>
@@ -2568,6 +2592,47 @@ $("scheduleFilterAuthor").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.
 let productionDashboardSeq=0;
 /* 세부 현황에서 작업을 눌러 등록 화면으로 갔을 때, 지표로 돌아오면 다시 열어 줄 호선 · STAGE · 작업 */
 let productionDashboardReopen=null;
+/* 생산통합지표: 고른 선종 · 호선(호선은 정규화 값) */
+let productionDashboardType=(()=>{try{return localStorage.getItem("hwdk.dashType")||""}catch(e){return ""}})();
+let productionDashboardShipSel="";
+let productionDashboardShips=[];
+function productionShipItems(ship){return [...ship.stages.values()].flatMap(stage=>[...stage.items.values()])}
+function productionShortDate(v){const d=productionDateOnly(v);return d?d.slice(2):""}
+/* 선종 버튼 → 그 선종 호선 칸(진수 L/C 순) → 고른 호선 카드 */
+function renderProductionTypes(content){
+  const shipList=productionDashboardShips,typeOf=ship=>ship.ship_type||"기타";
+  const types=[...SHIP_TYPES.filter(t=>shipList.some(ship=>typeOf(ship)===t)),...[...new Set(shipList.map(typeOf))].filter(t=>!SHIP_TYPES.includes(t))];
+  if(!types.includes(productionDashboardType))productionDashboardType=types[0]||"";
+  const ships=shipList.filter(ship=>typeOf(ship)===productionDashboardType).sort((a,b)=>{
+    const la=productionDateOnly(a.lc_date)||"9999",lb=productionDateOnly(b.lc_date)||"9999";
+    return la<lb?-1:la>lb?1:String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true});
+  });
+  if(!ships.some(ship=>productionNormalize(ship.ship_no)===productionDashboardShipSel))productionDashboardShipSel="";
+  const tabs=types.map(t=>{
+    const list=shipList.filter(ship=>typeOf(ship)===t),stats=productionItemsStats(list.flatMap(productionShipItems));
+    return `<button type="button" class="prod-type-tab${t===productionDashboardType?" active":""}" data-type="${escapeHtml(t)}" aria-pressed="${t===productionDashboardType}"><span class="prod-type-name">${escapeHtml(t)}</span><span class="prod-type-sub">${list.length}척 · 공정률 ${stats.total?productionPercentLabel(stats.avg):"-"}</span></button>`;
+  }).join("");
+  const chips=ships.map(ship=>{
+    const key=productionNormalize(ship.ship_no),stats=productionItemsStats(productionShipItems(ship));
+    const meta=[ship.record_count?`<span class="rec nw">등록 ${ship.record_count}건</span>`:"",ship.dl_date?`<span class="nw">D/L ${escapeHtml(productionShortDate(ship.dl_date))}</span>`:""].filter(Boolean).join(" · ");
+    return `<button type="button" class="prod-hull-chip${key===productionDashboardShipSel?" active":""}" data-ship="${escapeHtml(key)}" aria-pressed="${key===productionDashboardShipSel}"><div class="prod-hull-top"><span class="prod-hull-no">${escapeHtml(ship.ship_no||"-")}</span><span class="prod-hull-pct">${stats.total?productionPercentLabel(stats.avg):"-"}</span></div>${productionBarHtml(stats.avg)}<div class="prod-hull-meta">${meta||"&nbsp;"}</div></button>`;
+  }).join("");
+  content.innerHTML=`<div class="prod-type-tabs">${tabs}</div><div class="prod-hull-head">${escapeHtml(productionDashboardType)} 호선 ${ships.length}척 <span>진수(L/C) 순 · 호선을 누르면 STAGE별 공정률이 열립니다</span></div><div class="prod-hull-grid">${chips}</div><div class="prod-hull-detail"></div>`;
+  const detail=content.querySelector(".prod-hull-detail"),sel=ships.find(ship=>productionNormalize(ship.ship_no)===productionDashboardShipSel);
+  if(sel)detail.appendChild(productionShipCard(sel));
+  else detail.innerHTML='<div class="prod-hull-empty">호선을 누르면 STAGE별 공정률이 여기에 열립니다.</div>';
+  content.querySelectorAll(".prod-type-tab").forEach(btn=>btn.onclick=()=>{
+    if(btn.dataset.type===productionDashboardType)return;
+    productionDashboardType=btn.dataset.type;productionDashboardShipSel="";
+    try{localStorage.setItem("hwdk.dashType",productionDashboardType)}catch(e){}
+    renderProductionTypes(content);
+  });
+  content.querySelectorAll(".prod-hull-chip").forEach(btn=>btn.onclick=()=>{
+    productionDashboardShipSel=btn.dataset.ship===productionDashboardShipSel?"":btn.dataset.ship;
+    renderProductionTypes(content);
+    if(productionDashboardShipSel)content.querySelector(".prod-hull-detail .production-ship-card")?.scrollIntoView({behavior:"smooth",block:"start"});
+  });
+}
 
 /* 세부 현황의 작업을 누르면: 일일작업등록을 열고 선종 · 호선 · STAGE · 구역 · 작업을 미리 골라 둡니다.
    투입 인원과 공정률만 적어 등록하면 됩니다. SYSTEM 이 여러 개면 SYSTEM 체크 목록을 바로 펼칩니다. */
@@ -2761,13 +2826,18 @@ async function loadProductionDashboard(){
   const allItems=shipList.flatMap(ship=>[...ship.stages.values()].flatMap(stage=>[...stage.items.values()])),overall=productionItemsStats(allItems);
   summary.innerHTML=`<div class="production-summary-card"><div class="production-summary-label">누적 작업등록</div><div class="production-summary-value">${schedules.length}건</div></div><div class="production-summary-card"><div class="production-summary-label">호선</div><div class="production-summary-value">${shipList.length}척</div></div><div class="production-summary-card"><div class="production-summary-label">누적 투입 인원</div><div class="production-summary-value">${manpowerTotal}명</div></div><div class="production-summary-card"><div class="production-summary-label">전체 공정률</div><div class="production-summary-value">${overall.total?productionPercentLabel(overall.avg):"-"}</div></div>`;
   if(!shipList.length){status.textContent="";content.innerHTML='<div class="empty">등록된 생산 데이터가 없습니다.</div>';return}
-  shipList.forEach(ship=>content.appendChild(productionShipCard(ship)));
+  productionDashboardShips=shipList;
+  /* 등록 화면에서 막 돌아왔으면 그 호선(처음 한 번), 호선 검색 결과가 1척이면 그 호선을 바로 엶 */
+  const pickShip=productionDashboardReopen&&productionDashboardReopen.scroll?shipList.find(ship=>productionNormalize(ship.ship_no)===productionDashboardReopen.ship):(shipFilter&&shipList.length===1?shipList[0]:null);
+  if(pickShip){productionDashboardType=pickShip.ship_type||"기타";productionDashboardShipSel=productionNormalize(pickShip.ship_no)}
+  else if(shipFilter&&shipList.length&&!shipList.some(ship=>(ship.ship_type||"기타")===productionDashboardType))productionDashboardType=shipList[0].ship_type||"기타";
+  renderProductionTypes(content);
   status.textContent=`호선 ${shipList.length}척 · 마스터 작업 ${overall.total}건 중 완료 ${overall.done}건 · 누적 등록 ${schedules.length}건`;
   reopenProductionDetail(content);
 }
 
 function showProductionDashboard(push=true){hideAllMain();showHeader();$("productionDashboardApp").classList.remove("hidden");loadProductionDashboard();if(push)pushState({screen:"production-dashboard",admin:isAdmin})}
-$("openProductionDashboardBtn").onclick=()=>{productionDashboardReopen=null;showProductionDashboard(true)};
+$("openProductionDashboardBtn").onclick=()=>{productionDashboardReopen=null;productionDashboardShipSel="";showProductionDashboard(true)};
 $("scheduleBackDashBtn").onclick=()=>showProductionDashboard(true);
 $("refreshProductionDashboardBtn").onclick=loadProductionDashboard;
 $("productionDashboardSearchBtn").onclick=loadProductionDashboard;
