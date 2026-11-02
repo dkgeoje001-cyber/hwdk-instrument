@@ -2621,7 +2621,7 @@ function scheduleCard(record,batchSize=1){
 async function loadProductionScheduleList(){
   const list=$("scheduleList"),status=$("scheduleListStatus"),summary=$("scheduleListSummary"),date=$("scheduleFilterDate").value,ship=$("scheduleFilterShip").value.trim(),author=normalizeName($("scheduleFilterAuthor").value);
   list.innerHTML="";summary.classList.add("hidden");status.textContent="일일작업 불러오는 중...";
-  let q=supabase.from("production_schedules").select("*").order("work_date",{ascending:false}).order("created_at",{ascending:false}).limit(1000);
+  let q=supabase.from("production_schedules").select("*").not("is_baseline","is",true).order("work_date",{ascending:false}).order("created_at",{ascending:false}).limit(1000);
   if(date)q=q.eq("work_date",date);if(ship)q=q.ilike("ship_no",`%${ship}%`);if(author)q=q.ilike("author_name",`%${author}%`);
   const {data,error}=await q;if(error){status.textContent="목록 조회 실패: "+error.message;return}
   const items=data||[];if(!items.length){status.textContent="";list.innerHTML='<div class="empty">등록된 일일작업이 없습니다.</div>';return}
@@ -2951,13 +2951,14 @@ async function loadProductionDashboard(){
   const seq=++productionDashboardSeq;
   status.textContent="생산 데이터 집계 중...";summary.innerHTML="";content.innerHTML="";
   const [scheduleResult,masterResult]=await Promise.all([
-    fetchAllRows(()=>{let q=supabase.from("production_schedules").select("id,work_date,ship_type,ship_no,stage,area,work_type,work_method,system,system_items,system_rates,manpower,progress_rate,batch_id,created_at").order("created_at",{ascending:true}).order("id",{ascending:true});if(shipFilter)q=q.ilike("ship_no",`%${shipFilter}%`);return q}),
+    fetchAllRows(()=>{let q=supabase.from("production_schedules").select("id,work_date,ship_type,ship_no,stage,area,work_type,work_method,system,system_items,system_rates,manpower,progress_rate,batch_id,created_at,is_baseline").order("created_at",{ascending:true}).order("id",{ascending:true});if(shipFilter)q=q.ilike("ship_no",`%${shipFilter}%`);return q}),
     fetchAllRows(productionMasterQuery)
   ]);
   if(seq!==productionDashboardSeq)return;
   const error=scheduleResult.error||masterResult.error;
   if(error){status.textContent="생산 데이터 조회 실패: "+(productionSchemaMessage(error)||error.message);return}
   const schedules=scheduleResult.data||[];
+  const recordCount=schedules.filter(r=>!r.is_baseline).length;   /* 기초 공정률(10/30 지표) 기록은 건수에서 뺌 */
   let masters=productionCleanMaster(masterResult.data);
   if(shipFilter){const needle=productionNormalize(shipFilter);masters=masters.filter(m=>productionNormalize(m.ship_no).includes(needle))}
 
@@ -2982,6 +2983,15 @@ async function loadProductionDashboard(){
   let manpowerTotal=0;const countedBatches=new Set();
   schedules.forEach(r=>{
     const ship=getShip(r.ship_no,r.ship_type||""),manpower=Number(r.manpower||0)||0,workDate=productionDateOnly(r.work_date);
+    /* 기초 공정률 기록: 그 작업의 공정률(가장 높은 값)에만 반영 */
+    if(r.is_baseline){
+      const bs=ship.stages.get(productionNormalize(r.stage)),bi=bs?bs.items.get(productionWorkKey("","",r.area,r.work_type,r.work_method,r.system)):null;
+      if(!bi)return;
+      (Array.isArray(r.system_items)?r.system_items:[]).forEach(x=>bi.sys_done.add(normalizeName(x)));
+      if(r.system_rates&&typeof r.system_rates==="object")Object.entries(r.system_rates).forEach(([x,v])=>{const k=normalizeName(x),n=productionNumber(v);if(k&&n!==null&&(!bi.sys_rates.has(k)||n>bi.sys_rates.get(k)))bi.sys_rates.set(k,n)});
+      const bp=productionNumber(r.progress_rate);if(bp!==null&&(bi.progress===null||bp>bi.progress))bi.progress=bp;
+      return;
+    }
     ship.record_count++;
     if(!r.batch_id||!countedBatches.has(r.batch_id)){manpowerTotal+=manpower;if(r.batch_id)countedBatches.add(r.batch_id)}
     if(!ship.first_created)ship.first_created=r.created_at||r.work_date||"";
@@ -3008,7 +3018,7 @@ async function loadProductionDashboard(){
   });
 
   const allItems=shipList.flatMap(ship=>[...ship.stages.values()].flatMap(stage=>[...stage.items.values()])),overall=productionItemsStats(allItems);
-  summary.innerHTML=`<div class="production-summary-card"><div class="production-summary-label">누적 작업등록</div><div class="production-summary-value">${schedules.length}건</div></div><div class="production-summary-card"><div class="production-summary-label">호선</div><div class="production-summary-value">${shipList.length}척</div></div><div class="production-summary-card"><div class="production-summary-label">누적 투입 인원</div><div class="production-summary-value">${manpowerTotal}명</div></div><div class="production-summary-card"><div class="production-summary-label">전체 공정률</div><div class="production-summary-value">${overall.total?productionPercentLabel(overall.avg):"-"}</div></div>`;
+  summary.innerHTML=`<div class="production-summary-card"><div class="production-summary-label">누적 작업등록</div><div class="production-summary-value">${recordCount}건</div></div><div class="production-summary-card"><div class="production-summary-label">호선</div><div class="production-summary-value">${shipList.length}척</div></div><div class="production-summary-card"><div class="production-summary-label">누적 투입 인원</div><div class="production-summary-value">${manpowerTotal}명</div></div><div class="production-summary-card"><div class="production-summary-label">전체 공정률</div><div class="production-summary-value">${overall.total?productionPercentLabel(overall.avg):"-"}</div></div>`;
   if(!shipList.length){status.textContent="";content.innerHTML='<div class="empty">등록된 생산 데이터가 없습니다.</div>';return}
   productionDashboardShips=shipList;
   /* 등록 화면에서 막 돌아왔으면 그 호선(처음 한 번), 호선 검색 결과가 1척이면 그 호선을 바로 엶 */
@@ -3016,7 +3026,7 @@ async function loadProductionDashboard(){
   if(pickShip){productionDashboardType=pickShip.ship_type||"기타";productionDashboardShipSel=productionNormalize(pickShip.ship_no)}
   else if(shipFilter&&shipList.length&&!shipList.some(ship=>(ship.ship_type||"기타")===productionDashboardType))productionDashboardType=shipList[0].ship_type||"기타";
   renderProductionTypes(content);
-  status.textContent=`호선 ${shipList.length}척 · 마스터 작업 ${overall.total}건 중 완료 ${overall.done}건 · 누적 등록 ${schedules.length}건`;
+  status.textContent=`호선 ${shipList.length}척 · 마스터 작업 ${overall.total}건 중 완료 ${overall.done}건 · 누적 등록 ${recordCount}건`;
   reopenProductionDetail(content);
 }
 
