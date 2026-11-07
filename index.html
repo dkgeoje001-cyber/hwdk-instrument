@@ -179,6 +179,52 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .prod-hull-empty{margin-top:12px;padding:12px;border:1px dashed #cfd8df;border-radius:10px;color:#64748b;font-size:13px;text-align:center}
 @media(max-width:720px){.prod-type-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.prod-type-tab{padding:10px}.prod-type-name{font-size:16px}.prod-type-sub{font-size:11px}.prod-hull-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.prod-hull-chip{padding:8px}.prod-hull-no{font-size:15px}.prod-hull-pct{font-size:12px}.prod-hull-meta{font-size:10px}}
 .module-weekly{background:#2f6e73;color:#fff}
+.module-priority{background:#8a4b14;color:#fff}
+/* ===== 우선작업순위 ===== */
+.pr-title{display:flex;align-items:center;justify-content:space-between;gap:8px}.pr-title h2{margin:0}
+.pr-refresh{width:auto!important;margin-top:0!important;padding:8px 12px!important;font-size:13px!important}
+.pr-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:900;line-height:1.5;white-space:nowrap}
+.pr-badge.g1{background:#d93025;color:#fff}.pr-badge.g2{background:#f08c00;color:#fff}.pr-badge.g3{background:#f2d024;color:#4a3b00}.pr-badge.g4{background:#2e8b3e;color:#fff}.pr-badge.g0{background:#e6eaef;color:#5b6675}.pr-badge.gl{background:#6f42c1;color:#fff}.pr-badge.gd{background:#dcefe0;color:#1f6b33}.pr-badge.gx{background:#fff;color:#7a8494;border:1px dashed #b8c2cc}
+.pr-filter{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:8px;align-items:center;margin-top:12px}
+.pr-filter select{margin:0}
+.pr-grades{display:flex;flex-wrap:wrap;gap:6px}
+.pr-grades button{width:auto;margin:0;padding:7px 11px;border-radius:999px;border:1px solid #cfd8df;background:#fff;color:#16324f;font-size:13px;font-weight:800}
+.pr-grades button.on{background:#16324f;color:#fff;border-color:#16324f}
+.pr-card{margin-top:10px;border:1px solid #dde4ea;border-left:6px solid #c0c7d0;border-radius:10px;background:#fff;padding:10px 12px}
+.pr-card.g1{border-left-color:#d93025}.pr-card.g2{border-left-color:#f08c00}.pr-card.g3{border-left-color:#e3c000}.pr-card.g4{border-left-color:#2e8b3e}.pr-card.g0{border-left-color:#c9d0d8;background:#fafbfc}.pr-card.gd{border-left-color:#7cbf8e;background:#f7fbf8}
+.pr-card-top{display:flex;align-items:center;gap:8px}
+.pr-card-name{flex:1 1 auto;min-width:0;font-size:17px;font-weight:900;color:#16324f}
+.pr-card-name small{font-size:12px;color:#64748b;font-weight:800;margin-right:4px}.pr-ms-name small{font-size:12px;color:#64748b;font-weight:800;margin-right:4px}
+.pr-dday{font-size:20px;font-weight:900;color:#16324f;white-space:nowrap}
+.pr-card.g1 .pr-dday{color:#d93025}.pr-card.g2 .pr-dday{color:#c56a00}.pr-card.g0 .pr-dday{font-size:14px;color:#7a8494}
+.pr-card-dates{margin-top:6px;font-size:14px;color:#334155;font-weight:700}
+.pr-card-meta{margin-top:4px;font-size:13px;color:#52606d}
+.pr-card-act{display:flex;justify-content:flex-end;gap:6px;margin-top:6px}
+.pr-card-act button{width:auto;margin:0;padding:6px 12px;font-size:13px;border-radius:7px;background:#eef2f6;color:#16324f;border:0;font-weight:800}
+.pr-card-act button.del{background:#fdecec;color:#b42318}.pr-card-act button.ok{background:#1f7a3a;color:#fff;padding:8px 16px;font-size:14px}.pr-card.gd .pr-dday{font-size:14px;color:#1f6b33}
+.pr-done-toggle{margin-top:10px!important}
+.pr-done-h{margin-top:16px;padding:6px 10px;border-radius:8px;background:#e9edf2;color:#16324f;font-size:15px;font-weight:900}.pr-done-h span{font-size:12px;color:#5b6675;margin-left:6px}
+.pr-add{margin-top:14px!important}
+.pr-form{margin-top:12px;padding:12px;border:1px solid #bfd3e6;background:#f4f8fc;border-radius:10px}
+.pr-form-t{font-size:16px;font-weight:900;color:#16324f}
+.pr-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 10px}
+.pr-form-grid .pr-wide{grid-column:1/-1}
+.pr-form-act{display:grid;grid-template-columns:1fr 2fr;gap:8px;margin-top:10px}.pr-form-act button{margin-top:0}
+.pr-empty{margin-top:12px;padding:14px;border:1px dashed #cfd8df;border-radius:10px;color:#64748b;font-size:14px;text-align:center}
+.pr-ms{margin-top:10px;border:1px solid #dde4ea;border-left:6px solid #c0c7d0;border-radius:10px;background:#fff;padding:10px 12px}
+.pr-ms.gx{border-left-color:#c0c7d0}.pr-ms.gl{border-left-color:#6f42c1;background:#faf7fe}.pr-ms.gl .pr-dday{color:#5a32a3}.pr-ms.gd{border-left-color:#7cbf8e;background:#f7fbf8}.pr-ms.gd .pr-dday{font-size:14px;color:#1f6b33}.pr-ms.g1{border-left-color:#d93025}.pr-ms.g2{border-left-color:#f08c00}.pr-ms.g3{border-left-color:#e3c000}.pr-ms.g4{border-left-color:#2e8b3e}
+.pr-ms-top{display:flex;align-items:center;gap:8px}
+.pr-ms-name{flex:1 1 auto;font-size:17px;font-weight:900;color:#16324f}
+.pr-stage{display:inline-block;font-size:12px;font-weight:900;padding:2px 7px;border-radius:5px;margin-left:4px;vertical-align:2px;white-space:nowrap}.hint .pr-stage{margin:0 1px}
+.pr-ms.g1 .pr-dday{color:#d93025}.pr-ms.g2 .pr-dday{color:#c56a00}
+.pr-stage.pe{background:#e3f1df;color:#2f6a24}.pr-stage.dock{background:#dbe8f6;color:#1f4e79}.pr-stage.an{background:#fbe3d3;color:#a14a0f}
+.pr-ms-next{margin-top:6px;font-size:15px;font-weight:900;color:#16324f}
+.pr-ms-dates{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:8px}
+.pr-ms-dates div{background:#f4f6f8;border-radius:7px;padding:5px 4px;text-align:center;font-size:12px;color:#52606d;font-weight:700}
+.pr-ms-dates div b{display:block;font-size:13px;color:#16324f}
+.pr-ms-dates div.next{background:#16324f;color:#cfe0f2}.pr-ms-dates div.next b{color:#fff}
+.pr-ms-dates div.past{opacity:.55}.pr-ms-dates div.done{background:#dcefe0;color:#1f6b33}.pr-ms-dates div i{display:block;font-style:normal;font-size:11px;font-weight:900;color:#1f6b33}
+@media(max-width:420px){.pr-filter{grid-template-columns:1fr}.pr-card-name{font-size:16px}.pr-dday{font-size:18px}}
 /* ===== 주간계획입력 ===== */
 .wk-head{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
 .wk-head label{margin-top:0}
@@ -658,9 +704,9 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
             <span class="module-name">주간계획입력</span>
             <span class="module-sub">다음 주 계획 · 요일별 · 작성자별</span>
           </button>
-          <button class="module-btn module-dev" disabled>
+          <button id="openPriorityBtn" class="module-btn module-priority" type="button">
             <span class="module-name">우선작업순위</span>
-            <span class="module-sub">개발중</span>
+            <span class="module-sub">PE 블록 · L/C · S/T · D/L 일정</span>
           </button>
           <button id="openScheduleBtn" class="module-btn module-schedule">
             <span class="module-name">일일작업등록</span>
@@ -778,6 +824,35 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 </div>
 
 <!-- 주간계획입력 모듈 -->
+<div id="priorityApp" class="container hidden">
+  <section id="priorityPeSection">
+    <div class="card">
+      <div class="pr-title"><h2>우선작업순위</h2><button id="priorityRefreshBtn" class="secondary pr-refresh" type="button">새로고침</button></div>
+            <div id="prioritySetupNotice" class="schedule-setup-notice hidden"></div>
+      <div class="pr-filter">
+        <select id="priorityShip" aria-label="호선"></select>
+        <div id="priorityGrades" class="pr-grades"></div>
+      </div>
+      <div id="priorityStatus" class="status"></div>
+      <div id="priorityList"></div>
+      <button id="priorityDoneToggle" class="secondary pr-done-toggle hidden" type="button"></button>
+      <button id="priorityAddBtn" class="primary pr-add" type="button">＋ PE 블록 추가</button>
+      <div id="priorityForm" class="pr-form hidden">
+        <div class="pr-form-t" id="priorityFormTitle">PE 블록 추가</div>
+        <div class="pr-form-grid">
+          <div><label for="prType">선종</label><select id="prType"></select></div>
+          <div><label for="prShipNo">호선</label><select id="prShipNo"></select></div>
+          <div class="pr-wide"><label for="prBlock">BLOCK</label><input id="prBlock" autocomplete="off" placeholder="예: 50A"></div>
+          <div><label for="prStart">PE START</label><input id="prStart" type="date"></div>
+          <div><label for="prFinish">PE FINISH(탑재)</label><input id="prFinish" type="date"></div>
+          <div class="pr-wide"><label for="prNote">비고</label><input id="prNote" autocomplete="off" placeholder="예: CARGO HOLD TUBE 확인"></div>
+        </div>
+        <div class="pr-form-act"><button id="prCancelBtn" class="secondary" type="button">취소</button><button id="prSaveBtn" class="primary" type="button">저장</button></div>
+        <div id="prFormStatus" class="status"></div>
+      </div>
+    </div>
+  </section>
+</div>
 <div id="weeklyApp" class="container hidden">
   <div class="tabs" style="grid-template-columns:repeat(2,1fr)">
     <button id="weeklyInputTab" class="active" type="button">계획 입력</button>
@@ -1433,7 +1508,7 @@ async function nameToSyntheticEmail(name){
   return `u_${hex.slice(0,40)}@hwdk-bhd.com`;
 }
 
-function hideAllMain(){authScreen.classList.add("hidden");moduleHome.classList.add("hidden");scheduleApp.classList.add("hidden");$("productionDashboardApp")?.classList.add("hidden");$("boardApp")?.classList.add("hidden");$("materialApp")?.classList.add("hidden");$("equipCardApp")?.classList.add("hidden");$("weeklyApp")?.classList.add("hidden");if($("matSheet")&&!$("matSheet").classList.contains("hidden"))closeMaterialSheet();bhdApp.classList.add("hidden");requestApp.classList.add("hidden");myWorkApp.classList.add("hidden")}
+function hideAllMain(){authScreen.classList.add("hidden");moduleHome.classList.add("hidden");scheduleApp.classList.add("hidden");$("productionDashboardApp")?.classList.add("hidden");$("boardApp")?.classList.add("hidden");$("materialApp")?.classList.add("hidden");$("equipCardApp")?.classList.add("hidden");$("weeklyApp")?.classList.add("hidden");$("priorityApp")?.classList.add("hidden");if($("matSheet")&&!$("matSheet").classList.contains("hidden"))closeMaterialSheet();bhdApp.classList.add("hidden");requestApp.classList.add("hidden");myWorkApp.classList.add("hidden")}
 function updateHeader(){
   $("userBadge").textContent=isAdmin?`관리자 · ${currentUserName||"관리자"}`:currentUserName;
   $("userBadge").className=isAdmin?"user-badge admin":"user-badge";
@@ -3036,6 +3111,160 @@ $("scheduleBackDashBtn").onclick=()=>showProductionDashboard(true);
 $("refreshProductionDashboardBtn").onclick=loadProductionDashboard;
 $("productionDashboardSearchBtn").onclick=loadProductionDashboard;
 $("productionDashboardShip").addEventListener("keydown",e=>{if(e.key==="Enter")loadProductionDashboard()});
+
+/* ---------- 우선작업순위 ---------- */
+/* 표 production_pe_blocks: 한 줄 = 호선 · BLOCK 의 PE START · PE FINISH(탑재) · 비고 · 작업완료(done_at · done_by).
+   등급 = PE FINISH(절점 일정은 다음 절점)까지 남은 날 점수: 0~3일 100 · 4~7일 80 · 8~14일 60 · 15~30일 40 · 31일 이상 20
+   → 80점 이상 최긴급 · 60~79 긴급 · 40~59 보통 · 40 미만 여유(작업 우선 순위 산정 기준표, 발판 일정 제외). 날짜가 지나면 탑재 완료.
+   [작업완료]를 누른 블록(done_at)은 날짜와 상관없이 작업 완료 → 완료 목록. 완료 목록 = 작업 완료 + 탑재 완료(11-03 16:25). */
+const PRIORITY_TABLE="production_pe_blocks",PRIORITY_MS_TABLE="production_priority_ms_done";
+const PR_GRADES=[{key:"g1",label:"최긴급"},{key:"g2",label:"긴급"},{key:"g3",label:"보통"},{key:"gl",label:"인도지연"},{key:"g4",label:"여유"},{key:"g0",label:"탑재 완료"}];
+const PR_RANK={g1:0,g2:1,g3:2,gl:3,g4:4,gx:5};   /* 목록 순서: 최긴급 → 긴급 → 보통 → 인도지연 → 여유 → 미정 */
+let prRows=[],prMsDone=[],prShip="",prGradeSel="",prShowDone=false,prEditId=null,prLoadSeq=0;
+function prDays(v){const d=productionDateOnly(v);if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return null;const [y,m,dd]=d.split("-").map(Number),[ty,tm,td]=localToday().split("-").map(Number);return Math.round((Date.UTC(y,m-1,dd)-Date.UTC(ty,tm-1,td))/86400000)}
+function prScore(days){return days<=3?100:days<=7?80:days<=14?60:days<=30?40:20}
+function prGrade(days){
+  if(days===null)return {key:"gx",label:"미정",score:null};
+  if(days<0)return {key:"g0",label:"탑재 완료",score:0};
+  const score=prScore(days);
+  return {key:score>=80?"g1":score>=60?"g2":score>=40?"g3":"g4",label:score>=80?"최긴급":score>=60?"긴급":score>=40?"보통":"여유",score};
+}
+function prDdayText(days){return days===null?"미정":days<0?"탑재 완료":days===0?"D-DAY":`D-${days}`}
+function prMD(v){const d=productionDateOnly(v);return d?`${Number(d.slice(5,7))}/${Number(d.slice(8,10))}`:"미정"}
+function prShips(){
+  const seen=new Map();
+  scheduleMaster.forEach(m=>{const k=normalizeName(m.ship_no);if(!k)return;if(!seen.has(k))seen.set(k,{ship_type:m.ship_type,ship_no:m.ship_no,kl:"",lc:"",st:"",dl:""});const s=seen.get(k);[["kl","kl_date"],["lc","lc_date"],["st","st_date"],["dl","dl_date"]].forEach(([a,f])=>{const d=productionDateOnly(m[f]);if(d&&!s[a])s[a]=d})});
+  return [...seen.values()];
+}
+function prSchemaMessage(error){const text=`${error?.code||""} ${error?.message||""}`;return /PGRST205|42P01|schema cache|does not exist/i.test(text)?"우선작업순위 표가 아직 없습니다. 제공된 SQL(hwdk_pe_blocks)을 먼저 실행하세요.":""}
+async function showPriority(tab="pe",push=true){
+  hideAllMain();showHeader();$("priorityApp").classList.remove("hidden");
+  if(push)pushState({screen:"priority",tab,admin:isAdmin});
+  await loadPriority();
+}
+async function loadPriority(){
+  const seq=++prLoadSeq;$("priorityStatus").textContent="불러오는 중...";
+  const [res,msRes]=await Promise.all([fetchAllRows(()=>supabase.from(PRIORITY_TABLE).select("id,ship_type,ship_no,block,pe_start,pe_finish,note,author_name,done_at,done_by,updated_at").order("ship_no",{ascending:true}).order("pe_finish",{ascending:true}).order("id",{ascending:true})),
+    fetchAllRows(()=>supabase.from(PRIORITY_MS_TABLE).select("id,ship_no,milestone,ms_date,done_at,done_by").order("done_at",{ascending:true}).order("id",{ascending:true})),loadScheduleData()]);
+  if(seq!==prLoadSeq)return;
+  prMsDone=msRes.error?[]:(msRes.data||[]).map(r=>({...r,ship_no:normalizeName(r.ship_no)}));
+  const notice=$("prioritySetupNotice");
+  if(res.error){prRows=[];const msg=prSchemaMessage(res.error)||("불러오지 못했습니다: "+res.error.message);notice.textContent=msg;notice.classList.remove("hidden");$("priorityStatus").textContent=""}
+  else{prRows=(res.data||[]).map(r=>({...r,ship_no:normalizeName(r.ship_no),block:normalizeName(r.block)}));notice.classList.add("hidden");$("priorityStatus").textContent=""}
+  renderPriority();
+}
+function prRowInfo(r){const days=prDays(r.pe_finish);const doneDay=r.done_at?productionDateOnly(new Date(r.done_at).toLocaleDateString("sv-SE",{timeZone:"Asia/Seoul"})):"";
+  const grade=r.done_at?{key:"gd",label:"작업 완료",score:null}:prGrade(days);
+  return {...r,days,grade,finished:grade.key==="gd"||grade.key==="g0",endDay:doneDay||productionDateOnly(r.pe_finish)}}
+function renderPriority(){
+  const ships=prShips(),order=new Map(ships.map((s,i)=>[normalizeName(s.ship_no),i]));
+  const rows=[...prRows.map(r=>({...prRowInfo(r),kind:"pe"})),...prMilestoneItems()];
+  const byShip=new Map();rows.forEach(r=>{if(!byShip.has(r.ship_no))byShip.set(r.ship_no,{ship_type:r.ship_type,ship_no:r.ship_no})});
+  const typeRank=t=>{const i=SHIP_TYPES.indexOf(t);return i<0?99:i};
+  const list=[...byShip.values()].sort((a,b)=>typeRank(a.ship_type)-typeRank(b.ship_type)||(order.get(a.ship_no)??999)-(order.get(b.ship_no)??999)||String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true}));
+  /* 호선 고르기 · 등급 */
+  const sel=$("priorityShip");sel.innerHTML=`<option value="">전체 호선</option>`+list.map(s=>`<option value="${escapeHtml(s.ship_no)}">${escapeHtml(s.ship_type||"")} ${escapeHtml(s.ship_no)}</option>`).join("");
+  if(prShip&&!list.some(s=>s.ship_no===prShip))prShip="";sel.value=prShip;sel.onchange=()=>{prShip=sel.value;renderPriority()};
+  const shown=rows.filter(r=>!prShip||r.ship_no===prShip);
+  const gc={};shown.forEach(r=>gc[r.grade.key]=(gc[r.grade.key]||0)+1);
+  $("priorityGrades").innerHTML=`<button type="button" data-g="" class="${prGradeSel?"":"on"}">전체 ${shown.filter(r=>!r.finished).length}</button>`+PR_GRADES.filter(g=>g.key!=="g0").map(g=>`<button type="button" data-g="${g.key}" class="${prGradeSel===g.key?"on":""}">${g.label} ${gc[g.key]||0}</button>`).join("");
+  $("priorityGrades").querySelectorAll("button").forEach(b=>b.onclick=()=>{prGradeSel=b.dataset.g;renderPriority()});
+  /* 카드: PE 블록 · 호선 절점을 나누지 않고 날짜 빠른 순(미정은 뒤, 같은 날은 절점 먼저), 완료(작업 완료 · 탑재 완료)는 접어 둠 */
+  const active=shown.filter(r=>!r.finished&&(!prGradeSel||r.grade.key===prGradeSel)).sort((a,b)=>(PR_RANK[a.grade.key]??9)-(PR_RANK[b.grade.key]??9)||(a.days??99999)-(b.days??99999)||(a.kind===b.kind?0:a.kind==="ms"?-1:1)||typeRank(a.ship_type)-typeRank(b.ship_type)||String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true})||String(a.block||"").localeCompare(String(b.block||""),"ko",{numeric:true}));
+  const doneAll=prGradeSel?[]:shown.filter(r=>r.finished);
+  const lastDone=new Map();doneAll.forEach(r=>{const d=r.endDay||"";if(!lastDone.has(r.ship_no)||d>lastDone.get(r.ship_no))lastDone.set(r.ship_no,d)});
+  const done=doneAll.sort((a,b)=>typeRank(a.ship_type)-typeRank(b.ship_type)||String(lastDone.get(b.ship_no)).localeCompare(String(lastDone.get(a.ship_no)))||String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true})||String(b.endDay).localeCompare(String(a.endDay))||String(a.block).localeCompare(String(b.block),"ko",{numeric:true}));
+  const doneHtml=()=>{let html="",cur="";done.forEach(r=>{const k=`${r.ship_type} ${r.ship_no}`;if(k!==cur){cur=k;html+=`<div class="pr-done-h">${escapeHtml(k)} <span>완료 ${done.filter(x=>x.ship_no===r.ship_no).length}</span></div>`}html+=card(r)});return html};
+  const stCls={"P.E":"pe","DOCK":"dock","안벽":"an"},today=localToday();
+  const msCard=i=>{const done=i.grade.key==="gd";return `<div class="pr-ms ${i.grade.key}" data-ms="${escapeHtml(i.ship_no)}"><div class="pr-ms-top"><span class="pr-badge ${i.grade.key}">${i.grade.label}</span><span class="pr-ms-name"><small class="pr-type">${escapeHtml(i.ship_type||"")}</small>${escapeHtml(i.ship_no)} · ${i.next?i.next[0]:i.delayed?"인도지연":"절점"}<span class="pr-stage ${stCls[i.stage]}">${i.stage}</span></span><span class="pr-dday">${done?`${prMD(i.endDay)} 완료`:i.next?(i.days===0?"D-DAY":`D-${i.days}`):i.delayed?"지연":"미정"}</span></div><div class="pr-ms-next">${done?`${i.next[0]} ${prMD(i.next[1])} 절점 · 작업완료 ${prMD(i.endDay)}${i.doneRow.done_by?` · ${escapeHtml(i.doneRow.done_by)}`:""}`:i.next?`다음 절점 · ${i.next[0]} ${prMD(i.next[1])}${i.grade.score?` · ${i.grade.score}점`:""}`:i.delayed?`${i.lastPast[0]} ${prMD(i.lastPast[1])} 지남 · D/L 날짜 없음`:"다가오는 절점 없음(미정)"}</div><div class="pr-ms-dates">${i.ms.map(([k,d])=>`<div class="${i.next&&i.next[0]===k?"next":(i.doneOf(k)?"done":(d&&d<today?"past":""))}">${k}<b>${d?productionShortDate(d):"미정"}</b>${!done&&i.doneOf(k)?`<i>완료</i>`:""}</div>`).join("")}</div>${done?`<div class="pr-card-act"><button type="button" data-ms-undo="${escapeHtml(i.doneRow.id)}">완료 취소</button></div>`:(i.next?`<div class="pr-card-act"><button type="button" class="ok" data-ms-done="${escapeHtml(i.ship_no)}|${i.next[0]}">작업완료</button></div>`:"")}</div>`};
+  const card=r=>r.kind==="ms"?msCard(r):`<div class="pr-card ${r.grade.key}" data-id="${escapeHtml(r.id)}"><div class="pr-card-top"><span class="pr-badge ${r.grade.key}">${r.grade.label}</span><span class="pr-card-name"><small>${escapeHtml(r.ship_type||"")}</small>${escapeHtml(r.ship_no)} · ${escapeHtml(r.block)}<span class="pr-stage pe">PE 블록</span></span><span class="pr-dday">${r.grade.key==="gd"?`${prMD(r.endDay)} 완료`:prDdayText(r.days)}</span></div><div class="pr-card-dates">PE START ${prMD(r.pe_start)} → PE FINISH ${prMD(r.pe_finish)}${r.grade.score?` · ${r.grade.score}점`:""}</div>${r.grade.key==="gd"?`<div class="pr-card-meta">작업완료 ${prMD(r.endDay)}${r.done_by?` · ${escapeHtml(r.done_by)}`:""}</div>`:""}${r.note?`<div class="pr-card-meta">${escapeHtml(r.note)}</div>`:""}<div class="pr-card-act">${r.finished?(r.grade.key==="gd"?`<button type="button" data-pr-undo="${escapeHtml(r.id)}">완료 취소</button>`:""):`<button type="button" class="ok" data-pr-done="${escapeHtml(r.id)}">작업완료</button>`}<button type="button" class="del" data-pr-del="${escapeHtml(r.id)}">삭제</button></div></div>`;
+  const box=$("priorityList");
+  box.innerHTML=(active.length?active.map(card).join(""):`<div class="pr-empty">${rows.length?"이 조건의 일정이 없습니다.":"일정이 없습니다. PE 블록은 아래 [＋ PE 블록 추가]로 적습니다."}</div>`)+(prShowDone?doneHtml():"");
+  const tg=$("priorityDoneToggle");tg.classList.toggle("hidden",!done.length);tg.textContent=prShowDone?`완료 ${done.length}건 접기`:`완료 ${done.length}건 보기 (작업 완료 · 탑재 완료)`;tg.onclick=()=>{prShowDone=!prShowDone;renderPriority()};
+  box.querySelectorAll("[data-pr-done]").forEach(b=>b.onclick=()=>setPriorityDone(prRows.find(r=>String(r.id)===b.dataset.prDone),true));
+  box.querySelectorAll("[data-pr-undo]").forEach(b=>b.onclick=()=>setPriorityDone(prRows.find(r=>String(r.id)===b.dataset.prUndo),false));
+  box.querySelectorAll("[data-pr-del]").forEach(b=>b.onclick=()=>deletePriorityRow(prRows.find(r=>String(r.id)===b.dataset.prDel)));
+  box.querySelectorAll("[data-ms-done]").forEach(b=>b.onclick=()=>{const [ship,k]=b.dataset.msDone.split("|");setMilestoneDone(rows.find(r=>r.kind==="ms"&&!r.finished&&r.ship_no===ship),k)});
+  box.querySelectorAll("[data-ms-undo]").forEach(b=>b.onclick=()=>undoMilestoneDone(prMsDone.find(r=>String(r.id)===b.dataset.msUndo)));
+}
+async function setMilestoneDone(item,k){
+  if(!item||!item.next)return;
+  const after=item.ms.find(([kk,d])=>kk!==k&&d&&d>=localToday()&&!item.doneOf(kk)&&item.ms.findIndex(x=>x[0]===kk)>item.ms.findIndex(x=>x[0]===k));
+  if(!confirm(`${item.ship_no} ${k}(${prMD(item.next[1])}) 작업을 모두 끝냈나요?\n[확인]을 누르면 완료 목록으로 옮깁니다.${after?`\n그 다음 절점 ${after[0]} ${prMD(after[1])} 이(가) 목록에 나옵니다.`:""}\n(마스터 일정 · 공정률은 바뀌지 않습니다)`))return;
+  const {error}=await supabase.from(PRIORITY_MS_TABLE).insert({ship_no:item.ship_no,milestone:k,ms_date:item.next[1]||null,done_at:new Date().toISOString(),done_by:currentUserName||null,created_by:currentUserId});
+  if(error){alert("작업완료 실패: "+(prSchemaMessage(error)||error.message));return}
+  await loadPriority();$("priorityStatus").textContent=`작업완료 · ${item.ship_no} ${k} (완료 목록으로 옮김)`;
+}
+async function undoMilestoneDone(row){
+  if(!row||!confirm(`${row.ship_no} ${row.milestone} 절점의 작업완료를 취소할까요?\n다시 진행 중 목록으로 돌아갑니다.`))return;
+  const {error}=await supabase.from(PRIORITY_MS_TABLE).delete().eq("id",row.id);
+  if(error){alert("취소 실패: "+error.message);return}
+  await loadPriority();$("priorityStatus").textContent=`작업완료 취소 · ${row.ship_no} ${row.milestone}`;
+}
+function prFillShipSelect(type,ship){
+  const ships=prShips(),types=[...new Set([...SHIP_TYPES.filter(t=>ships.some(s=>s.ship_type===t)),...ships.map(s=>s.ship_type).filter(Boolean)])];
+  const ts=$("prType");ts.innerHTML=types.map(t=>`<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join("");ts.value=types.includes(type)?type:(types[0]||"");
+  const fill=keep=>{const list=ships.filter(s=>s.ship_type===ts.value);const ss=$("prShipNo");ss.innerHTML=list.map(s=>`<option value="${escapeHtml(s.ship_no)}">${escapeHtml(s.ship_no)}</option>`).join("");if(keep&&list.some(s=>s.ship_no===keep))ss.value=keep};
+  fill(ship);ts.onchange=()=>fill("");
+}
+function openPriorityForm(row=null){
+  prEditId=row?row.id:null;$("priorityFormTitle").textContent=row?`PE 블록 수정 · ${row.ship_no} ${row.block}`:"PE 블록 추가";
+  const ship=row?row.ship_no:(prShip||""),type=row?row.ship_type:(prRows.find(r=>r.ship_no===prShip)?.ship_type||"");
+  prFillShipSelect(type,ship);
+  $("prBlock").value=row?row.block:"";$("prStart").value=row?productionDateOnly(row.pe_start):"";$("prFinish").value=row?productionDateOnly(row.pe_finish):"";$("prNote").value=row?row.note||"":"";$("prFormStatus").textContent="";
+  $("priorityForm").classList.remove("hidden");$("priorityAddBtn").classList.add("hidden");$("priorityForm").scrollIntoView({block:"start",behavior:"smooth"});
+}
+function closePriorityForm(){$("priorityForm").classList.add("hidden");$("priorityAddBtn").classList.remove("hidden");prEditId=null}
+async function savePriorityRow(){
+  const status=$("prFormStatus");
+  const v={ship_type:$("prType").value,ship_no:normalizeName($("prShipNo").value),block:normalizeName($("prBlock").value).toUpperCase(),pe_start:$("prStart").value||null,pe_finish:$("prFinish").value||null,note:normalizeName($("prNote").value)||null};
+  if(!v.ship_no||!v.block){status.textContent="호선과 BLOCK 을 적으세요.";return}
+  if(v.pe_start&&v.pe_start>v.pe_finish){status.textContent="PE START 가 PE FINISH 보다 늦습니다.";return}
+  if(prRows.some(r=>r.ship_no===v.ship_no&&r.block===v.block&&String(r.id)!==String(prEditId))){status.textContent=`${v.ship_no} ${v.block} 은 이미 있습니다. 날짜를 바꾸려면 목록에서 지우고 다시 추가하세요.`;return}
+  status.textContent="저장 중...";
+  const now=new Date().toISOString();
+  const q=prEditId?supabase.from(PRIORITY_TABLE).update({...v,updated_at:now}).eq("id",prEditId):supabase.from(PRIORITY_TABLE).insert({...v,author_name:currentUserName,created_by:currentUserId,updated_at:now});
+  const {error}=await q;
+  if(error){status.textContent="저장 실패: "+(prSchemaMessage(error)||error.message);return}
+  prShip=v.ship_no;closePriorityForm();await loadPriority();$("priorityStatus").textContent=`저장 완료 · ${v.ship_no} ${v.block}`;
+}
+async function setPriorityDone(row,done){
+  if(!row)return;
+  if(!confirm(done?`${row.ship_no} ${row.block} 블록 작업을 모두 끝냈나요?\n[확인]을 누르면 작업완료로 처리되어 완료 목록으로 옮겨집니다.`:`${row.ship_no} ${row.block} 블록의 작업완료를 취소할까요?\n다시 진행 중 목록으로 돌아갑니다.`))return;
+  const now=new Date().toISOString();
+  const {error}=await supabase.from(PRIORITY_TABLE).update(done?{done_at:now,done_by:currentUserName||null,updated_at:now}:{done_at:null,done_by:null,updated_at:now}).eq("id",row.id);
+  if(error){alert((done?"작업완료 실패: ":"취소 실패: ")+(prSchemaMessage(error)||error.message));return}
+  await loadPriority();$("priorityStatus").textContent=done?`작업완료 · ${row.ship_no} ${row.block} (완료 목록으로 옮김)`:`작업완료 취소 · ${row.ship_no} ${row.block}`;
+}
+async function deletePriorityRow(row){
+  if(!row||!confirm(`${row.ship_no} ${row.block} 블록을 지울까요?`))return;
+  const {error}=await supabase.from(PRIORITY_TABLE).delete().eq("id",row.id);
+  if(error){alert("삭제 실패: "+error.message);return}
+  await loadPriority();$("priorityStatus").textContent=`삭제 완료 · ${row.ship_no} ${row.block}`;
+}
+/* 호선 절점 항목: 진행 중 호선마다 다음 절점 1개(K/L → L/C → S/T → D/L 중 오늘 이후 첫 날짜). 모두 지난 호선(인도 완료)은 뺌 */
+function prMilestoneItems(){
+  const today=localToday(),out=[];
+  prShips().forEach(s=>{
+    const ship=normalizeName(s.ship_no),stage=s.lc&&today>=s.lc?"안벽":s.kl&&today>=s.kl?"DOCK":"P.E";
+    const ms=[["K/L",s.kl],["L/C",s.lc],["S/T",s.st],["D/L",s.dl]];
+    const doneOf=k=>prMsDone.find(d=>d.ship_no===ship&&d.milestone===k);
+    const next=ms.find(([k,d])=>d&&d>=today&&!doneOf(k))||null;
+    const days=next?prDays(next[1]):null;
+    const finishedShip=!next&&((s.dl&&s.dl<today)||!!doneOf("D/L"));
+    const lastPast=next?null:[...ms].slice(0,3).reverse().find(([,d])=>d&&d<today);   /* 인도지연: 다음 절점 없음 · D/L 없음 · 지난 절점 있음 */
+    const delayed=!next&&!s.dl&&!!lastPast;
+    if(!finishedShip)out.push({kind:"ms",id:"ms-"+ship,ship_type:s.ship_type,ship_no:ship,stage,ms,next,days,grade:delayed?{key:"gl",label:"인도지연",score:null}:prGrade(days),finished:false,doneOf,delayed,lastPast});
+    ms.forEach(([k,d])=>{const r=doneOf(k);if(!r)return;const day=productionDateOnly(new Date(r.done_at).toLocaleDateString("sv-SE",{timeZone:"Asia/Seoul"}));
+      out.push({kind:"ms",id:r.id,doneRow:r,ship_type:s.ship_type,ship_no:ship,stage,ms,next:[k,d||productionDateOnly(r.ms_date)],days:null,grade:{key:"gd",label:"작업 완료",score:null},finished:true,endDay:day,block:k,doneOf})});
+  });
+  return out;
+}
+$("openPriorityBtn").onclick=()=>{prShip="";prGradeSel="";prShowDone=false;closePriorityForm();showPriority("pe",true)};
+$("priorityRefreshBtn").onclick=loadPriority;
+$("priorityAddBtn").onclick=()=>openPriorityForm(null);
+$("prCancelBtn").onclick=closePriorityForm;
+$("prSaveBtn").onclick=savePriorityRow;
 
 /* ---------- 주간계획입력 ---------- */
 /* 표 production_weekly_plans: 한 줄 = 계획 주(월요일) · 작업 하나 · 작업 요일 · 계획 인원 · 담당 반장.
@@ -5746,7 +5975,7 @@ $("notificationBtn").onclick=()=>showMyWork(true);
 $("refreshMyWorkBtn").onclick=loadMyWork;
 
 /* ---------- 브라우저 뒤로가기 ---------- */
-async function renderHistoryState(state){const t=state||{screen:"auth"};if(t.screen!=="image")hideImageModalOnly();if(t.screen!=="log"&&t.screen!=="image")hideHistoryModalOnly();if(t.screen==="auth"){showAuth();return}if(t.admin){if(!await checkCurrentUserAdmin()){showAuth();replaceState({screen:"auth"});return}isAdmin=true;currentUserName="관리자"}showHeader();if(t.screen==="home"){showHome(false);return}if(t.screen==="mywork"){showMyWork(false);return}if(t.screen==="schedule-tab"){showScheduleTab(t.tab||"register");return}if(t.screen==="production-dashboard"){showProductionDashboard(false);return}if(t.screen==="weekly"){showWeekly(t.tab||"input",false);return}if(t.screen==="board"){showBoard(false);return}if(t.screen==="material"){showMaterial(t.tab||"out",false);return}if(t.screen==="equip-cards"){showEquipCards(t.tab||"cards",false);return}if(t.screen==="equip-card"){showEquipCard(t.id,false);return}if(t.screen==="equip-register"){showEquipRegister(false);return}if(t.screen==="bhd-tab"){showBhdTab(t.tab||"register");return}if(t.screen==="bhd-edit"){const r=await fetchRecordById(t.recordId);if(r)await loadForEdit(r,false);else showBhdTab("list");return}if(t.screen==="bhd-detail"){const r=await fetchRecordById(t.recordId);if(r)await renderRecordDetail(r,false);else showBhdTab("list");return}if(t.screen==="request-tab"){showRequestTab(t.tab||"register");return}if(t.screen==="request-detail"){const r=await fetchRequestById(t.recordId);if(r)await renderRequestDetail(r,false);else showRequestTab("list");return}if(t.screen==="log"){const r=await fetchRecordById(t.recordId);if(r)await openHistoryModal(r,Number(t.logIndex||0),false);return}if(t.screen==="image"){showImageModalOnly(t.url,t.filename||"HWDK-photo.jpg",!!t.mirror)}}
+async function renderHistoryState(state){const t=state||{screen:"auth"};if(t.screen!=="image")hideImageModalOnly();if(t.screen!=="log"&&t.screen!=="image")hideHistoryModalOnly();if(t.screen==="auth"){showAuth();return}if(t.admin){if(!await checkCurrentUserAdmin()){showAuth();replaceState({screen:"auth"});return}isAdmin=true;currentUserName="관리자"}showHeader();if(t.screen==="home"){showHome(false);return}if(t.screen==="mywork"){showMyWork(false);return}if(t.screen==="schedule-tab"){showScheduleTab(t.tab||"register");return}if(t.screen==="production-dashboard"){showProductionDashboard(false);return}if(t.screen==="weekly"){showWeekly(t.tab||"input",false);return}if(t.screen==="priority"){showPriority(t.tab||"pe",false);return}if(t.screen==="board"){showBoard(false);return}if(t.screen==="material"){showMaterial(t.tab||"out",false);return}if(t.screen==="equip-cards"){showEquipCards(t.tab||"cards",false);return}if(t.screen==="equip-card"){showEquipCard(t.id,false);return}if(t.screen==="equip-register"){showEquipRegister(false);return}if(t.screen==="bhd-tab"){showBhdTab(t.tab||"register");return}if(t.screen==="bhd-edit"){const r=await fetchRecordById(t.recordId);if(r)await loadForEdit(r,false);else showBhdTab("list");return}if(t.screen==="bhd-detail"){const r=await fetchRecordById(t.recordId);if(r)await renderRecordDetail(r,false);else showBhdTab("list");return}if(t.screen==="request-tab"){showRequestTab(t.tab||"register");return}if(t.screen==="request-detail"){const r=await fetchRequestById(t.recordId);if(r)await renderRequestDetail(r,false);else showRequestTab("list");return}if(t.screen==="log"){const r=await fetchRecordById(t.recordId);if(r)await openHistoryModal(r,Number(t.logIndex||0),false);return}if(t.screen==="image"){showImageModalOnly(t.url,t.filename||"HWDK-photo.jpg",!!t.mirror)}}
 addEventListener("popstate",e=>{updateAppBackButton();renderHistoryState(e.state)});
 
 /* ---------- 초기 실행 ---------- */
