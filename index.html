@@ -3144,6 +3144,7 @@ async function showPriority(tab="pe",push=true){
 }
 async function loadPriority(){
   const seq=++prLoadSeq;$("priorityStatus").textContent="불러오는 중...";
+  try{await supabase.rpc("priority_cleanup")}catch(e){}   /* 날짜 지난 블록 · 절점 작업완료 표시는 DB 에서 지움 */
   const [res,msRes]=await Promise.all([fetchAllRows(()=>supabase.from(PRIORITY_TABLE).select("id,ship_type,ship_no,block,pe_start,pe_finish,note,author_name,done_at,done_by,updated_at").order("ship_no",{ascending:true}).order("pe_finish",{ascending:true}).order("id",{ascending:true})),
     fetchAllRows(()=>supabase.from(PRIORITY_MS_TABLE).select("id,ship_no,milestone,ms_date,done_at,done_by").order("done_at",{ascending:true}).order("id",{ascending:true})),loadScheduleData()]);
   if(seq!==prLoadSeq)return;
@@ -3171,7 +3172,7 @@ function renderPriority(){
   $("priorityGrades").querySelectorAll("button").forEach(b=>b.onclick=()=>{prGradeSel=b.dataset.g;renderPriority()});
   /* 카드: PE 블록 · 호선 절점을 나누지 않고 날짜 빠른 순(미정은 뒤, 같은 날은 절점 먼저), 완료(작업 완료 · 탑재 완료)는 접어 둠 */
   const active=shown.filter(r=>!r.finished&&(!prGradeSel||r.grade.key===prGradeSel)).sort((a,b)=>(PR_RANK[a.grade.key]??9)-(PR_RANK[b.grade.key]??9)||(a.days??99999)-(b.days??99999)||(a.kind===b.kind?0:a.kind==="ms"?-1:1)||typeRank(a.ship_type)-typeRank(b.ship_type)||String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true})||String(a.block||"").localeCompare(String(b.block||""),"ko",{numeric:true}));
-  const doneAll=prGradeSel?[]:shown.filter(r=>r.finished);
+  const doneAll=prGradeSel?[]:shown.filter(r=>r.finished&&r.grade.key==="gd"&&!(r.kind==="pe"&&r.days!==null&&r.days<0));   /* 날짜 지난 것은 남기지 않음 */
   const lastDone=new Map();doneAll.forEach(r=>{const d=r.endDay||"";if(!lastDone.has(r.ship_no)||d>lastDone.get(r.ship_no))lastDone.set(r.ship_no,d)});
   const done=doneAll.sort((a,b)=>typeRank(a.ship_type)-typeRank(b.ship_type)||String(lastDone.get(b.ship_no)).localeCompare(String(lastDone.get(a.ship_no)))||String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true})||String(b.endDay).localeCompare(String(a.endDay))||String(a.block).localeCompare(String(b.block),"ko",{numeric:true}));
   const doneHtml=()=>{let html="",cur="";done.forEach(r=>{const k=`${r.ship_type} ${r.ship_no}`;if(k!==cur){cur=k;html+=`<div class="pr-done-h">${escapeHtml(k)} <span>완료 ${done.filter(x=>x.ship_no===r.ship_no).length}</span></div>`}html+=card(r)});return html};
@@ -3180,7 +3181,7 @@ function renderPriority(){
   const card=r=>r.kind==="ms"?msCard(r):`<div class="pr-card ${r.grade.key}" data-id="${escapeHtml(r.id)}"><div class="pr-card-top"><span class="pr-badge ${r.grade.key}">${r.grade.label}</span><span class="pr-card-name"><small>${escapeHtml(r.ship_type||"")}</small>${escapeHtml(r.ship_no)} · ${escapeHtml(r.block)}<span class="pr-stage pe">PE 블록</span></span><span class="pr-dday">${r.grade.key==="gd"?`${prMD(r.endDay)} 완료`:prDdayText(r.days)}</span></div><div class="pr-card-dates">PE START ${prMD(r.pe_start)} → PE FINISH ${prMD(r.pe_finish)}${r.grade.score?` · ${r.grade.score}점`:""}</div>${r.grade.key==="gd"?`<div class="pr-card-meta">작업완료 ${prMD(r.endDay)}${r.done_by?` · ${escapeHtml(r.done_by)}`:""}</div>`:""}${r.note?`<div class="pr-card-meta">${escapeHtml(r.note)}</div>`:""}<div class="pr-card-act">${r.finished?(r.grade.key==="gd"?`<button type="button" data-pr-undo="${escapeHtml(r.id)}">완료 취소</button>`:""):`<button type="button" class="ok" data-pr-done="${escapeHtml(r.id)}">작업완료</button>`}<button type="button" class="del" data-pr-del="${escapeHtml(r.id)}">삭제</button></div></div>`;
   const box=$("priorityList");
   box.innerHTML=(active.length?active.map(card).join(""):`<div class="pr-empty">${rows.length?"이 조건의 일정이 없습니다.":"일정이 없습니다. PE 블록은 아래 [＋ PE 블록 추가]로 적습니다."}</div>`)+(prShowDone?doneHtml():"");
-  const tg=$("priorityDoneToggle");tg.classList.toggle("hidden",!done.length);tg.textContent=prShowDone?`완료 ${done.length}건 접기`:`완료 ${done.length}건 보기 (작업 완료 · 탑재 완료)`;tg.onclick=()=>{prShowDone=!prShowDone;renderPriority()};
+  const tg=$("priorityDoneToggle");tg.classList.toggle("hidden",!done.length);tg.textContent=prShowDone?`작업완료 ${done.length}건 접기`:`작업완료 ${done.length}건 보기`;tg.onclick=()=>{prShowDone=!prShowDone;renderPriority()};
   box.querySelectorAll("[data-pr-done]").forEach(b=>b.onclick=()=>setPriorityDone(prRows.find(r=>String(r.id)===b.dataset.prDone),true));
   box.querySelectorAll("[data-pr-undo]").forEach(b=>b.onclick=()=>setPriorityDone(prRows.find(r=>String(r.id)===b.dataset.prUndo),false));
   box.querySelectorAll("[data-pr-del]").forEach(b=>b.onclick=()=>deletePriorityRow(prRows.find(r=>String(r.id)===b.dataset.prDel)));
@@ -3255,7 +3256,7 @@ function prMilestoneItems(){
     const lastPast=next?null:[...ms].slice(0,3).reverse().find(([,d])=>d&&d<today);   /* 인도지연: 다음 절점 없음 · D/L 없음 · 지난 절점 있음 */
     const delayed=!next&&!s.dl&&!!lastPast;
     if(!finishedShip)out.push({kind:"ms",id:"ms-"+ship,ship_type:s.ship_type,ship_no:ship,stage,ms,next,days,grade:delayed?{key:"gl",label:"인도지연",score:null}:prGrade(days),finished:false,doneOf,delayed,lastPast});
-    ms.forEach(([k,d])=>{const r=doneOf(k);if(!r)return;const day=productionDateOnly(new Date(r.done_at).toLocaleDateString("sv-SE",{timeZone:"Asia/Seoul"}));
+    ms.forEach(([k,d])=>{const r=doneOf(k);if(!r||(d&&d<today))return;const day=productionDateOnly(new Date(r.done_at).toLocaleDateString("sv-SE",{timeZone:"Asia/Seoul"}));
       out.push({kind:"ms",id:r.id,doneRow:r,ship_type:s.ship_type,ship_no:ship,stage,ms,next:[k,d||productionDateOnly(r.ms_date)],days:null,grade:{key:"gd",label:"작업 완료",score:null},finished:true,endDay:day,block:k,doneOf})});
   });
   return out;
