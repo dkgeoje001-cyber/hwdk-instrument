@@ -210,6 +210,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .pr-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 10px}
 .pr-form-grid .pr-wide{grid-column:1/-1}
 .pr-form-act{display:grid;grid-template-columns:1fr 2fr;gap:8px;margin-top:10px}.pr-form-act button{margin-top:0}
+.pr-window-note{margin-top:8px;font-size:12px;color:#7a8494;font-weight:700}
 .pr-empty{margin-top:12px;padding:14px;border:1px dashed #cfd8df;border-radius:10px;color:#64748b;font-size:14px;text-align:center}
 .pr-ms{margin-top:10px;border:1px solid #dde4ea;border-left:6px solid #c0c7d0;border-radius:10px;background:#fff;padding:10px 12px}
 .pr-ms.gx{border-left-color:#c0c7d0}.pr-ms.gl{border-left-color:#6f42c1;background:#faf7fe}.pr-ms.gl .pr-dday{color:#5a32a3}.pr-ms.gd{border-left-color:#7cbf8e;background:#f7fbf8}.pr-ms.gd .pr-dday{font-size:14px;color:#1f6b33}.pr-ms.g1{border-left-color:#d93025}.pr-ms.g2{border-left-color:#f08c00}.pr-ms.g3{border-left-color:#e3c000}.pr-ms.g4{border-left-color:#2e8b3e}
@@ -833,6 +834,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
         <select id="priorityShip" aria-label="호선"></select>
         <div id="priorityGrades" class="pr-grades"></div>
       </div>
+      <div id="priorityWindowNote" class="pr-window-note"></div>
       <div id="priorityStatus" class="status"></div>
       <div id="priorityList"></div>
       <button id="priorityDoneToggle" class="secondary pr-done-toggle hidden" type="button"></button>
@@ -3119,7 +3121,9 @@ $("productionDashboardShip").addEventListener("keydown",e=>{if(e.key==="Enter")l
    [작업완료]를 누른 블록(done_at)은 날짜와 상관없이 작업 완료 → 완료 목록. 완료 목록 = 작업 완료 + 탑재 완료(11-03 16:25). */
 const PRIORITY_TABLE="production_pe_blocks",PRIORITY_MS_TABLE="production_priority_ms_done";
 const PR_GRADES=[{key:"g1",label:"최긴급"},{key:"g2",label:"긴급"},{key:"g3",label:"보통"},{key:"gl",label:"인도지연"},{key:"g4",label:"여유"},{key:"g0",label:"탑재 완료"}];
-const PR_RANK={g1:0,g2:1,g3:2,gl:3,g4:4,gx:5};   /* 목록 순서: 최긴급 → 긴급 → 보통 → 인도지연 → 여유 → 미정 */
+const PR_RANK={g1:0,g2:1,g3:2,gl:3,g4:4,gx:5};
+const PR_WINDOW=40;   /* 앱은 D-40 이내만 보임(엑셀은 전체) */
+const prInWindow=r=>r.finished||r.grade.key==="gl"||(r.days!==null&&r.days>=0&&r.days<=PR_WINDOW);   /* 목록 순서: 최긴급 → 긴급 → 보통 → 인도지연 → 여유 → 미정 */
 let prRows=[],prMsDone=[],prShip="",prGradeSel="",prShowDone=false,prEditId=null,prLoadSeq=0;
 function prDays(v){const d=productionDateOnly(v);if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return null;const [y,m,dd]=d.split("-").map(Number),[ty,tm,td]=localToday().split("-").map(Number);return Math.round((Date.UTC(y,m-1,dd)-Date.UTC(ty,tm-1,td))/86400000)}
 function prScore(days){return days<=3?100:days<=7?80:days<=14?60:days<=30?40:20}
@@ -3159,11 +3163,13 @@ function prRowInfo(r){const days=prDays(r.pe_finish);const doneDay=r.done_at?pro
   return {...r,days,grade,finished:grade.key==="gd"||grade.key==="g0",endDay:doneDay||productionDateOnly(r.pe_finish)}}
 function renderPriority(){
   const ships=prShips(),order=new Map(ships.map((s,i)=>[normalizeName(s.ship_no),i]));
-  const rows=[...prRows.map(r=>({...prRowInfo(r),kind:"pe"})),...prMilestoneItems()];
+  const allRows=[...prRows.map(r=>({...prRowInfo(r),kind:"pe"})),...prMilestoneItems()];
+  const rows=allRows.filter(prInWindow),farN=allRows.length-rows.length;   /* D-40 밖 · 날짜 없음은 숨김 */
   const byShip=new Map();rows.forEach(r=>{if(!byShip.has(r.ship_no))byShip.set(r.ship_no,{ship_type:r.ship_type,ship_no:r.ship_no})});
   const typeRank=t=>{const i=SHIP_TYPES.indexOf(t);return i<0?99:i};
   const list=[...byShip.values()].sort((a,b)=>typeRank(a.ship_type)-typeRank(b.ship_type)||(order.get(a.ship_no)??999)-(order.get(b.ship_no)??999)||String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true}));
   /* 호선 고르기 · 등급 */
+  $("priorityWindowNote").textContent=`D-${PR_WINDOW} 이내만 표시${farN?` · 그 밖 ${farN}건(${PR_WINDOW+1}일 이상 · 날짜 없음)은 엑셀에서 확인`:""}`;
   const sel=$("priorityShip");sel.innerHTML=`<option value="">전체 호선</option>`+list.map(s=>`<option value="${escapeHtml(s.ship_no)}">${escapeHtml(s.ship_type||"")} ${escapeHtml(s.ship_no)}</option>`).join("");
   if(prShip&&!list.some(s=>s.ship_no===prShip))prShip="";sel.value=prShip;sel.onchange=()=>{prShip=sel.value;renderPriority()};
   const shown=rows.filter(r=>!prShip||r.ship_no===prShip);
@@ -3172,17 +3178,17 @@ function renderPriority(){
   $("priorityGrades").querySelectorAll("button").forEach(b=>b.onclick=()=>{prGradeSel=b.dataset.g;renderPriority()});
   /* 카드: PE 블록 · 호선 절점을 나누지 않고 날짜 빠른 순(미정은 뒤, 같은 날은 절점 먼저), 완료(작업 완료 · 탑재 완료)는 접어 둠 */
   const active=shown.filter(r=>!r.finished&&(!prGradeSel||r.grade.key===prGradeSel)).sort((a,b)=>(PR_RANK[a.grade.key]??9)-(PR_RANK[b.grade.key]??9)||(a.days??99999)-(b.days??99999)||(a.kind===b.kind?0:a.kind==="ms"?-1:1)||typeRank(a.ship_type)-typeRank(b.ship_type)||String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true})||String(a.block||"").localeCompare(String(b.block||""),"ko",{numeric:true}));
-  const doneAll=prGradeSel?[]:shown.filter(r=>r.finished&&r.grade.key==="gd"&&!(r.kind==="pe"&&r.days!==null&&r.days<0));   /* 날짜 지난 것은 남기지 않음 */
+  const doneAll=[];   /* 11-07: 작업완료 = 삭제, 완료 목록 없음 */   /* 날짜 지난 것은 남기지 않음 */
   const lastDone=new Map();doneAll.forEach(r=>{const d=r.endDay||"";if(!lastDone.has(r.ship_no)||d>lastDone.get(r.ship_no))lastDone.set(r.ship_no,d)});
   const done=doneAll.sort((a,b)=>typeRank(a.ship_type)-typeRank(b.ship_type)||String(lastDone.get(b.ship_no)).localeCompare(String(lastDone.get(a.ship_no)))||String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true})||String(b.endDay).localeCompare(String(a.endDay))||String(a.block).localeCompare(String(b.block),"ko",{numeric:true}));
   const doneHtml=()=>{let html="",cur="";done.forEach(r=>{const k=`${r.ship_type} ${r.ship_no}`;if(k!==cur){cur=k;html+=`<div class="pr-done-h">${escapeHtml(k)} <span>완료 ${done.filter(x=>x.ship_no===r.ship_no).length}</span></div>`}html+=card(r)});return html};
   const stCls={"P.E":"pe","DOCK":"dock","안벽":"an"},today=localToday();
   const msCard=i=>{const done=i.grade.key==="gd";return `<div class="pr-ms ${i.grade.key}" data-ms="${escapeHtml(i.ship_no)}"><div class="pr-ms-top"><span class="pr-badge ${i.grade.key}">${i.grade.label}</span><span class="pr-ms-name"><small class="pr-type">${escapeHtml(i.ship_type||"")}</small>${escapeHtml(i.ship_no)} · ${i.next?i.next[0]:i.delayed?"인도지연":"절점"}<span class="pr-stage ${stCls[i.stage]}">${i.stage}</span></span><span class="pr-dday">${done?`${prMD(i.endDay)} 완료`:i.next?(i.days===0?"D-DAY":`D-${i.days}`):i.delayed?"지연":"미정"}</span></div><div class="pr-ms-next">${done?`${i.next[0]} ${prMD(i.next[1])} 절점 · 작업완료 ${prMD(i.endDay)}${i.doneRow.done_by?` · ${escapeHtml(i.doneRow.done_by)}`:""}`:i.next?`다음 절점 · ${i.next[0]} ${prMD(i.next[1])}${i.grade.score?` · ${i.grade.score}점`:""}`:i.delayed?`${i.lastPast[0]} ${prMD(i.lastPast[1])} 지남 · D/L 날짜 없음`:"다가오는 절점 없음(미정)"}</div><div class="pr-ms-dates">${i.ms.map(([k,d])=>`<div class="${i.next&&i.next[0]===k?"next":(i.doneOf(k)?"done":(d&&d<today?"past":""))}">${k}<b>${d?productionShortDate(d):"미정"}</b>${!done&&i.doneOf(k)?`<i>완료</i>`:""}</div>`).join("")}</div>${done?`<div class="pr-card-act"><button type="button" data-ms-undo="${escapeHtml(i.doneRow.id)}">완료 취소</button></div>`:(i.next?`<div class="pr-card-act"><button type="button" class="ok" data-ms-done="${escapeHtml(i.ship_no)}|${i.next[0]}">작업완료</button></div>`:"")}</div>`};
-  const card=r=>r.kind==="ms"?msCard(r):`<div class="pr-card ${r.grade.key}" data-id="${escapeHtml(r.id)}"><div class="pr-card-top"><span class="pr-badge ${r.grade.key}">${r.grade.label}</span><span class="pr-card-name"><small>${escapeHtml(r.ship_type||"")}</small>${escapeHtml(r.ship_no)} · ${escapeHtml(r.block)}<span class="pr-stage pe">PE 블록</span></span><span class="pr-dday">${r.grade.key==="gd"?`${prMD(r.endDay)} 완료`:prDdayText(r.days)}</span></div><div class="pr-card-dates">PE START ${prMD(r.pe_start)} → PE FINISH ${prMD(r.pe_finish)}${r.grade.score?` · ${r.grade.score}점`:""}</div>${r.grade.key==="gd"?`<div class="pr-card-meta">작업완료 ${prMD(r.endDay)}${r.done_by?` · ${escapeHtml(r.done_by)}`:""}</div>`:""}${r.note?`<div class="pr-card-meta">${escapeHtml(r.note)}</div>`:""}<div class="pr-card-act">${r.finished?(r.grade.key==="gd"?`<button type="button" data-pr-undo="${escapeHtml(r.id)}">완료 취소</button>`:""):`<button type="button" class="ok" data-pr-done="${escapeHtml(r.id)}">작업완료</button>`}<button type="button" class="del" data-pr-del="${escapeHtml(r.id)}">삭제</button></div></div>`;
+  const card=r=>r.kind==="ms"?msCard(r):`<div class="pr-card ${r.grade.key}" data-id="${escapeHtml(r.id)}"><div class="pr-card-top"><span class="pr-badge ${r.grade.key}">${r.grade.label}</span><span class="pr-card-name"><small>${escapeHtml(r.ship_type||"")}</small>${escapeHtml(r.ship_no)} · ${escapeHtml(r.block)}<span class="pr-stage pe">PE 블록</span></span><span class="pr-dday">${r.grade.key==="gd"?`${prMD(r.endDay)} 완료`:prDdayText(r.days)}</span></div><div class="pr-card-dates">PE START ${prMD(r.pe_start)} → PE FINISH ${prMD(r.pe_finish)}${r.grade.score?` · ${r.grade.score}점`:""}</div>${r.grade.key==="gd"?`<div class="pr-card-meta">작업완료 ${prMD(r.endDay)}${r.done_by?` · ${escapeHtml(r.done_by)}`:""}</div>`:""}${r.note?`<div class="pr-card-meta">${escapeHtml(r.note)}</div>`:""}<div class="pr-card-act">${r.finished?"":`<button type="button" class="ok" data-pr-done="${escapeHtml(r.id)}">작업완료</button>`}</div></div>`;
   const box=$("priorityList");
-  box.innerHTML=(active.length?active.map(card).join(""):`<div class="pr-empty">${rows.length?"이 조건의 일정이 없습니다.":"일정이 없습니다. PE 블록은 아래 [＋ PE 블록 추가]로 적습니다."}</div>`)+(prShowDone?doneHtml():"");
-  const tg=$("priorityDoneToggle");tg.classList.toggle("hidden",!done.length);tg.textContent=prShowDone?`작업완료 ${done.length}건 접기`:`작업완료 ${done.length}건 보기`;tg.onclick=()=>{prShowDone=!prShowDone;renderPriority()};
-  box.querySelectorAll("[data-pr-done]").forEach(b=>b.onclick=()=>setPriorityDone(prRows.find(r=>String(r.id)===b.dataset.prDone),true));
+  box.innerHTML=(active.length?active.map(card).join(""):`<div class="pr-empty">${rows.length?"이 조건의 일정이 없습니다.":`D-${PR_WINDOW} 이내 일정이 없습니다.`}</div>`)+(prShowDone?doneHtml():"");
+  const tg=$("priorityDoneToggle");tg.classList.add("hidden");tg.textContent=prShowDone?`작업완료 ${done.length}건 접기`:`작업완료 ${done.length}건 보기`;tg.onclick=()=>{prShowDone=!prShowDone;renderPriority()};
+  box.querySelectorAll("[data-pr-done]").forEach(b=>b.onclick=()=>completePriorityRow(prRows.find(r=>String(r.id)===b.dataset.prDone)));
   box.querySelectorAll("[data-pr-undo]").forEach(b=>b.onclick=()=>setPriorityDone(prRows.find(r=>String(r.id)===b.dataset.prUndo),false));
   box.querySelectorAll("[data-pr-del]").forEach(b=>b.onclick=()=>deletePriorityRow(prRows.find(r=>String(r.id)===b.dataset.prDel)));
   box.querySelectorAll("[data-ms-done]").forEach(b=>b.onclick=()=>{const [ship,k]=b.dataset.msDone.split("|");setMilestoneDone(rows.find(r=>r.kind==="ms"&&!r.finished&&r.ship_no===ship),k)});
@@ -3191,10 +3197,10 @@ function renderPriority(){
 async function setMilestoneDone(item,k){
   if(!item||!item.next)return;
   const after=item.ms.find(([kk,d])=>kk!==k&&d&&d>=localToday()&&!item.doneOf(kk)&&item.ms.findIndex(x=>x[0]===kk)>item.ms.findIndex(x=>x[0]===k));
-  if(!confirm(`${item.ship_no} ${k}(${prMD(item.next[1])}) 작업을 모두 끝냈나요?\n[확인]을 누르면 완료 목록으로 옮깁니다.${after?`\n그 다음 절점 ${after[0]} ${prMD(after[1])} 이(가) 목록에 나옵니다.`:""}\n(마스터 일정 · 공정률은 바뀌지 않습니다)`))return;
+  if(!confirm(`[작업완료] ${item.ship_no} ${k} (${prMD(item.next[1])})\n\n정말 작업이 모두 완료되어 목록에서 삭제할까요?\n삭제하면 되돌릴 수 없습니다.${after?`\n이 호선의 다음 절점은 ${after[0]} ${prMD(after[1])} 입니다.`:""}\n(마스터 일정 · 공정률은 바뀌지 않습니다)`))return;
   const {error}=await supabase.from(PRIORITY_MS_TABLE).insert({ship_no:item.ship_no,milestone:k,ms_date:item.next[1]||null,done_at:new Date().toISOString(),done_by:currentUserName||null,created_by:currentUserId});
   if(error){alert("작업완료 실패: "+(prSchemaMessage(error)||error.message));return}
-  await loadPriority();$("priorityStatus").textContent=`작업완료 · ${item.ship_no} ${k} (완료 목록으로 옮김)`;
+  await loadPriority();$("priorityStatus").textContent=`작업완료 · ${item.ship_no} ${k} 삭제됨`;
 }
 async function undoMilestoneDone(row){
   if(!row||!confirm(`${row.ship_no} ${row.milestone} 절점의 작업완료를 취소할까요?\n다시 진행 중 목록으로 돌아갑니다.`))return;
@@ -3227,7 +3233,7 @@ async function savePriorityRow(){
   const q=prEditId?supabase.from(PRIORITY_TABLE).update({...v,updated_at:now}).eq("id",prEditId):supabase.from(PRIORITY_TABLE).insert({...v,author_name:currentUserName,created_by:currentUserId,updated_at:now});
   const {error}=await q;
   if(error){status.textContent="저장 실패: "+(prSchemaMessage(error)||error.message);return}
-  prShip=v.ship_no;closePriorityForm();await loadPriority();$("priorityStatus").textContent=`저장 완료 · ${v.ship_no} ${v.block}`;
+  prShip=v.ship_no;closePriorityForm();await loadPriority();{const d=prDays(v.pe_finish);$("priorityStatus").textContent=`저장 완료 · ${v.ship_no} ${v.block}`+(d===null||d>PR_WINDOW?` (D-${PR_WINDOW} 밖이라 앱 목록에는 안 보임 · 엑셀에서 확인)`:"")}
 }
 async function setPriorityDone(row,done){
   if(!row)return;
@@ -3236,6 +3242,13 @@ async function setPriorityDone(row,done){
   const {error}=await supabase.from(PRIORITY_TABLE).update(done?{done_at:now,done_by:currentUserName||null,updated_at:now}:{done_at:null,done_by:null,updated_at:now}).eq("id",row.id);
   if(error){alert((done?"작업완료 실패: ":"취소 실패: ")+(prSchemaMessage(error)||error.message));return}
   await loadPriority();$("priorityStatus").textContent=done?`작업완료 · ${row.ship_no} ${row.block} (완료 목록으로 옮김)`:`작업완료 취소 · ${row.ship_no} ${row.block}`;
+}
+async function completePriorityRow(row){
+  if(!row)return;
+  if(!confirm(`[작업완료] ${row.ship_no} ${row.block} 블록 (PE FINISH ${prMD(row.pe_finish)})\n\n정말 작업이 모두 완료되어 삭제할까요?\n삭제하면 되돌릴 수 없습니다.`))return;
+  const {error}=await supabase.from(PRIORITY_TABLE).delete().eq("id",row.id);
+  if(error){alert("작업완료(삭제) 실패: "+(prSchemaMessage(error)||error.message));return}
+  await loadPriority();$("priorityStatus").textContent=`작업완료 · ${row.ship_no} ${row.block} 삭제됨`;
 }
 async function deletePriorityRow(row){
   if(!row||!confirm(`${row.ship_no} ${row.block} 블록을 지울까요?`))return;
