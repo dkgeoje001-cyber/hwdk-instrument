@@ -559,7 +559,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .note-ref-w{margin-top:7px;font-size:12px;font-weight:900;color:#16324f}
 .note-ref-it{margin-top:4px;padding:6px 8px;background:#fff;border:1px solid #f0e2b6;border-radius:7px;white-space:pre-wrap;overflow-wrap:anywhere}
 .note-ref-h{font-weight:900;color:#5b4300;white-space:normal}.note-ref-h span{font-weight:600;color:#8a6d1f;margin-left:6px}.note-ref-h em{font-style:normal;margin-left:4px;padding:0 6px;border-radius:999px;background:#e4eef8;color:#16324f;font-size:11px}
-.note-ref-more{margin-top:4px;color:#8a6d1f;font-size:12px}
+.note-ref-ship{display:inline-block;margin-right:6px;padding:1px 9px;border-radius:999px;background:#16324f;color:#fff;font-weight:900;font-size:12px;white-space:nowrap;vertical-align:1px}.note-ref-it em{font-style:normal;margin-right:6px;padding:0 6px;border-radius:999px;background:#e4eef8;color:#16324f;font-size:11px;font-weight:800;white-space:nowrap}.note-ref-by{margin-top:3px;font-size:11px;color:#8a6d1f;white-space:normal}.note-ref-more{margin-top:4px;color:#8a6d1f;font-size:12px}
 .schedule-card-note{margin-top:8px;padding:8px 10px;background:#fff8e7;border:1px solid #ecd9a0;border-radius:8px;font-size:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;color:#3f3210}
 .schedule-card-note strong{color:#7a5200;margin-right:4px}
 .schedule-edit-memo{min-height:56px;font-size:15px}
@@ -2044,7 +2044,7 @@ function renderScheduleNoteRef(card){
   const sameN=groups.reduce((n,g)=>n+g.list.filter(x=>productionNormalize(x.ship_no)===me).length,0);
   box.innerHTML=`<div class="note-ref-t">${sameN?"같은 작업 비고":"같은 작업 · 앞 호선 비고"} ${total}건<span>${escapeHtml(sel.ship_type)} · ${escapeHtml(sel.stage)} · ${escapeHtml(sel.area)}</span></div>`
     +groups.map(g=>(groups.length>1||works.length>1?`<div class="note-ref-w">${escapeHtml(g.m.work_type)} ${escapeHtml(g.m.work_method)}</div>`:"")
-      +g.list.slice(0,3).map(x=>`<div class="note-ref-it"><div class="note-ref-h">${escapeHtml(x.ship_no||"-")}${productionNormalize(x.ship_no)===me?"<em>이 호선</em>":""}<span>${escapeHtml(productionShortDate(x.work_date))} · ${escapeHtml(x.author_name||"")}</span></div>${escapeHtml(x.note)}</div>`).join("")
+      +g.list.slice(0,3).map(x=>`<div class="note-ref-it"><span class="note-ref-ship">${escapeHtml(x.ship_no||"-")}호선</span>${productionNormalize(x.ship_no)===me?"<em>이 호선</em>":""}${escapeHtml(x.note)}<div class="note-ref-by">${escapeHtml(productionShortDate(x.work_date))} · ${escapeHtml(x.author_name||"")}</div></div>`).join("")
       +(g.list.length>3?`<div class="note-ref-more">외 ${g.list.length-3}건 · 엑셀 '후속호선 검토 비고' 시트에서 모두 볼 수 있습니다</div>`:"")).join("");
   box.classList.remove("hidden");
 }
