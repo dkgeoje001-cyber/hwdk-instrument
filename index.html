@@ -251,6 +251,10 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .wk-total{box-sizing:border-box;display:flex;align-items:center;justify-content:center;margin-top:4px;border:1px solid #b9cfe0;border-radius:10px;background:#eaf2f8;font-size:18px;font-weight:900;color:#16324f}
 .wk-total.empty{color:#9aa5b1;font-size:15px;font-weight:700;background:#f1f4f7;border-color:#dbe2e8}
 .wk-sum small.crew{color:#52606d}
+.area-panel{grid-column:1/-1;border:1px solid #16324f;border-radius:10px;background:#fff;overflow:hidden;box-shadow:0 6px 16px rgba(22,50,79,.16)}
+.area-sub{font-size:11px;font-weight:700;color:#7b8794}
+.schedule-area-box .multi-text,.schedule-type-box .multi-text,.schedule-method-box .multi-text{white-space:normal;line-height:1.3;word-break:keep-all;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.copy-hint{grid-column:1/-1;margin:2px 0 8px;padding:8px 10px;border-radius:8px;background:#e9f7ef;border:1px solid #9fd3b4;color:#1e6b46;font-size:13px;font-weight:700;line-height:1.45}.copy-hint b{font-weight:900}
 .wk-req{display:inline-block;margin-left:4px;padding:0 6px;border-radius:999px;background:#fdecea;color:#c0392b;font-size:11px;font-weight:900;line-height:16px;vertical-align:1px}
 .wk-card>label,.wk-sys>label{font-size:12px;color:#52606d}
 .wk-sub{color:#7a8794;font-weight:700}
@@ -1860,6 +1864,13 @@ function refreshScheduleCascade(card,fromIndex=0,reset=false){
     if(!value&&i>0&&options.length===1)value=options[0];
     selected[def.field]=value;
     const placeholder=parentMissing?`${SCHEDULE_LEVELS[i-1].label} 먼저 선택`:(options.length?`${def.label} 선택`:`등록된 ${def.label} 없음`);
+    if(def.field==="area"&&card.querySelector(".schedule-area-box")){
+      /* 11-12: 구역은 여러 개 — card._areas(고른 순서 아님, 목록 순서). select 에는 첫 구역만(다른 코드가 '구역을 골랐는지' 볼 때 씀) */
+      if(reset)card._areas=[];
+      card._areas=options.filter(v=>(card._areas||[]).includes(v));
+      if(!card._areas.length&&!parentMissing&&options.length===1)card._areas=[options[0]];
+      value=card._areas[0]||"";selected.area=value;
+    }
     select.innerHTML=`<option value="">${escapeHtml(placeholder)}</option>`+options.map(v=>`<option value="${escapeHtml(v)}"${v===value?" selected":""}>${escapeHtml(v)}</option>`).join("");
     select.disabled=parentMissing||!options.length;
   }
@@ -1869,6 +1880,14 @@ function refreshScheduleCascade(card,fromIndex=0,reset=false){
 
 /* ----- 작업구분 · 작업방식: 드롭다운을 펼쳐 여러 개 체크 ----- */
 function scheduleWorkKey(type,method,system=""){return type+"|||"+method+(system?"|||"+system:"")}
+/* 11-12: 구역 여러 개 — 카드 안의 작업구분 · 작업 열쇠에 구역을 붙입니다(같은 작업이 두 구역에 있어도 따로). */
+function scheduleTypeKey(area,type){return (area||"")+"@@"+type}
+function scheduleCardKey(m){return scheduleTypeKey(m.area,m.work_type)+"|||"+m.work_method+(m.system?"|||"+m.system:"")}
+function scheduleTypeParts(tk){const i=tk.indexOf("@@");return i<0?{area:"",type:tk}:{area:tk.slice(0,i),type:tk.slice(i+2)}}
+function scheduleMultiArea(card){return (card._areas||[]).length>1}
+/* 구역이 여러 개일 때만 이름 앞에 구역을 붙입니다. */
+function scheduleTypeLabel(card,tk){const p=scheduleTypeParts(tk);return scheduleMultiArea(card)?`${p.area} ${p.type}`:p.type}
+function scheduleWorkLabel(card,m,works){return (scheduleMultiArea(card)?m.area+" ":"")+`${m.work_type} ${scheduleMethodLabel(m,works)}`}
 /* SYSTEM 을 화면에 쓸 때: '/' 뒤에서만 줄을 바꾸고, 항목 이름(PUMP CONTROL · AIR HORN) 안에서는 끊지 않습니다(저장 값은 그대로). */
 function systemHtml(text){return String(text||"").split("/").map(item=>escapeHtml(item).replace(/ /g,"&nbsp;")).join("/<wbr>")}
 /* 마스터 SYSTEM 을 '/' 기준 항목으로 나눔: "VRC/RS/PUMP CONTROL" → ["VRC","RS","PUMP CONTROL"] */
@@ -1895,17 +1914,17 @@ function systemOverall(system,items,today=null){
 }
 function systemItemsLabel(items,rates){return items.map(x=>{const n=productionNumber(rates?.[x]);return n===null?x:`${x} ${Number(n.toFixed(1))}%`}).join(" · ")}
 /* 그 작업에서 체크한 SYSTEM 항목(마스터 순서) */
-function scheduleSysChecked(card,m){const set=card._sys.get(scheduleWorkKey(m.work_type,m.work_method,m.system));return systemItems(m.system).filter(x=>set&&set.has(x))}
-function scheduleWorkProgressKey(card,m){const sel=readScheduleSelection(card);return productionWorkKey(sel.ship_no,sel.stage,sel.area,m.work_type,m.work_method,m.system)}
+function scheduleSysChecked(card,m){const set=card._sys.get(scheduleCardKey(m));return systemItems(m.system).filter(x=>set&&set.has(x))}
+function scheduleWorkProgressKey(card,m){const sel=readScheduleSelection(card);return productionWorkKey(sel.ship_no,sel.stage,m.area,m.work_type,m.work_method,m.system)}
 function scheduleItemPrev(card,m,x){return scheduleItemProgress.get(scheduleWorkProgressKey(card,m))?.items.get(x)}
-function scheduleItemToday(card,m,x){const set=card._sys.get(scheduleWorkKey(m.work_type,m.work_method,m.system));if(!set||!set.has(x))return null;return productionNumber(card._rates.get(scheduleWorkKey(m.work_type,m.work_method,m.system)+"::"+x))}
+function scheduleItemToday(card,m,x){const set=card._sys.get(scheduleCardKey(m));if(!set||!set.has(x))return null;return productionNumber(card._rates.get(scheduleCardKey(m)+"::"+x))}
 function scheduleItemNow(card,m,x){const p=scheduleItemPrev(card,m,x),t=scheduleItemToday(card,m,x);if(t===null||t===undefined)return p??null;return p!==undefined&&p>t?p:t}
 function scheduleTodayMap(card,m){const map=new Map();scheduleSysChecked(card,m).forEach(x=>{const t=scheduleItemToday(card,m,x);if(t!==null&&t!==undefined)map.set(x,t)});return map}
 /* 고른 작업이 바뀌면 체크 상태를 맞춤: 빠진 작업은 지우고, 항목이 하나뿐인 SYSTEM 은 바로 체크 */
 function syncScheduleSystems(card){
   const keys=new Set();
   scheduleSelectedWorks(card).forEach(m=>{
-    const k=scheduleWorkKey(m.work_type,m.work_method,m.system),items=systemItems(m.system);keys.add(k);
+    const k=scheduleCardKey(m),items=systemItems(m.system);keys.add(k);
     if(!card._sys.has(k))card._sys.set(k,new Set(items.length===1?items:[]));
     else{const set=card._sys.get(k);[...set].forEach(x=>{if(!items.includes(x))set.delete(x)})}
   });
@@ -1913,45 +1932,82 @@ function syncScheduleSystems(card){
 }
 /* 작업방식 이름. 같은 구역에 작업방식이 같고 SYSTEM 만 다른 줄이 있으면 SYSTEM 을 괄호로 붙여 구분합니다. */
 function scheduleMethodLabel(m,works){
-  const twin=m.system&&works.some(x=>x!==m&&x.work_type===m.work_type&&x.work_method===m.work_method);
+  const twin=m.system&&works.some(x=>x!==m&&x.area===m.area&&x.work_type===m.work_type&&x.work_method===m.work_method);
   return twin?`${m.work_method}(${m.system})`:m.work_method;
 }
 /* 고른 구역에 있는 마스터 작업 전체(엑셀 순서) */
 function scheduleAreaWorks(card){
-  const selected=readScheduleSelection(card);
-  if(SCHEDULE_LEVELS.some(def=>!selected[def.field]))return [];
-  return scheduleMaster.filter(m=>SCHEDULE_LEVELS.every(def=>m[def.field]===selected[def.field]));
+  const selected=readScheduleSelection(card),areas=card._areas&&card._areas.length?card._areas:(selected.area?[selected.area]:[]);
+  if(SCHEDULE_LEVELS.slice(0,3).some(def=>!selected[def.field])||!areas.length)return [];
+  const base=scheduleMaster.filter(m=>SCHEDULE_LEVELS.slice(0,3).every(def=>m[def.field]===selected[def.field]));
+  return areas.flatMap(a=>base.filter(m=>m.area===a));
 }
 /* 체크한 작업(작업구분 · 작업방식)만, 엑셀 순서대로 */
 function scheduleSelectedWorks(card){
-  return scheduleAreaWorks(card).filter(m=>card._types.includes(m.work_type)&&card._works.has(scheduleWorkKey(m.work_type,m.work_method,m.system)));
+  return scheduleAreaWorks(card).filter(m=>card._types.includes(scheduleTypeKey(m.area,m.work_type))&&card._works.has(scheduleCardKey(m)));
 }
-function toggleScheduleType(card,type){
+function toggleScheduleType(card,tk){
   const works=scheduleAreaWorks(card);
-  if(card._types.includes(type)){
-    card._types=card._types.filter(t=>t!==type);
-    [...card._works].forEach(key=>{if(key.startsWith(type+"|||"))card._works.delete(key)});
+  if(card._types.includes(tk)){
+    card._types=card._types.filter(t=>t!==tk);
+    [...card._works].forEach(key=>{if(key.startsWith(tk+"|||"))card._works.delete(key)});
   }else{
-    card._types.push(type);
+    card._types.push(tk);
     /* 작업방식이 하나뿐인 작업구분은 바로 체크해 둡니다. */
-    const methods=works.filter(m=>m.work_type===type);
-    if(methods.length===1)card._works.add(scheduleWorkKey(type,methods[0].work_method,methods[0].system));
+    const methods=works.filter(m=>scheduleTypeKey(m.area,m.work_type)===tk);
+    if(methods.length===1)card._works.add(scheduleCardKey(methods[0]));
   }
+  scheduleSortTypes(card);
 }
+/* 작업구분 순서를 구역 순서 → 엑셀 순서로 맞춤 */
+function scheduleSortTypes(card){const order=[...new Set(scheduleAreaWorks(card).map(m=>scheduleTypeKey(m.area,m.work_type)))];card._types.sort((a,b)=>order.indexOf(a)-order.indexOf(b))}
+/* 작업구분은 골랐는데 작업방식을 안 고른 것 */
+function scheduleTypesWithoutWork(card,works=scheduleSelectedWorks(card)){return card._types.filter(tk=>!works.some(m=>scheduleTypeKey(m.area,m.work_type)===tk))}
 function toggleScheduleWork(card,key){if(card._works.has(key))card._works.delete(key);else card._works.add(key)}
 
 /* 구역이 바뀌었거나 마스터를 다시 읽었을 때: 없는 항목은 빼고 화면을 다시 그립니다. */
 function syncScheduleWorkPicks(card){
   if(!card.querySelector(".schedule-type-box"))return;
-  const works=scheduleAreaWorks(card),types=[...new Set(works.map(m=>m.work_type))];
+  const works=scheduleAreaWorks(card),types=[...new Set(works.map(m=>scheduleTypeKey(m.area,m.work_type)))];
   card._types=types.filter(type=>card._types.includes(type));
-  const valid=new Set(works.filter(m=>card._types.includes(m.work_type)).map(m=>scheduleWorkKey(m.work_type,m.work_method,m.system)));
+  const valid=new Set(works.filter(m=>card._types.includes(scheduleTypeKey(m.area,m.work_type))).map(m=>scheduleCardKey(m)));
+  renderScheduleAreaBox(card);
   card._works=new Set([...card._works].filter(key=>valid.has(key)));
   if(!works.length)card._open="";
   if(card._weekly){renderWeeklyWorks(card);return}
   renderScheduleWorkBoxes(card);renderSchedulePanel(card);renderScheduleRates(card);updateScheduleSaveLabel();
 }
 
+/* 구역 칸(여러 개 체크) */
+function renderScheduleAreaBox(card){
+  const box=card.querySelector(".schedule-area-box");if(!box)return;
+  const select=card.querySelector(".schedule-area"),areas=card._areas||[],ph=select.options[0]?.textContent||"구역 선택";
+  const label=box.querySelector(".multi-text"),badge=box.querySelector(".multi-count");
+  label.textContent=areas.length?areas.join(", "):ph;label.classList.toggle("placeholder",!areas.length);
+  badge.textContent=`${areas.length}개`;badge.classList.toggle("hidden",areas.length<2);
+  box.disabled=select.disabled;const open=card._open==="area";box.classList.toggle("open",open);box.setAttribute("aria-expanded",open?"true":"false");
+  box.querySelector(".multi-caret").textContent=open?"▴":"▾";
+  const panel=card.querySelector(".area-panel");
+  if(!open){panel.classList.add("hidden");panel.innerHTML="";return}
+  const options=[...select.options].map(o=>o.value).filter(Boolean);
+  panel.innerHTML=`<div class="multi-list">${options.map(v=>{const on=areas.includes(v);return `<button type="button" role="checkbox" class="multi-row${on?" on":""}" data-kind="area" data-value="${escapeHtml(v)}" aria-checked="${on}"><span class="multi-check">${on?"✓":""}</span><span class="multi-label">${escapeHtml(v)}</span></button>`}).join("")}</div><div class="multi-foot"><span class="multi-foot-count">${areas.length}개 선택 · 같은 호선 여러 구역 가능</span><button type="button" class="multi-done">선택 완료</button></div>`;
+  panel.classList.remove("hidden");
+}
+function bindScheduleAreaPick(card,after){
+  const box=card.querySelector(".schedule-area-box");if(!box)return;
+  box.onclick=()=>{card._open=card._open==="area"?"":"area";after()};
+  card.querySelector(".area-panel").addEventListener("click",e=>{
+    if(e.target.closest(".multi-done")){card._open=card._types.length||!card._areas.length?"":"type";after();return}
+    const row=e.target.closest(".multi-row");if(!row)return;
+    const v=row.dataset.value,options=[...card.querySelector(".schedule-area").options].map(o=>o.value).filter(Boolean);
+    const set=new Set(card._areas||[]);if(set.has(v))set.delete(v);else set.add(v);
+    card._areas=options.filter(x=>set.has(x));
+    const select=card.querySelector(".schedule-area");select.value=card._areas[0]||"";
+    const list=card.querySelector(".area-panel .multi-list"),top=list?list.scrollTop:0;
+    syncScheduleWorkPicks(card);if(card._weekly)renderWeeklyBoxes(card);
+    const l2=card.querySelector(".area-panel .multi-list");if(l2)l2.scrollTop=top;
+  });
+}
 function renderScheduleWorkBoxes(card){
   const works=scheduleAreaWorks(card),selectedWorks=scheduleSelectedWorks(card);
   const paint=(box,text,placeholder,count,disabled,open)=>{
@@ -1961,19 +2017,19 @@ function renderScheduleWorkBoxes(card){
     box.disabled=disabled;box.classList.toggle("open",open);box.setAttribute("aria-expanded",open?"true":"false");
     box.querySelector(".multi-caret").textContent=open?"▴":"▾";
   };
-  paint(card.querySelector(".schedule-type-box"),!works.length?"구역 먼저 선택":(card._types.length?card._types.join(", "):"작업구분 선택"),!card._types.length,card._types.length,!works.length,card._open==="type");
-  const summary=card._types.map(type=>{const methods=selectedWorks.filter(m=>m.work_type===type).map(m=>scheduleMethodLabel(m,works));return methods.length?`${type} ${methods.join("·")}`:""}).filter(Boolean).join(" / ");
+  paint(card.querySelector(".schedule-type-box"),!works.length?"구역 먼저 선택":(card._types.length?card._types.map(tk=>scheduleTypeLabel(card,tk)).join(", "):"작업구분 선택"),!card._types.length,card._types.length,!works.length,card._open==="type");
+  const summary=card._types.map(tk=>{const methods=selectedWorks.filter(m=>scheduleTypeKey(m.area,m.work_type)===tk).map(m=>scheduleMethodLabel(m,works));return methods.length?`${scheduleTypeLabel(card,tk)} ${methods.join("·")}`:""}).filter(Boolean).join(" / ");
   paint(card.querySelector(".schedule-method-box"),!card._types.length?"작업구분 먼저 선택":(summary||"작업방식 선택"),!summary,selectedWorks.length,!card._types.length,card._open==="method");
   /* SYSTEM: 고른 작업 중 SYSTEM 이 있는 것만 */
   const withSys=selectedWorks.filter(m=>systemItems(m.system).length);
-  const sysSummary=withSys.map(m=>{const c=scheduleSysChecked(card,m);return c.length?`${m.work_type} ${scheduleMethodLabel(m,works)}: ${c.join("·")}`:""}).filter(Boolean).join(" / ");
+  const sysSummary=withSys.map(m=>{const c=scheduleSysChecked(card,m);return c.length?`${scheduleWorkLabel(card,m,works)}: ${c.join("·")}`:""}).filter(Boolean).join(" / ");
   const sysCount=withSys.reduce((n,m)=>n+scheduleSysChecked(card,m).length,0);
   paint(card.querySelector(".schedule-sys-box"),!selectedWorks.length?"작업방식 먼저 선택":(!withSys.length?"SYSTEM 없음":(sysSummary||"SYSTEM 체크")),!sysSummary,sysCount,!withSys.length,card._open==="system");
   if(sysSummary){
     const label=card.querySelector(".schedule-sys-box .multi-text");
-    label.innerHTML=withSys.map(m=>{const c=scheduleSysChecked(card,m);return c.length?`${escapeHtml(m.work_type)} ${escapeHtml(scheduleMethodLabel(m,works))}: ${c.map(x=>(scheduleItemNow(card,m,x)??0)>=100?`<span class="sys-ok">${escapeHtml(x)}✓</span>`:escapeHtml(x)).join("·")}`:""}).filter(Boolean).join(" / ");
+    label.innerHTML=withSys.map(m=>{const c=scheduleSysChecked(card,m);return c.length?`${escapeHtml(scheduleWorkLabel(card,m,works))}: ${c.map(x=>(scheduleItemNow(card,m,x)??0)>=100?`<span class="sys-ok">${escapeHtml(x)}✓</span>`:escapeHtml(x)).join("·")}`:""}).filter(Boolean).join(" / ");
   }
-  const missing=withSys.filter(m=>!scheduleSysChecked(card,m).length).map(m=>`${m.work_type} ${scheduleMethodLabel(m,works)}`);
+  const missing=withSys.filter(m=>!scheduleSysChecked(card,m).length).map(m=>scheduleWorkLabel(card,m,works));
   card.querySelector(".schedule-sys-note").textContent=missing.length&&card._open!=="system"?`SYSTEM 을 체크하세요: ${missing.join(", ")}`:"";
 }
 
@@ -1984,8 +2040,8 @@ function renderScheduleSysPanel(card){
   const area=scheduleAreaWorks(card),works=scheduleSelectedWorks(card).filter(m=>systemItems(m.system).length);
   let rows="";
   works.forEach(m=>{
-    const k=scheduleWorkKey(m.work_type,m.work_method,m.system),items=systemItems(m.system);
-    rows+=`<div class="multi-group sys-group"><span>${escapeHtml(m.work_type)} ${escapeHtml(scheduleMethodLabel(m,area))}</span><span class="sys-group-sub">${items.length}개 중 선택</span></div>`;
+    const k=scheduleCardKey(m),items=systemItems(m.system);
+    rows+=`<div class="multi-group sys-group"><span>${escapeHtml(scheduleWorkLabel(card,m,area))}</span><span class="sys-group-sub">${items.length}개 중 선택</span></div>`;
     if(items.length>1)rows+=`<button type="button" role="checkbox" class="multi-row sys-all" data-kind="sysall" data-key="${escapeHtml(k)}"><span class="multi-check"></span><span class="multi-label">전체</span></button>`;
     items.forEach(x=>{rows+=`<button type="button" role="checkbox" class="multi-row" data-kind="sys" data-key="${escapeHtml(k)}" data-item="${escapeHtml(x)}"><span class="multi-check"></span><span class="multi-label">${escapeHtml(x)}</span><span class="sys-rate hidden"></span></button>`});
   });
@@ -1998,10 +2054,10 @@ function syncScheduleSysPanel(card){
   panel.querySelectorAll(".multi-row").forEach(row=>{
     const set=card._sys.get(row.dataset.key)||new Set();
     let on;
-    if(row.dataset.kind==="sysall"){const m=scheduleSelectedWorks(card).find(w=>scheduleWorkKey(w.work_type,w.work_method,w.system)===row.dataset.key);on=!!m&&systemItems(m.system).every(x=>set.has(x))}
+    if(row.dataset.kind==="sysall"){const m=scheduleSelectedWorks(card).find(w=>scheduleCardKey(w)===row.dataset.key);on=!!m&&systemItems(m.system).every(x=>set.has(x))}
     else{
       on=set.has(row.dataset.item);if(on)total++;
-      const m=scheduleSelectedWorks(card).find(w=>scheduleWorkKey(w.work_type,w.work_method,w.system)===row.dataset.key),tag=row.querySelector(".sys-rate");
+      const m=scheduleSelectedWorks(card).find(w=>scheduleCardKey(w)===row.dataset.key),tag=row.querySelector(".sys-rate");
       const now=m?scheduleItemNow(card,m,row.dataset.item):null;
       if(tag){tag.classList.toggle("hidden",now===null||now===undefined);tag.classList.toggle("full",(now??0)>=100);tag.textContent=(now??0)>=100?"100% 완료":(now!==null&&now!==undefined?productionPercentLabel(now):"")}
       row.classList.toggle("sys-full",(now??0)>=100);
@@ -2018,10 +2074,11 @@ function renderSchedulePanel(card){
   const works=scheduleAreaWorks(card);
   const rowHtml=(kind,value,label,system="")=>`<button type="button" role="checkbox" class="multi-row" data-kind="${kind}" data-value="${escapeHtml(value)}"><span class="multi-check"></span><span class="multi-label">${escapeHtml(label)}</span>${system?`<span class="multi-sys">${systemHtml(system)}</span>`:""}</button>`;
   let rows="";
-  if(card._open==="type")[...new Set(works.map(m=>m.work_type))].forEach(type=>{rows+=rowHtml("type",type,type)});
-  else card._types.forEach(type=>{
-    rows+=`<div class="multi-group">${escapeHtml(type)}</div>`;
-    works.filter(m=>m.work_type===type).forEach(m=>{rows+=rowHtml("work",scheduleWorkKey(type,m.work_method,m.system),m.work_method,m.system)});
+  const multi=scheduleMultiArea(card);
+  if(card._open==="type"){let lastArea=null;[...new Set(works.map(m=>scheduleTypeKey(m.area,m.work_type)))].forEach(tk=>{const p=scheduleTypeParts(tk);if(multi&&p.area!==lastArea){rows+=`<div class="multi-group">${escapeHtml(p.area)}</div>`;lastArea=p.area}rows+=rowHtml("type",tk,p.type)})}
+  else card._types.forEach(tk=>{
+    rows+=`<div class="multi-group">${escapeHtml((p=>multi?p.area+" · "+p.type:p.type)(scheduleTypeParts(tk)))}</div>`;
+    works.filter(m=>scheduleTypeKey(m.area,m.work_type)===tk).forEach(m=>{rows+=rowHtml("work",scheduleCardKey(m),m.work_method,m.system)});
   });
   panel.innerHTML=`<div class="multi-list">${rows}</div><div class="multi-foot"><span class="multi-foot-count"></span><button type="button" class="multi-done">선택 완료</button></div>`;
   panel.classList.remove("hidden");
@@ -2046,12 +2103,12 @@ function renderScheduleSystem(card){syncScheduleSystems(card);renderScheduleWork
 function renderScheduleNoteRef(card){
   const box=card.querySelector(".note-ref");if(!box)return;
   const sel=readScheduleSelection(card),works=scheduleSelectedWorks(card),seen=new Set(),groups=[];
-  works.forEach(m=>{const k=scheduleNoteKey(sel.ship_type,sel.stage,sel.area,m.work_type,m.work_method);if(seen.has(k))return;seen.add(k);const list=scheduleNoteIndex.get(k)||[];if(list.length)groups.push({m,list})});
+  works.forEach(m=>{const k=scheduleNoteKey(sel.ship_type,sel.stage,m.area,m.work_type,m.work_method);if(seen.has(k))return;seen.add(k);const list=scheduleNoteIndex.get(k)||[];if(list.length)groups.push({m,list})});
   if(!groups.length){box.classList.add("hidden");box.innerHTML="";return}
   const total=groups.reduce((n,g)=>n+g.list.length,0),me=productionNormalize(sel.ship_no);
   const sameN=groups.reduce((n,g)=>n+g.list.filter(x=>productionNormalize(x.ship_no)===me).length,0);
-  box.innerHTML=`<div class="note-ref-t">${sameN?"같은 작업 비고":"같은 작업 · 앞 호선 비고"} ${total}건<span>${escapeHtml(sel.ship_type)} · ${escapeHtml(sel.stage)} · ${escapeHtml(sel.area)}</span></div>`
-    +groups.map(g=>(groups.length>1||works.length>1?`<div class="note-ref-w">${escapeHtml(g.m.work_type)} ${escapeHtml(g.m.work_method)}</div>`:"")
+  box.innerHTML=`<div class="note-ref-t">${sameN?"같은 작업 비고":"같은 작업 · 앞 호선 비고"} ${total}건<span>${escapeHtml(sel.ship_type)} · ${escapeHtml(sel.stage)} · ${escapeHtml([...new Set(groups.map(g=>g.m.area))].join(", "))}</span></div>`
+    +groups.map(g=>(groups.length>1||works.length>1?`<div class="note-ref-w">${escapeHtml((scheduleMultiArea(card)?g.m.area+" · ":"")+g.m.work_type+" "+g.m.work_method)}</div>`:"")
       +g.list.slice(0,3).map(x=>`<div class="note-ref-it"><span class="note-ref-ship">${escapeHtml(x.ship_no||"-")}호선</span>${productionNormalize(x.ship_no)===me?"<em>이 호선</em>":""}${escapeHtml(x.note)}<div class="note-ref-by">${escapeHtml(productionShortDate(x.work_date))} · ${escapeHtml(x.author_name||"")}</div></div>`).join("")
       +(g.list.length>3?`<div class="note-ref-more">외 ${g.list.length-3}건 · 엑셀 '후속호선 검토 비고' 시트에서 모두 볼 수 있습니다</div>`:"")).join("");
   box.classList.remove("hidden");
@@ -2065,10 +2122,10 @@ function renderScheduleRates(card){
   wrap.innerHTML="";
   if(!works.length){wrap.innerHTML='<div class="rate-empty">작업방식을 고르면 작업별 공정률 입력칸이 나옵니다.</div>';return}
   works.forEach(m=>{
-    const key=scheduleWorkKey(m.work_type,m.work_method,m.system);
+    const key=scheduleCardKey(m);
     if(systemItems(m.system).length){wrap.appendChild(scheduleSysRateBlock(card,m,key));return}
     const row=document.createElement("div");row.className="rate-row";row.dataset.key=key;
-    row.innerHTML=`<div><div class="rate-name">${escapeHtml(m.work_type)} · ${escapeHtml(m.work_method)}</div>${systemItems(m.system).length?(()=>{const c=scheduleSysChecked(card,m);return `<div class="rate-sys${c.length?"":" warn"}">SYSTEM ${c.length?c.map(x=>escapeHtml(x).replace(/ /g,"&nbsp;")).join(" · "):"체크 필요"}</div>`})():""}<div class="rate-prev"></div></div><input class="schedule-rate-input" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100" aria-label="${escapeHtml(m.work_type)} ${escapeHtml(m.work_method)} 공정률">`;
+    row.innerHTML=`<div><div class="rate-name">${scheduleMultiArea(card)?escapeHtml(m.area)+" · ":""}${escapeHtml(m.work_type)} · ${escapeHtml(m.work_method)}</div>${systemItems(m.system).length?(()=>{const c=scheduleSysChecked(card,m);return `<div class="rate-sys${c.length?"":" warn"}">SYSTEM ${c.length?c.map(x=>escapeHtml(x).replace(/ /g,"&nbsp;")).join(" · "):"체크 필요"}</div>`})():""}<div class="rate-prev"></div></div><input class="schedule-rate-input" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100" aria-label="${escapeHtml(m.work_type)} ${escapeHtml(m.work_method)} 공정률">`;
     const input=row.querySelector("input");
     input.value=card._rates.get(key)||"";
     input.addEventListener("input",()=>{card._rates.set(key,input.value);card.querySelector(".schedule-rate-msg").textContent="";updateScheduleRateHint(card,row,m)});
@@ -2081,7 +2138,7 @@ function renderScheduleRates(card){
 function scheduleSysRateBlock(card,m,key){
   const block=document.createElement("div");block.className="rate-row rate-row-sys";block.dataset.key=key;
   const checked=scheduleSysChecked(card,m),all=systemItems(m.system);
-  block.innerHTML=`<div class="rate-sys-head"><div><div class="rate-name">${escapeHtml(m.work_type)} · ${escapeHtml(m.work_method)}</div><div class="rate-prev"></div></div><div class="rate-overall"></div></div>`
+  block.innerHTML=`<div class="rate-sys-head"><div><div class="rate-name">${scheduleMultiArea(card)?escapeHtml(m.area)+" · ":""}${escapeHtml(m.work_type)} · ${escapeHtml(m.work_method)}</div><div class="rate-prev"></div></div><div class="rate-overall"></div></div>`
     +(checked.length?`<div class="rate-items">${checked.map(x=>`<div class="rate-item" data-item="${escapeHtml(x)}"><div class="rate-item-name">${escapeHtml(x).replace(/ /g,"&nbsp;")}<span class="rate-item-prev"></span></div><input class="schedule-rate-input" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100" aria-label="${escapeHtml(m.work_type)} ${escapeHtml(m.work_method)} ${escapeHtml(x)} 공정률"></div>`).join("")}</div>`:`<div class="rate-sys warn">SYSTEM 체크 필요</div>`)
     +`<div class="rate-calc"></div>`;
   block.querySelectorAll(".rate-item").forEach(item=>{
@@ -2110,7 +2167,7 @@ function updateScheduleSysRates(card,block,m){
 /* 작업별로 지금까지의 공정률과 완료 일정을 알려 줍니다. 지표에는 항상 가장 높은 공정률이 남습니다. */
 function updateScheduleRateHint(card,row,m){
   const selected=readScheduleSelection(card),hint=row.querySelector(".rate-prev"),value=productionNumber(row.querySelector("input").value);
-  const prev=scheduleProgressMap.get(productionWorkKey(selected.ship_no,selected.stage,selected.area,m.work_type,m.work_method,m.system));
+  const prev=scheduleProgressMap.get(productionWorkKey(selected.ship_no,selected.stage,m.area,m.work_type,m.work_method,m.system));
   const due=m.due_date||m.milestone?`완료 일정 ${[m.due_date,m.milestone?`(${m.milestone})`:""].filter(Boolean).map(part=>`<span class="rate-nowrap">${escapeHtml(part)}</span>`).join(" ")}`:"";
   hint.classList.remove("warn");
   if(prev!==undefined&&value!==null&&value<prev){
@@ -2434,7 +2491,7 @@ async function refreshScheduleDayPeople(force=false){
 function readScheduleCard(card){
   const people=card._people.read();
   return {...readScheduleSelection(card),types:[...card._types],manpower:people.manpower,worker_names:people.names,peoplePending:people.pending,note:scheduleNoteText(card.querySelector(".schedule-note")?.value),
-    works:scheduleSelectedWorks(card).map(m=>({work_type:m.work_type,work_method:m.work_method,system:m.system||"",system_items:scheduleSysChecked(card,m),sys_total:systemItems(m.system).length,item_rates:Object.fromEntries(scheduleSysChecked(card,m).map(x=>[x,productionNumber(card._rates.get(scheduleWorkKey(m.work_type,m.work_method,m.system)+"::"+x))])),progress_rate:productionNumber(card._rates.get(scheduleWorkKey(m.work_type,m.work_method,m.system)))}))};
+    works:scheduleSelectedWorks(card).map(m=>({area:m.area,work_type:m.work_type,work_method:m.work_method,system:m.system||"",system_items:scheduleSysChecked(card,m),sys_total:systemItems(m.system).length,item_rates:Object.fromEntries(scheduleSysChecked(card,m).map(x=>[x,productionNumber(card._rates.get(scheduleCardKey(m)+"::"+x))])),progress_rate:productionNumber(card._rates.get(scheduleCardKey(m)))}))};
 }
 
 function refreshScheduleRowHeads(){
@@ -2446,13 +2503,20 @@ function refreshScheduleRowHeads(){
   updateScheduleSaveLabel();
 }
 
+/* 선종 · 호선 · STAGE 는 드롭다운 하나, 구역은 펼쳐서 여러 개 체크(숨긴 select 는 목록 원본) */
+function scheduleLevelFieldHtml(def){
+  if(def.field!=="area")return `<div><label>${escapeHtml(def.label)}</label><select class="${def.cls}"></select></div>`;
+  return `<div class="area-field"><label>${escapeHtml(def.label)} <span class="area-sub">· 여러 개 체크</span></label><select class="${def.cls}" hidden tabindex="-1" aria-hidden="true"></select><button type="button" class="multi-box schedule-area-box" aria-haspopup="true"><span class="multi-text"></span><span class="multi-count hidden"></span><span class="multi-caret">▾</span></button></div><div class="area-panel hidden"></div>`;
+}
+/* [+ 작업 추가] · [+ 계획 추가]로 앞 칸을 이어받았을 때 알림 */
+function scheduleCopyHint(text){return `<div class="copy-hint">↑ ${text}</div>`}
 function scheduleRowTemplate(prefill={}){
   scheduleRowSeq++;
   const card=document.createElement("div");card.className="schedule-row-card";card.dataset.seq=String(scheduleRowSeq);
   card._types=[];card._works=new Set();card._rates=new Map();card._sys=new Map();card._open="";
   const boxHtml=cls=>`<button type="button" class="multi-box ${cls}" aria-haspopup="true"><span class="multi-text"></span><span class="multi-count hidden"></span><span class="multi-caret">▾</span></button>`;
   card.innerHTML=`<div class="schedule-row-head"><span class="schedule-row-title">작업</span><button type="button" class="schedule-remove-btn">작업 삭제</button></div><div class="schedule-row-grid">`
-    +SCHEDULE_LEVELS.map(def=>`<div><label>${escapeHtml(def.label)}</label><select class="${def.cls}"></select></div>`).join("")
+    +SCHEDULE_LEVELS.map(scheduleLevelFieldHtml).join("")
     +`<div><label>작업구분</label>${boxHtml("schedule-type-box")}</div>
     <div><label>작업방식</label>${boxHtml("schedule-method-box")}</div>
     <div class="multi-panel hidden"></div>
@@ -2462,17 +2526,21 @@ function scheduleRowTemplate(prefill={}){
     <div class="schedule-wide-field"><div class="rate-head"><label>현재 공정률(%) <span class="rate-sub">· 작업별 입력</span></label><button type="button" class="schedule-rate-same hidden">모두 같은 값</button></div><div class="schedule-rate-list"></div><div class="schedule-rate-msg"></div></div>
     <div class="schedule-wide-field schedule-note-field"><div class="note-ref hidden"></div><label>비고 <span class="rate-sub">· 후속 호선 참고(설계 · 자재 · 간섭 등), 비워도 됩니다</span></label><textarea class="schedule-note" rows="2" maxlength="500" placeholder="후속 호선에서 참고할 내용을 적으세요"></textarea></div>
   </div>`;
-  card._people=createPeopleField([],null,{blockedReason:()=>"",onChange:()=>recheckSchedulePeople()});   /* 11-11: 같은 날 여러 작업 허용 */
+  card._people=createPeopleField(prefill.people?.names||[],prefill.people?prefill.people.manpower:null,{blockedReason:()=>"",onChange:()=>recheckSchedulePeople()});   /* 11-11: 같은 날 여러 작업 허용 · 11-12: 작업 추가 때 앞 칸 인원 이어받음 */
   card.querySelector(".schedule-people-slot").insertBefore(card._people,card.querySelector(".schedule-people-slot .schedule-field-note"));
   /* 드롭다운을 위에서부터 채웁니다. prefill 값이 있으면(작업 추가 시 앞 작업의 선종 · 호선 · STAGE · 구역) 그대로 골라 둡니다. */
   SCHEDULE_LEVELS.forEach((def,index)=>{
     const select=card.querySelector("."+def.cls);
     refreshScheduleCascade(card,index,true);
     if(prefill[def.field]&&[...select.options].some(o=>o.value===prefill[def.field]))select.value=prefill[def.field];
-    select.onchange=()=>refreshScheduleCascade(card,index+1,true);
+    if(def.field==="area"&&prefill.areas)card._areas=[...prefill.areas];
+    select.onchange=()=>{card.querySelector(".copy-hint")?.remove();refreshScheduleCascade(card,index+1,true)};
   });
   refreshScheduleCascade(card,0,false);
-  const openPanel=kind=>{card._open=card._open===kind?"":kind;renderSchedulePanel(card);renderScheduleWorkBoxes(card)};
+  if(prefill.ship_no&&card._areas?.length)card.querySelector(".schedule-row-grid").insertAdjacentHTML("afterbegin",scheduleCopyHint(`앞 작업과 같은 <b>호선 · STAGE · 구역${prefill.people?.names?.length||prefill.people?.manpower?" · 투입 인원":""}</b>으로 채웠습니다. 작업만 고르고, 다른 것은 고치면 됩니다.`));
+  bindScheduleAreaPick(card,()=>{renderScheduleAreaBox(card);renderSchedulePanel(card);renderScheduleWorkBoxes(card)});
+  renderScheduleAreaBox(card);
+  const openPanel=kind=>{card._open=card._open===kind?"":kind;renderScheduleAreaBox(card);renderSchedulePanel(card);renderScheduleWorkBoxes(card)};
   card.querySelector(".schedule-type-box").onclick=()=>openPanel("type");
   card.querySelector(".schedule-method-box").onclick=()=>openPanel("method");
   card.querySelector(".schedule-sys-box").onclick=()=>openPanel("system");
@@ -2481,7 +2549,7 @@ function scheduleRowTemplate(prefill={}){
     const row=e.target.closest(".multi-row");if(!row)return;
     const k=row.dataset.key,set=card._sys.get(k)||new Set();card._sys.set(k,set);card._sysTouched=true;
     if(row.dataset.kind==="sysall"){
-      const m=scheduleSelectedWorks(card).find(w=>scheduleWorkKey(w.work_type,w.work_method,w.system)===k),items=m?systemItems(m.system):[];
+      const m=scheduleSelectedWorks(card).find(w=>scheduleCardKey(w)===k),items=m?systemItems(m.system):[];
       if(items.every(x=>set.has(x)))set.clear();else items.forEach(x=>set.add(x));
     }else if(set.has(row.dataset.item))set.delete(row.dataset.item);else set.add(row.dataset.item);
     syncScheduleSysPanel(card);renderScheduleWorkBoxes(card);renderScheduleRates(card);
@@ -2489,7 +2557,7 @@ function scheduleRowTemplate(prefill={}){
   card.querySelector(".multi-panel").addEventListener("click",e=>{
     if(e.target.closest(".multi-done")){
       /* 작업구분을 고르고 닫으면, 아직 작업방식을 안 고른 작업구분이 있을 때 작업방식 목록을 바로 엽니다. */
-      const needMethod=card._open==="type"&&card._types.some(type=>!scheduleSelectedWorks(card).some(m=>m.work_type===type));
+      const needMethod=card._open==="type"&&scheduleTypesWithoutWork(card).length>0;
       /* 작업방식을 고르고 닫으면, SYSTEM 을 아직 체크하지 않은 작업이 있을 때 SYSTEM 목록을 바로 엽니다. */
       const needSys=!needMethod&&scheduleSelectedWorks(card).some(m=>systemItems(m.system).length>1&&!scheduleSysChecked(card,m).length);
       card._open=needMethod?"method":(needSys?"system":"");
@@ -2516,10 +2584,11 @@ function scheduleRowTemplate(prefill={}){
   return card;
 }
 
-/* 작업을 추가하면 바로 앞 작업의 선종 · 호선 · STAGE · 구역을 이어받습니다(작업구분부터 새로 고름). */
+/* 작업을 추가하면 바로 앞 작업의 선종 · 호선 · STAGE · 구역(여러 개) · 투입 인원을 이어받습니다(작업구분부터 새로 고름). 11-12 */
 function addScheduleRow(){
   const cards=$("scheduleRows").querySelectorAll(".schedule-row-card"),last=cards[cards.length-1],prefill={};
-  if(last){const selected=readScheduleSelection(last);SCHEDULE_LEVELS.forEach(def=>{prefill[def.field]=selected[def.field]})}
+  if(last){const selected=readScheduleSelection(last);SCHEDULE_LEVELS.forEach(def=>{prefill[def.field]=selected[def.field]});prefill.areas=[...(last._areas||[])];
+    const p=last._people?.read();if(p&&(p.names.length||p.manpower))prefill.people={names:[...p.names],manpower:p.manpower}}
   $("scheduleRows").appendChild(scheduleRowTemplate(prefill));
   refreshScheduleRowHeads();
 }
@@ -2541,8 +2610,8 @@ async function saveProductionSchedule(){
     const r=rows[i],missing=SCHEDULE_LEVELS.find(def=>!r[def.field]);
     if(missing){status.textContent=`작업 ${i+1}의 ${missing.label}${missing.particle} 선택하세요.`;return}
     if(!r.types.length){status.textContent=`작업 ${i+1}의 작업구분을 선택하세요.`;return}
-    const noMethod=r.types.find(type=>!r.works.some(w=>w.work_type===type));
-    if(noMethod){status.textContent=`작업 ${i+1}의 ${noMethod} 작업방식을 선택하세요.`;return}
+    const noMethod=r.types.find(tk=>!r.works.some(w=>scheduleTypeKey(w.area,w.work_type)===tk));
+    if(noMethod){status.textContent=`작업 ${i+1}의 ${scheduleTypeParts(noMethod).area} ${scheduleTypeParts(noMethod).type} 작업방식을 선택하세요.`;return}
     if(r.peoplePending){status.textContent=`작업 ${i+1}: ${r.peoplePending}`;return}
     if(r.manpower===null||!Number.isInteger(r.manpower)||r.manpower<0){status.textContent=`작업 ${i+1}의 오늘 투입 인원을 입력하세요. 이름을 넣거나 인원 수를 숫자로 적으면 됩니다.`;return}
     const noSys=r.works.find(w=>w.sys_total&&!w.system_items.length);
@@ -2565,8 +2634,8 @@ async function saveProductionSchedule(){
     const itemMap=collectItemProgress(prevRecords);
     rows.forEach(r=>{
       const batchId=newScheduleBatchId();
-      r.works.forEach(w=>payload.push({work_date:workDate,ship_type:r.ship_type,ship_no:r.ship_no,stage:r.stage,area:r.area,work_type:w.work_type,work_method:w.work_method,system:w.system||null,system_items:w.system_items,system_rates:w.sys_total?w.item_rates:{},work_name:`${w.work_type} ${w.work_method}${w.system_items.length?` (${systemItemsLabel(w.system_items,w.item_rates)})`:""}`,manpower:r.manpower,worker_names:r.worker_names,...(r.note?{note:r.note}:{}),progress_rate:w.sys_total?(()=>{
-        const key=productionWorkKey(r.ship_no,r.stage,r.area,w.work_type,w.work_method,w.system),prev=itemMap.get(key)||{system:w.system,items:new Map()},today=new Map(Object.entries(w.item_rates));
+      r.works.forEach(w=>payload.push({work_date:workDate,ship_type:r.ship_type,ship_no:r.ship_no,stage:r.stage,area:w.area,work_type:w.work_type,work_method:w.work_method,system:w.system||null,system_items:w.system_items,system_rates:w.sys_total?w.item_rates:{},work_name:`${w.work_type} ${w.work_method}${w.system_items.length?` (${systemItemsLabel(w.system_items,w.item_rates)})`:""}`,manpower:r.manpower,worker_names:r.worker_names,...(r.note?{note:r.note}:{}),progress_rate:w.sys_total?(()=>{
+        const key=productionWorkKey(r.ship_no,r.stage,w.area,w.work_type,w.work_method,w.system),prev=itemMap.get(key)||{system:w.system,items:new Map()},today=new Map(Object.entries(w.item_rates));
         const o=systemOverall(w.system,prev.items,today);today.forEach((v,x)=>{if(!prev.items.has(x)||v>prev.items.get(x))prev.items.set(x,v)});itemMap.set(key,prev);return o??0})():w.progress_rate,batch_id:batchId,author_name:currentUserName,created_by:currentUserId,updated_at:now}));
     });
     const {error}=await supabase.from("production_schedules").insert(payload);if(error)throw error;
@@ -2717,8 +2786,8 @@ document.addEventListener("click",e=>{
   const path=e.composedPath?e.composedPath():[];
   $("scheduleRows").querySelectorAll(".schedule-row-card").forEach(card=>{
     if(!card._open)return;
-    if(path.some(el=>el.classList&&(el.classList.contains("multi-panel")||el.classList.contains("sys-panel")||el.classList.contains("multi-box"))&&card.contains(el)))return;
-    card._open="";renderSchedulePanel(card);renderScheduleWorkBoxes(card);
+    if(path.some(el=>el.classList&&(el.classList.contains("multi-panel")||el.classList.contains("sys-panel")||el.classList.contains("area-panel")||el.classList.contains("multi-box"))&&card.contains(el)))return;
+    card._open="";renderScheduleAreaBox(card);renderSchedulePanel(card);renderScheduleWorkBoxes(card);
   });
 });
 $("saveScheduleBtn").onclick=saveProductionSchedule;
@@ -2912,11 +2981,11 @@ function applySchedulePick(card,pick){
   for(let i=0;i<SCHEDULE_LEVELS.length;i++){
     const def=SCHEDULE_LEVELS[i],select=card.querySelector("."+def.cls);
     if(![...select.options].some(o=>o.value===pick[def.field]))return false;
-    select.value=pick[def.field];refreshScheduleCascade(card,i+1,true);
+    select.value=pick[def.field];if(def.field==="area")card._areas=[pick.area];refreshScheduleCascade(card,i+1,true);
   }
   const m=scheduleAreaWorks(card).find(w=>w.work_type===pick.work_type&&w.work_method===pick.work_method&&(w.system||"")===pick.system);
   if(!m)return false;
-  card._types=[m.work_type];card._works=new Set([scheduleWorkKey(m.work_type,m.work_method,m.system)]);
+  card._types=[scheduleTypeKey(m.area,m.work_type)];card._works=new Set([scheduleCardKey(m)]);
   card._open=systemItems(m.system).length>1?"system":"";
   syncScheduleWorkPicks(card);
   return true;
@@ -3402,14 +3471,14 @@ function renderWeeklyBoxes(card){
   updateWeeklySaveLabel();
 }
 function weeklyBindWorkPick(card){
-  const openPanel=kind=>{card._open=card._open===kind?"":kind;renderSchedulePanel(card);renderWeeklyBoxes(card)};
+  const openPanel=kind=>{card._open=card._open===kind?"":kind;renderScheduleAreaBox(card);renderSchedulePanel(card);renderWeeklyBoxes(card)};
   card.querySelector(".schedule-type-box").onclick=()=>openPanel("type");
   card.querySelector(".schedule-method-box").onclick=()=>openPanel("method");
   card.querySelector(".schedule-sys-box").onclick=()=>openPanel("system");
   card.querySelector(".multi-panel").addEventListener("click",e=>{
     if(e.target.closest(".multi-done")){
       /* 작업구분을 고르고 닫으면 작업방식 목록, 작업방식을 고르고 닫으면 SYSTEM 목록(체크 안 한 작업이 있을 때)을 바로 엽니다. */
-      const needMethod=card._open==="type"&&card._types.some(type=>!scheduleSelectedWorks(card).some(m=>m.work_type===type));
+      const needMethod=card._open==="type"&&scheduleTypesWithoutWork(card).length>0;
       const needSys=!needMethod&&scheduleSelectedWorks(card).some(m=>systemItems(m.system).length>1&&!scheduleSysChecked(card,m).length);
       card._open=needMethod?"method":(needSys?"system":"");
       renderSchedulePanel(card);renderWeeklyBoxes(card);
@@ -3424,7 +3493,7 @@ function weeklyBindWorkPick(card){
     const row=e.target.closest(".multi-row");if(!row)return;
     const k=row.dataset.key,set=card._sys.get(k)||new Set();card._sys.set(k,set);
     if(row.dataset.kind==="sysall"){
-      const m=scheduleSelectedWorks(card).find(w=>scheduleWorkKey(w.work_type,w.work_method,w.system)===k),items=m?systemItems(m.system):[];
+      const m=scheduleSelectedWorks(card).find(w=>scheduleCardKey(w)===k),items=m?systemItems(m.system):[];
       if(items.every(x=>set.has(x)))set.clear();else items.forEach(x=>set.add(x));
     }else if(set.has(row.dataset.item))set.delete(row.dataset.item);else set.add(row.dataset.item);
     syncScheduleSysPanel(card);renderWeeklyBoxes(card);
@@ -3436,7 +3505,7 @@ function weeklyRowTemplate(prefill={}){
   card._types=[];card._works=new Set();card._rates=new Map();card._sys=new Map();card._open="";card._days=new Set();card._weekly=true;
   const boxHtml=cls=>`<button type="button" class="multi-box ${cls}" aria-haspopup="true"><span class="multi-text"></span><span class="multi-count hidden"></span><span class="multi-caret">▾</span></button>`;
   card.innerHTML=`<div class="wk-card-head"><span class="wk-card-title">계획</span><button type="button" class="wk-remove secondary">삭제</button></div>
-    <div class="wk-grid">${SCHEDULE_LEVELS.map(def=>`<div><label>${escapeHtml(def.label)}</label><select class="${def.cls}"></select></div>`).join("")}</div>
+    <div class="wk-grid">${SCHEDULE_LEVELS.map(scheduleLevelFieldHtml).join("")}</div>
     <div class="wk-pick">
       <div><label>작업구분</label>${boxHtml("schedule-type-box")}</div>
       <div><label>작업방식</label>${boxHtml("schedule-method-box")}</div>
@@ -3453,11 +3522,20 @@ function weeklyRowTemplate(prefill={}){
     const select=card.querySelector("."+def.cls);
     refreshScheduleCascade(card,index,true);
     if(prefill[def.field]&&[...select.options].some(o=>o.value===prefill[def.field]))select.value=prefill[def.field];
-    select.onchange=()=>refreshScheduleCascade(card,index+1,true);
+    if(def.field==="area"&&prefill.areas)card._areas=[...prefill.areas];
+    select.onchange=()=>{card.querySelector(".copy-hint")?.remove();refreshScheduleCascade(card,index+1,true)};
   });
   refreshScheduleCascade(card,0,false);
   weeklyBindWorkPick(card);
+  bindScheduleAreaPick(card,()=>{renderScheduleAreaBox(card);renderSchedulePanel(card);renderWeeklyBoxes(card)});
+  renderScheduleAreaBox(card);
+  /* 11-12: [+ 계획 추가] — 앞 계획의 요일 · 본/지원 인원 이어받음 */
+  if(prefill.days)prefill.days.forEach(d=>card._days.add(d));
+  if(prefill.main!==undefined&&prefill.main!==null)card.querySelector(".wk-main").value=prefill.main;
+  if(prefill.support!==undefined&&prefill.support!==null)card.querySelector(".wk-support").value=prefill.support;
+  if(prefill.ship_no&&card._areas?.length)card.querySelector(".wk-grid").insertAdjacentHTML("beforebegin",scheduleCopyHint(`앞 계획과 같은 <b>호선 · STAGE · 구역${prefill.days?.length?" · 작업 요일":""}${prefill.main!=null?" · 본/지원 인원":""}</b>으로 채웠습니다. 작업만 고르면 됩니다.`));
   weeklyBindDays(card.querySelector(".wk-days"),card._days);
+  card.querySelectorAll(".wk-days .wk-day").forEach(b=>{const on=card._days.has(b.dataset.day);b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false")});
   weeklyBindTotal(card.querySelector(".wk-main"),card.querySelector(".wk-support"),card.querySelector(".wk-total"));
   card.querySelector(".wk-remove").onclick=()=>{card.remove();if(!$("weeklyRows").querySelector(".wk-card"))addWeeklyRow();refreshWeeklyRowHeads()};
   renderWeeklyWorks(card);
@@ -3470,7 +3548,8 @@ function refreshWeeklyRowHeads(){
 }
 function addWeeklyRow(){
   const cards=$("weeklyRows").querySelectorAll(".wk-card"),last=cards[cards.length-1],prefill={};
-  if(last){const sel=readScheduleSelection(last);SCHEDULE_LEVELS.forEach(def=>{prefill[def.field]=sel[def.field]})}
+  if(last){const sel=readScheduleSelection(last);SCHEDULE_LEVELS.forEach(def=>{prefill[def.field]=sel[def.field]});prefill.areas=[...(last._areas||[])];
+    prefill.days=WEEK_DAYS.filter(d=>last._days.has(d));const c=weeklyReadCrew(last.querySelector(".wk-main"),last.querySelector(".wk-support"));if(!c.error){prefill.main=c.main;prefill.support=c.support}}
   $("weeklyRows").appendChild(weeklyRowTemplate(prefill));
   refreshWeeklyRowHeads();
 }
@@ -3506,8 +3585,8 @@ async function saveWeeklyPlans(){
     const missing=SCHEDULE_LEVELS.find(def=>!sel[def.field]);
     if(missing){status.textContent=`계획 ${i+1}의 ${missing.label}${missing.particle} 선택하세요.`;return}
     if(!card._types.length){status.textContent=`계획 ${i+1}의 작업구분을 고르세요. 목록에 없는 작업은 [누락 작업 추가]에 적습니다.`;return}
-    const noMethod=card._types.find(type=>!works.some(m=>m.work_type===type));
-    if(noMethod){status.textContent=`계획 ${i+1}의 ${noMethod} 작업방식을 고르세요.`;return}
+    const noMethod=scheduleTypesWithoutWork(card,works)[0];
+    if(noMethod){status.textContent=`계획 ${i+1}의 ${scheduleTypeParts(noMethod).area} ${scheduleTypeParts(noMethod).type} 작업방식을 고르세요.`;return}
     if(!card._days.size){status.textContent=`계획 ${i+1}의 작업 요일을 고르세요.`;return}
     const crew=weeklyReadCrew(card.querySelector(".wk-main"),card.querySelector(".wk-support"));
     if(crew.error){status.textContent=`계획 ${i+1}의 ${crew.error}`;return}
@@ -3515,9 +3594,9 @@ async function saveWeeklyPlans(){
     const note=normalizeName(card.querySelector(".wk-note").value)||null;
     const batch=newScheduleBatchId(),days=WEEK_DAYS.filter(d=>card._days.has(d));
     works.forEach(m=>{
-      const k=scheduleWorkKey(m.work_type,m.work_method,m.system),items=systemItems(m.system);
+      const k=scheduleCardKey(m),items=systemItems(m.system);
       const chosen=items.length===1?items:items.filter(x=>card._sys.get(k)?.has(x));
-      payload.push({week_start:week,ship_type:sel.ship_type,ship_no:sel.ship_no,stage:sel.stage,area:sel.area,work_type:m.work_type,work_method:m.work_method,system:m.system||null,system_items:chosen,work_days:days,manpower:crew.total,main_manpower:crew.main,support_manpower:crew.support,note,is_missing:false,batch_id:batch,author_name:currentUserName,created_by:currentUserId,updated_at:new Date().toISOString()});
+      payload.push({week_start:week,ship_type:sel.ship_type,ship_no:sel.ship_no,stage:sel.stage,area:m.area,work_type:m.work_type,work_method:m.work_method,system:m.system||null,system_items:chosen,work_days:days,manpower:crew.total,main_manpower:crew.main,support_manpower:crew.support,note,is_missing:false,batch_id:batch,author_name:currentUserName,created_by:currentUserId,updated_at:new Date().toISOString()});
     });
   }
   if(!payload.length){status.textContent="등록할 계획을 입력하세요.";return}
@@ -3694,8 +3773,8 @@ document.addEventListener("click",e=>{
   const path=e.composedPath?e.composedPath():[];
   $("weeklyRows").querySelectorAll(".wk-card").forEach(card=>{
     if(!card._open)return;
-    if(path.some(el=>el.classList&&(el.classList.contains("multi-panel")||el.classList.contains("sys-panel")||el.classList.contains("multi-box"))&&card.contains(el)))return;
-    card._open="";renderSchedulePanel(card);renderWeeklyBoxes(card);
+    if(path.some(el=>el.classList&&(el.classList.contains("multi-panel")||el.classList.contains("sys-panel")||el.classList.contains("area-panel")||el.classList.contains("multi-box"))&&card.contains(el)))return;
+    card._open="";renderScheduleAreaBox(card);renderSchedulePanel(card);renderWeeklyBoxes(card);
   });
 });
 $("weeklySaveBtn").onclick=saveWeeklyPlans;
