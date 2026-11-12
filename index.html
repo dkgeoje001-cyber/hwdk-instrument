@@ -2984,7 +2984,7 @@ function productionStageDetailHtml(stage){
     html+=`<div class="production-area"><div class="production-area-title"><span>${escapeHtml(group.area||"-")}</span><span>${productionPercentLabel(stats.avg)} · 완료 ${stats.done} / ${stats.total}</span></div>`;
     group.rows.forEach(row=>{
       const registered=row.record_count>0,progress=row.progress||0;
-      const badge=progress>=100?'<span class="badge badge-completed">완료</span>':(registered?`<strong>${productionPercentLabel(progress)}</strong>`:'<span class="production-no-target">미등록</span>');
+      const badge=progress>=100?'<span class="badge badge-completed">완료</span>':(registered||progress>0?`<strong>${productionPercentLabel(progress)}</strong>`:'<span class="production-no-target">미등록</span>');   /* 11-12: 공정률이 있으면 미등록 아님 */
       const due=row.due_date||row.milestone?`완료 일정 ${escapeHtml([row.due_date,row.milestone?`(${row.milestone})`:""].filter(Boolean).join(" "))}`:"";
       const meta=[registered?`등록 ${row.record_count}건`:"",row.last_work_date?`최근작업 ${escapeHtml(row.last_work_date)}`:"",registered?`투입 ${row.manpower}명`:"",due].filter(Boolean).map(x=>`<span class="pw-part">${x}</span>`).join(" · ");
       const workKey=productionWorkKey("","",row.area,row.work_type,row.work_method,row.system);
