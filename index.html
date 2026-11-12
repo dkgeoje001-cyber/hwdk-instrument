@@ -251,6 +251,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .wk-total{box-sizing:border-box;display:flex;align-items:center;justify-content:center;margin-top:4px;border:1px solid #b9cfe0;border-radius:10px;background:#eaf2f8;font-size:18px;font-weight:900;color:#16324f}
 .wk-total.empty{color:#9aa5b1;font-size:15px;font-weight:700;background:#f1f4f7;border-color:#dbe2e8}
 .wk-sum small.crew{color:#52606d}
+.wk-req{display:inline-block;margin-left:4px;padding:0 6px;border-radius:999px;background:#fdecea;color:#c0392b;font-size:11px;font-weight:900;line-height:16px;vertical-align:1px}
 .wk-card>label,.wk-sys>label{font-size:12px;color:#52606d}
 .wk-sub{color:#7a8794;font-weight:700}
 .wk-chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -868,7 +869,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
   <section id="weeklyInputSection">
     <div class="card">
       <h2>주간계획입력</h2>
-      <div class="hint">다음 주 계획을 선종 → 호선 → STAGE → 구역 → 작업 순서로 골라 적습니다(일일작업등록과 같은 방식). 작업은 여러 개 고를 수 있고, 작업 요일 · 본 인원 · 지원 인원 · 비고를 함께 적습니다(총원은 자동 합계). 목록(데이터베이스)에 없는 작업은 [누락 작업 추가]에 적습니다.</div>
+      <div class="hint">다음 주 계획을 선종 → 호선 → STAGE → 구역 → 작업 순서로 골라 적습니다(일일작업등록과 같은 방식). 작업은 여러 개 고를 수 있고, 작업 요일 · 본 인원(필수) · 지원 인원 · 비고를 함께 적습니다(총원은 자동 합계). 목록(데이터베이스)에 없는 작업은 [누락 작업 추가]에 적습니다.</div>
       <div id="weeklySetupNotice" class="schedule-setup-notice hidden"></div>
       <div class="wk-head">
         <div><label for="weeklyWeek">계획 주</label><select id="weeklyWeek"></select></div>
@@ -894,7 +895,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
           <div><label for="weeklyMissWorkType">작업구분<span class="missing-req">*</span></label><input id="weeklyMissWorkType" list="weeklyMissWorkTypeList" autocomplete="off" placeholder="예: TUBE"></div>
           <div><label for="weeklyMissWorkMethod">작업방식<span class="missing-req">*</span></label><input id="weeklyMissWorkMethod" list="weeklyMissWorkMethodList" autocomplete="off" placeholder="예: SUPPORT 보강"></div>
           <div class="missing-wide"><label>작업 요일<span class="missing-req">*</span></label><div id="weeklyMissDays" class="wk-days wk-miss-days"></div></div>
-          <div class="missing-wide"><div class="wk-grid3"><div><label for="weeklyMissMain">본 인원(명)</label><input id="weeklyMissMain" type="number" inputmode="numeric" min="0" step="1" placeholder="비워도 됨"></div><div><label for="weeklyMissSupport">지원 인원(명)</label><input id="weeklyMissSupport" type="number" inputmode="numeric" min="0" step="1" placeholder="비워도 됨"></div><div><label>총원 <span class="wk-sub">· 자동</span></label><div id="weeklyMissTotal" class="wk-total empty">-</div></div></div></div>
+          <div class="missing-wide"><div class="wk-grid3"><div><label for="weeklyMissMain">본 인원(명)<span class="wk-req">필수</span></label><input id="weeklyMissMain" type="number" inputmode="numeric" min="0" step="1" required></div><div><label for="weeklyMissSupport">지원 인원(명)</label><input id="weeklyMissSupport" type="number" inputmode="numeric" min="0" step="1" placeholder="비워도 됨"></div><div><label>총원 <span class="wk-sub">· 자동</span></label><div id="weeklyMissTotal" class="wk-total empty">-</div></div></div></div>
           <div class="missing-wide"><label for="weeklyMissNote">비고</label><input id="weeklyMissNote" autocomplete="off" placeholder="예: 구역 이름이 목록에 없음"></div>
         </div>
         <datalist id="weeklyMissShipTypeList"></datalist><datalist id="weeklyMissShipNoList"></datalist><datalist id="weeklyMissStageList"></datalist>
@@ -3443,7 +3444,7 @@ function weeklyRowTemplate(prefill={}){
       <div class="note-ref wk-wide hidden"></div>
     </div>
     <label>작업 요일</label><div class="wk-days">${weeklyDaysHtml()}</div>
-    <div class="wk-grid3"><div><label>본 인원(명)</label><input class="wk-main" type="number" min="0" step="1" inputmode="numeric" placeholder="비워도 됨"></div><div><label>지원 인원(명)</label><input class="wk-support" type="number" min="0" step="1" inputmode="numeric" placeholder="비워도 됨"></div><div><label>총원 <span class="wk-sub">· 자동</span></label><div class="wk-total empty">-</div></div></div>
+    <div class="wk-grid3"><div><label>본 인원(명)<span class="wk-req">필수</span></label><input class="wk-main" type="number" min="0" step="1" inputmode="numeric" required></div><div><label>지원 인원(명)</label><input class="wk-support" type="number" min="0" step="1" inputmode="numeric" placeholder="비워도 됨"></div><div><label>총원 <span class="wk-sub">· 자동</span></label><div class="wk-total empty">-</div></div></div>
     <label>비고</label><input class="wk-note" autocomplete="off" placeholder="예) L/C 전 마무리, 자재 확인 필요">`;
   SCHEDULE_LEVELS.forEach((def,index)=>{
     const select=card.querySelector("."+def.cls);
@@ -3507,6 +3508,7 @@ async function saveWeeklyPlans(){
     if(!card._days.size){status.textContent=`계획 ${i+1}의 작업 요일을 고르세요.`;return}
     const crew=weeklyReadCrew(card.querySelector(".wk-main"),card.querySelector(".wk-support"));
     if(crew.error){status.textContent=`계획 ${i+1}의 ${crew.error}`;return}
+    if(crew.main===null){status.textContent=`계획 ${i+1}의 본 인원을 적어 주세요(필수).`;card.querySelector(".wk-main").focus();return}
     const note=normalizeName(card.querySelector(".wk-note").value)||null;
     const batch=newScheduleBatchId(),days=WEEK_DAYS.filter(d=>card._days.has(d));
     works.forEach(m=>{
@@ -3586,6 +3588,7 @@ async function saveWeeklyMissing(){
   if(!weeklyMissDays.size){status.textContent="작업 요일을 고르세요.";return}
   const crew=weeklyReadCrew($("weeklyMissMain"),$("weeklyMissSupport"));
   if(crew.error){status.textContent=crew.error;return}
+  if(crew.main===null){status.textContent="본 인원을 적어 주세요(필수).";$("weeklyMissMain").focus();return}
   const key=WEEKLY_MISS_FIELDS.map(f=>productionNormalize(v[f.field])).join("|||");
   if(scheduleMaster.some(m=>WEEKLY_MISS_FIELDS.map(f=>productionNormalize(m[f.field])).join("|||")===key)){status.textContent="이미 목록에 있는 작업입니다. 위 계획 칸에서 골라 등록하세요.";return}
   try{
