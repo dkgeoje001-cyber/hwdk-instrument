@@ -30,7 +30,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}*{box-sizing:border-box
 .production-work-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
 .production-work-name{font-weight:900;line-height:1.4}
 .production-progress-track{width:100%;height:12px;margin-top:9px;overflow:hidden;border-radius:999px;background:#e2e8f0}
-.production-progress-fill{height:100%;background:#278159;border-radius:999px}
+.production-progress-fill{height:100%;background:#278159;border-radius:999px}.prod-hull-chip.lag1{background:#fff6ec;border-color:#efb27a}.prod-hull-chip.lag1 .prod-hull-pct{color:#C55A11}.prod-hull-chip.lag1 .production-progress-fill{background:#e2843a}.prod-hull-chip.lag2{background:#fdeeee;border-color:#e99b9b}.prod-hull-chip.lag2 .prod-hull-pct{color:#C00000}.prod-hull-chip.lag2 .production-progress-fill{background:#d64545}.prod-hull-std{display:flex;justify-content:space-between;gap:4px;margin-top:3px;font-size:11px;font-weight:800;color:#64748b}.prod-hull-std b{font-weight:900}.lag1 .prod-hull-std b{color:#C55A11}.lag2 .prod-hull-std b{color:#C00000}.prod-lag-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0 2px;font-size:12px;font-weight:800;color:#475569}.prod-lag-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px}.prod-lag-legend .mut{color:#94a3b8}@media(max-width:720px){.prod-hull-std{font-size:10px}.prod-lag-legend{font-size:11px}}
 .production-work-meta{margin-top:7px;color:#64748b;font-size:12px;line-height:1.65}
 .production-no-target{display:inline-block;padding:3px 7px;border-radius:999px;background:#fff0c9;color:#8a5700;font-size:11px;font-weight:900}
 @media(max-width:720px){
@@ -2859,11 +2859,12 @@ function renderProductionTypes(content){
     return `<button type="button" class="prod-type-tab${t===productionDashboardType?" active":""}" data-type="${escapeHtml(t)}" aria-pressed="${t===productionDashboardType}"><span class="prod-type-name">${escapeHtml(t)}</span><span class="prod-type-sub">${list.length}척 · 공정률 ${stats.total?productionPercentLabel(stats.avg):"-"}</span></button>`;
   }).join("");
   const chips=ships.map(ship=>{
-    const key=productionNormalize(ship.ship_no),stats=productionItemsStats(productionShipItems(ship));
-    const meta=[ship.record_count?`<span class="rec nw">등록 ${ship.record_count}건</span>`:"",ship.dl_date?`<span class="nw">D/L ${escapeHtml(productionShortDate(ship.dl_date))}</span>`:""].filter(Boolean).join(" · ");
-    return `<button type="button" class="prod-hull-chip${key===productionDashboardShipSel?" active":""}" data-ship="${escapeHtml(key)}" aria-pressed="${key===productionDashboardShipSel}"><div class="prod-hull-top"><span class="prod-hull-no">${escapeHtml(ship.ship_no||"-")}</span><span class="prod-hull-pct">${stats.total?productionPercentLabel(stats.avg):"-"}</span></div>${productionBarHtml(stats.avg)}<div class="prod-hull-meta">${meta||"&nbsp;"}</div></button>`;
+    const key=productionNormalize(ship.ship_no),stats=productionItemsStats(productionShipItems(ship)),ix=productionShipIndex(ship);
+    const cur=ix.cur!==null?ix.cur:(stats.total?stats.avg:null),std=ix.std,lag=productionLagLevel(cur,std),ms=productionNextMilestone(ship);   /* 11-12: 엑셀 기준 */
+    const meta=[ship.record_count?`<span class="rec nw">등록 ${ship.record_count}건</span>`:"",`<span class="nw">${ms[0]} ${ms[1]?escapeHtml(productionShortDate(ms[1])):"미정"}</span>`].filter(Boolean).join(" · ");
+    return `<button type="button" class="prod-hull-chip${lag?` lag${lag}`:""}${key===productionDashboardShipSel?" active":""}" data-ship="${escapeHtml(key)}" aria-pressed="${key===productionDashboardShipSel}"><div class="prod-hull-top"><span class="prod-hull-no">${escapeHtml(ship.ship_no||"-")}</span><span class="prod-hull-pct">${cur===null?"-":productionPercentLabel(cur)}</span></div>${productionBarHtml(cur)}${std===null?"":`<div class="prod-hull-std"><span>표준 ${productionPercentLabel(std)}</span>${lag?`<b>−${Math.round(std-cur)}%p</b>`:""}</div>`}<div class="prod-hull-meta">${meta||"&nbsp;"}</div></button>`;
   }).join("");
-  content.innerHTML=`<div class="prod-type-tabs">${tabs}</div><div class="prod-hull-head">${escapeHtml(productionDashboardType)} 호선 ${ships.length}척 <span>진수(L/C) 순 · 호선을 누르면 STAGE별 공정률이 열립니다</span></div><div class="prod-hull-grid">${chips}</div><div class="prod-hull-detail"></div>`;
+  content.innerHTML=`<div class="prod-type-tabs">${tabs}</div><div class="prod-hull-head">${escapeHtml(productionDashboardType)} 호선 ${ships.length}척 <span>진수(L/C) 순 · 호선을 누르면 STAGE별 공정률이 열립니다</span></div>${PROD_STD_RULE[String(productionDashboardType).toUpperCase()]?'<div class="prod-lag-legend"><span><i style="background:#fff6ec;border:1px solid #efb27a"></i>주의 · 표준보다 10%p 넘게 늦음</span><span><i style="background:#fdeeee;border:1px solid #e99b9b"></i>위험 · 표준보다 30%p 넘게 늦음</span><span class="mut">엑셀 공정률 지표와 같은 기준</span></div>':""}<div class="prod-hull-grid">${chips}</div><div class="prod-hull-detail"></div>`;
   const detail=content.querySelector(".prod-hull-detail"),sel=ships.find(ship=>productionNormalize(ship.ship_no)===productionDashboardShipSel);
   if(sel)detail.appendChild(productionShipCard(sel));
   else detail.innerHTML='<div class="prod-hull-empty">호선을 누르면 STAGE별 공정률이 여기에 열립니다.</div>';
@@ -2934,6 +2935,40 @@ function productionDateOnly(v){
   if(Number.isNaN(d.getTime()))return text.slice(0,10);
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
+const PROD_ZONE_SRC={"LPG": "DOCK|CASING|기장;DOCK|E/R 20존|기장;DOCK|E/R 30~40존|기장;DOCK|M/D|선장;DOCK|NO.1 C/HOLD|선장;DOCK|NO.1 DOME|선장;DOCK|NO.2 C/HOLD|선장;DOCK|NO.2 DOME|선장;DOCK|NO.3 C/HOLD|선장;DOCK|NO.3 DOME|선장;DOCK|NO.3 W.B TK|선장;DOCK|NO.4 C/HOLD|선장;DOCK|NO.4 DOME|선장;DOCK|P/D|P/D;P.E|11A|기장;P.E|11D|기장;P.E|50J|선장;P.E|81A|선수;안벽|M/D|선장;안벽|M/F|선장;안벽|NO.1 DOME|선장;안벽|NO.2 DOME|선장;안벽|NO.3 DOME|선장;안벽|NO.4 DOME|선장;안벽|RELI RM|선장;안벽|기타|제외;안벽|선실|기장", "VLCC": "DOCK|E/R & P/R|기장;DOCK|FORE SHIP|선수;DOCK|M/F|선장;DOCK|NO.1 C.O TK|선장;DOCK|NO.1 M/D|선장;DOCK|NO.1 W.B TK|선장;DOCK|NO.1~5 M/D|선장;DOCK|NO.2 C.O TK|선장;DOCK|NO.2 M/D|선장;DOCK|NO.2 W.B TK|선장;DOCK|NO.3 C.O TK|선장;DOCK|NO.3 M/D|선장;DOCK|NO.3 W.B TK|선장;DOCK|NO.4 C.O TK|선장;DOCK|NO.4 M/D|선장;DOCK|NO.4 W.B TK|선장;DOCK|NO.5 C.O TK|선장;DOCK|NO.5 M/D|선장;DOCK|NO.5 W.B TK|선장;DOCK|선실|기장;P.E|11A|기장;P.E|11D|기장;P.E|80A/81B|선수;안벽|기타|제외", "LNG": "DOCK|B/S|선수;DOCK|CMR|선장;DOCK|E/R 20존|기장;DOCK|E/R 30존|기장;DOCK|E/R 40존|기장;DOCK|E/R 50존|기장;DOCK|E/R U/D|기장;DOCK|EMR|선장;DOCK|M/F (P)|선장;DOCK|M/F (S)|선장;DOCK|NO.1 C/D|선장;DOCK|NO.1 I/D|선장;DOCK|NO.1 T/D|선장;DOCK|NO.2 C/D|선장;DOCK|NO.2 I/D|선장;DOCK|NO.2 T/D|선장;DOCK|NO.3 C/D|선장;DOCK|NO.3 I/D|선장;DOCK|NO.3 T/D|선장;DOCK|NO.4 C/D|선장;DOCK|NO.4 I/D|선장;DOCK|NO.4 T/D|선장;DOCK|NO.5 C/D|선장;DOCK|P/D|P/D;DOCK|P/R|선수;DOCK|P/W(P)|선장;DOCK|P/W(S)|선장;DOCK|S.G.R|기장;P.E|10C|기장;P.E|10D|기장;P.E|10E|기장;P.E|10F|기장;P.E|10G|기장;P.E|10J|기장;P.E|11A|기장;P.E|20D|P/D;P.E|405(NO1 CD)|선장;P.E|40A|선장;P.E|40C|선장;P.E|51A|선장;P.E|80A|선수;P.E|80B|선수;P.E|80E|선수;안벽|CMR|선장;안벽|NO.1 T/D|선장;안벽|NO.2 T/D|선장;안벽|NO.3 T/D|선장;안벽|NO.4 T/D|선장;안벽|기타|제외"};
+/* 11-12: 엑셀 '공정률 지표'와 같은 기준 — 현재 공정률(대분류 가중) · 표준 공정률 · 늦음 음영 · 다음 절점 */
+let PROD_ZONE=null;
+function productionZoneOf(t,stage,area){
+  if(!PROD_ZONE){PROD_ZONE=new Map();Object.entries(PROD_ZONE_SRC).forEach(([ty,src])=>src.split(";").forEach(x=>{const [g,a,z]=x.split("|");PROD_ZONE.set(`${ty}|${productionNormalize(g)}|${productionNormalize(a)}`,z)}))}
+  return PROD_ZONE.get(`${t}|${productionNormalize(stage)}|${productionNormalize(area)}`)||"";
+}
+const PROD_ZONE_W={LNG:{"P/D":0.1,"기장":0.3,"선장":0.4,"선수":0.2},LPG:{"P/D":0.1,"기장":0.3,"선장":0.4,"선수":0.2},VLCC:{"기장":0.3,"선장":0.5,"선수":0.2}};
+/* 표준 공정률: P.E 20% · DOCK 은 K/L ~ L/C 를 n 등분해 10%씩 · 안벽은 L/C 날 base, per 일마다 inc (최대 100) */
+const PROD_STD_RULE={LNG:{n:5,base:70,per:30,inc:10},LPG:{n:7,base:90,per:10,inc:10/3},VLCC:{n:8,base:100,per:0,inc:0}};
+function productionDays(a,b){return Math.round((Date.parse(b+"T00:00:00Z")-Date.parse(a+"T00:00:00Z"))/86400000)}
+function productionStdRate(ship){
+  const r=PROD_STD_RULE[String(ship.ship_type||"").toUpperCase()];if(!r)return null;
+  const today=localToday(),kl=productionDateOnly(ship.kl_date),lc=productionDateOnly(ship.lc_date);
+  if(!kl)return null;if(today<kl)return 20;if(!lc)return null;
+  if(today<lc)return 20+Math.floor(productionDays(kl,today)/productionDays(kl,lc)*r.n)*10;
+  if(!r.per)return 100;
+  return Math.min(100,r.base+Math.floor(productionDays(lc,today)/r.per)*r.inc);
+}
+/* 현재 공정률(엑셀 기준): 대분류마다 작업 공정률 평균 → 비중으로 가중 평균(작업이 있는 대분류만). 대분류를 모르면 null */
+function productionShipIndex(ship){
+  const t=String(ship.ship_type||"").toUpperCase(),w=PROD_ZONE_W[t];let cur=null;
+  if(w){
+    const zs=new Map();
+    ship.stages.forEach(stage=>stage.items.forEach(item=>{const z=productionZoneOf(t,stage.name,item.area);if(!(z in w))return;const a=zs.get(z)||{s:0,n:0};a.s+=item.progress||0;a.n++;zs.set(z,a)}));
+    let sw=0,sv=0;zs.forEach((a,z)=>{sw+=w[z];sv+=a.s/a.n*w[z]});cur=sw?sv/sw:null;
+  }
+  return {cur,std:productionStdRate(ship)};
+}
+function productionLagLevel(cur,std){if(cur===null||cur===undefined||std===null)return 0;const g=std-cur;return g>30?2:g>10?1:0}
+function productionNextMilestone(ship){
+  const today=localToday(),[kl,lc,st,dl]=["kl_date","lc_date","st_date","dl_date"].map(f=>productionDateOnly(ship[f]));
+  if(kl&&today<kl)return ["K/L",kl];if(lc&&today<lc)return ["L/C",lc];if(st&&today<=st)return ["S/T",st];return ["D/L",dl];
+}
 function productionItemsStats(items){
   let sum=0,done=0,started=0;
   items.forEach(item=>{const p=item.progress||0;sum+=p;if(p>=100)done++;else if(item.record_count>0)started++});
@@ -2965,7 +3000,7 @@ function productionShipCard(ship){
   const stages=[...ship.stages.values()];
   const shipStats=productionItemsStats(stages.flatMap(stage=>[...stage.items.values()]));
   const dates=[["K/L",ship.kl_date],["L/C",ship.lc_date],["S/T",ship.st_date],["D/L",ship.dl_date]].filter(x=>x[1]).map(x=>`${x[0]} ${escapeHtml(productionDateOnly(x[1]))}`).join(" · ");
-  const sub=[ship.first_created?`최초등록 ${escapeHtml(productionDateOnly(ship.first_created))}`:"등록 전",`등록 ${ship.record_count}건`,shipStats.total?`전체 공정률 ${productionPercentLabel(shipStats.avg)}`:""].filter(Boolean).join(" · ");
+  const sub=[ship.first_created?`최초등록 ${escapeHtml(productionDateOnly(ship.first_created))}`:"등록 전",`등록 ${ship.record_count}건`,(()=>{const ix=productionShipIndex(ship),cur=ix.cur!==null?ix.cur:(shipStats.total?shipStats.avg:null);return cur===null?"":`전체 공정률 ${productionPercentLabel(cur)}${ix.std!==null?` · 표준 ${productionPercentLabel(ix.std)}`:""}`})()].filter(Boolean).join(" · ");
   let html=`<div class="production-ship-head"><div class="production-ship-title">${escapeHtml([ship.ship_type,ship.ship_no||"-"].filter(Boolean).join(" "))} 호선</div><div class="production-ship-progress">${sub}</div>${dates?`<div class="production-ship-progress">${dates}</div>`:""}</div>`;
   if(stages.length){
     html+='<div class="production-major-grid">';
