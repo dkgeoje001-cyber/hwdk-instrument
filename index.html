@@ -3141,7 +3141,7 @@ $("productionDashboardShip").addEventListener("keydown",e=>{if(e.key==="Enter")l
 
 /* ---------- 우선작업순위 ---------- */
 /* 표 production_pe_blocks: 한 줄 = 호선 · BLOCK 의 PE START · PE FINISH(탑재) · 비고 · 작업완료(done_at · done_by).
-   11-12: 남은 날은 실제 날짜 3일 전(목표일)까지(PR_LEAD). 목표일이 지나도 실제 날짜 전이면 D+N · 최긴급으로 남음.
+   11-12: 남은 날은 실제 날짜 7일 전(목표일)까지(PR_LEAD). 목표일이 지나도 실제 날짜 전이면 D+N · 최긴급으로 남음.
    등급 = PE FINISH(절점 일정은 다음 절점)까지 남은 날 점수: 0~3일 100 · 4~7일 80 · 8~14일 60 · 15~30일 40 · 31일 이상 20
    → 80점 이상 최긴급 · 60~79 긴급 · 40~59 보통 · 40 미만 여유(작업 우선 순위 산정 기준표, 발판 일정 제외). 날짜가 지나면 탑재 완료.
    [작업완료]를 누른 블록(done_at)은 날짜와 상관없이 작업 완료 → 완료 목록. 완료 목록 = 작업 완료 + 탑재 완료(11-03 16:25). */
@@ -3149,7 +3149,7 @@ const PRIORITY_TABLE="production_pe_blocks",PRIORITY_MS_TABLE="production_priori
 const PR_GRADES=[{key:"g1",label:"최긴급"},{key:"g2",label:"긴급"},{key:"g3",label:"보통"},{key:"gl",label:"인도지연"},{key:"g4",label:"여유"},{key:"g0",label:"탑재 완료"}];
 const PR_RANK={g1:0,g2:1,g3:2,gl:3,g4:4,gx:5};
 const PR_WINDOW=40;   /* 앱은 D-40 이내만 보임(엑셀은 전체) */
-const PR_LEAD=3;   /* 11-12: D-day 는 실제 날짜보다 3일 앞(목표일) 기준 — 놓쳤을 때를 대비한 여유. 목표일이 지나면 D+N */
+const PR_LEAD=7;   /* 11-12: D-day 는 실제 날짜보다 7일 앞(목표일) 기준 — 놓쳤을 때를 대비한 여유(처음 3일 → 16:06 7일). 목표일이 지나면 D+N */
 const prInWindow=r=>r.finished||r.grade.key==="gl"||(r.days!==null&&r.days<=PR_WINDOW);   /* 목록 순서: 최긴급 → 긴급 → 보통 → 인도지연 → 여유 → 미정 */
 let prRows=[],prMsDone=[],prShip="",prGradeSel="",prShowDone=false,prEditId=null,prLoadSeq=0;
 function prDays(v){const d=productionDateOnly(v);if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return null;const [y,m,dd]=d.split("-").map(Number),[ty,tm,td]=localToday().split("-").map(Number);return Math.round((Date.UTC(y,m-1,dd)-Date.UTC(ty,tm-1,td))/86400000)}
