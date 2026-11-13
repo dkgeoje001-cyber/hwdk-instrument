@@ -1733,6 +1733,8 @@ let scheduleRowSeq=0;
 const MASTER_TABLE="production_master";
 /* 선종 드롭다운 기본 목록. 마스터에 다른 선종이 들어오면 자동으로 뒤에 추가됩니다. */
 const SHIP_TYPES=["LPG","LNG","VLCC","CONT"];
+/* 11-13: 작업 목록이 아직 없는 호선(CONT)의 자리 표시 줄 — 드롭다운에는 안 보이고 생산통합지표에만 0% 로 */
+const PROD_PLACEHOLDER="작업 목록 준비 중";
 /* 드롭다운 선택 순서. 위에서 고른 값에 해당하는 것만 아래 드롭다운에 나옵니다. (작업구분 · 작업방식은 그 아래에서 여러 개 체크) */
 const SCHEDULE_LEVELS=[
   {field:"ship_type",label:"선종",particle:"을",cls:"schedule-ship-type"},
@@ -1843,6 +1845,7 @@ async function loadScheduleData(force=false){
 function scheduleLevelOptions(levelIndex,selected){
   const field=SCHEDULE_LEVELS[levelIndex].field,values=levelIndex===0?[...SHIP_TYPES]:[];
   scheduleMaster.forEach(m=>{
+    if(m.work_type===PROD_PLACEHOLDER)return;
     for(let i=0;i<levelIndex;i++){const f=SCHEDULE_LEVELS[i].field;if(m[f]!==selected[f])return}
     if(!values.includes(m[field]))values.push(m[field]);
   });
@@ -3020,13 +3023,14 @@ function productionZoneOf(t,stage,area){
   return PROD_ZONE.get(`${t}|${productionNormalize(stage)}|${productionNormalize(area)}`)||"";
 }
 const PROD_ZONE_W={LNG:{"P/D":0.1,"기장":0.3,"선장":0.4,"선수":0.2},LPG:{"P/D":0.1,"기장":0.3,"선장":0.4,"선수":0.2},VLCC:{"기장":0.3,"선장":0.5,"선수":0.2}};
-/* 표준 공정률: P.E 20% · DOCK 은 K/L ~ L/C 를 n 등분해 10%씩 · 안벽은 L/C 날 base, per 일마다 inc (최대 100) */
+/* 표준 공정률: P.E 는 K/L 40일 전 0% → 매일 0.5%씩 → K/L 날 20%(20일 전 10%, 11-13) · DOCK 은 K/L ~ L/C 를 n 등분해 10%씩 · 안벽은 L/C 날 base, per 일마다 inc (최대 100) */
+const PROD_PE_DAYS=40,PROD_PE_STD=20;
 const PROD_STD_RULE={LNG:{n:5,base:70,per:30,inc:10},LPG:{n:7,base:90,per:10,inc:10/3},VLCC:{n:8,base:100,per:0,inc:0}};
 function productionDays(a,b){return Math.round((Date.parse(b+"T00:00:00Z")-Date.parse(a+"T00:00:00Z"))/86400000)}
 function productionStdRate(ship){
-  const r=PROD_STD_RULE[String(ship.ship_type||"").toUpperCase()];if(!r)return null;
+  const r=PROD_STD_RULE[String(ship.ship_type||"").toUpperCase()];
   const today=localToday(),kl=productionDateOnly(ship.kl_date),lc=productionDateOnly(ship.lc_date);
-  if(!kl)return null;if(today<kl)return 20;if(!lc)return null;
+  if(!kl)return null;if(today<kl)return Math.max(0,Math.min(PROD_PE_STD,(PROD_PE_DAYS-productionDays(today,kl))*PROD_PE_STD/PROD_PE_DAYS));if(!r||!lc)return null;
   if(today<lc)return 20+Math.floor(productionDays(kl,today)/productionDays(kl,lc)*r.n)*10;
   if(!r.per)return 100;
   return Math.min(100,r.base+Math.floor(productionDays(lc,today)/r.per)*r.inc);
@@ -3065,7 +3069,8 @@ function productionStageDetailHtml(stage){
       const due=row.due_date||row.milestone?`완료 일정 ${escapeHtml([row.due_date,row.milestone?`(${row.milestone})`:""].filter(Boolean).join(" "))}`:"";
       const meta=[registered?`등록 ${row.record_count}건`:"",row.last_work_date?`최근작업 ${escapeHtml(row.last_work_date)}`:"",registered?`투입 ${row.manpower}명`:"",due].filter(Boolean).map(x=>`<span class="pw-part">${x}</span>`).join(" · ");
       const workKey=productionWorkKey("","",row.area,row.work_type,row.work_method,row.system);
-      html+=`<div class="production-work-item go" role="button" tabindex="0" data-work-key="${escapeHtml(workKey)}" aria-label="${escapeHtml(`${row.area} ${row.work_type} ${row.work_method} 일일작업등록`)}"><div class="production-work-head"><div class="production-work-name">${escapeHtml([row.work_type,row.work_method].filter(Boolean).join(" · ")||"-")}${row.system?`<span class="production-work-sys">SYSTEM ${systemItems(row.system).map(x=>{const t=escapeHtml(x).replace(/ /g,"&nbsp;"),n=row.sys_rates?.get(x);if(n!==undefined)return n>=100?`<span class="sys-done">${t}&nbsp;100%&nbsp;✓</span>`:`<span>${t}&nbsp;${Number(n.toFixed(1))}%</span>`;return row.sys_done&&row.sys_done.has(x)?`<span class="sys-done">${t}&nbsp;✓</span>`:`<span class="sys-todo">${t}</span>`}).join(" · ")}${row.sys_rates&&row.sys_rates.size?` <span class="sys-todo sys-basis">(${systemItems(row.system).length}개 기준)</span>`:""}</span>`:""}</div><div>${badge}</div></div>${registered?productionBarHtml(progress):""}<div class="production-work-foot"><div class="production-work-meta">${meta}</div><span class="production-work-go">작업등록 ›</span></div></div>`;
+      const ph=row.work_type===PROD_PLACEHOLDER;
+      html+=`<div class="production-work-item${ph?"":" go"}"${ph?"":' role="button" tabindex="0"'} data-work-key="${escapeHtml(workKey)}" aria-label="${escapeHtml(`${row.area} ${row.work_type} ${row.work_method} 일일작업등록`)}"><div class="production-work-head"><div class="production-work-name">${escapeHtml((ph?[row.work_type]:[row.work_type,row.work_method]).filter(Boolean).join(" · ")||"-")}${row.system?`<span class="production-work-sys">SYSTEM ${systemItems(row.system).map(x=>{const t=escapeHtml(x).replace(/ /g,"&nbsp;"),n=row.sys_rates?.get(x);if(n!==undefined)return n>=100?`<span class="sys-done">${t}&nbsp;100%&nbsp;✓</span>`:`<span>${t}&nbsp;${Number(n.toFixed(1))}%</span>`;return row.sys_done&&row.sys_done.has(x)?`<span class="sys-done">${t}&nbsp;✓</span>`:`<span class="sys-todo">${t}</span>`}).join(" · ")}${row.sys_rates&&row.sys_rates.size?` <span class="sys-todo sys-basis">(${systemItems(row.system).length}개 기준)</span>`:""}</span>`:""}</div><div>${badge}</div></div>${registered?productionBarHtml(progress):""}<div class="production-work-foot"><div class="production-work-meta">${meta}</div>${ph?"":'<span class="production-work-go">작업등록 ›</span>'}</div></div>`;
     });
     html+="</div>";
   });
