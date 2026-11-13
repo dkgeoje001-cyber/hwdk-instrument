@@ -189,6 +189,24 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .pr-filter{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:8px;align-items:center;margin-top:12px}
 .pr-filter select{margin:0}
 .pr-grades{display:flex;flex-wrap:wrap;gap:6px}
+/* 11-13 우선작업순위 현황표 */
+.prs{margin-top:10px}
+.prs-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.prs-tile{width:auto;margin:0;border:2px solid transparent;border-radius:10px;padding:8px 2px 7px;text-align:center;cursor:pointer;font-family:inherit;line-height:1.15}
+.prs-tile .l{display:block;font-size:12px;font-weight:800}.prs-tile .n{display:block;font-size:24px;font-weight:900;margin:2px 0}.prs-tile .d{display:block;font-size:11px;font-weight:800;min-height:13px}
+.prs-tile.g1{background:#c00000;color:#fff}.prs-tile.g2{background:#ea7a1a;color:#fff}.prs-tile.g3{background:#fff4c2;color:#854d0e}.prs-tile.g4{background:#e7f5ec;color:#1e6b46}
+.prs-tile.on{border-color:#16324f;box-shadow:0 0 0 2px #fff inset}.prs-tiles.sel .prs-tile:not(.on){opacity:.45}
+.prs-cmp{margin-top:8px;border:1px solid #d5dde5;border-radius:10px;padding:8px 10px;background:#fff}
+.prs-row{display:flex;align-items:center;gap:10px}
+.prs-row .t{font-size:13px;font-weight:800;color:#16324f;line-height:1.3}.prs-row .v{font-size:26px;font-weight:900;white-space:nowrap}.prs-row .v.up{color:#c00000}.prs-row .v.dn{color:#1e6b46}.prs-row .v.eq{color:#52606d;font-size:18px}
+.prs-row .s{font-size:12px;color:#52606d;line-height:1.4}
+.prs-more{width:auto;margin:4px 0 0;padding:0;border:0;background:none;color:#1d4f86;font-size:12.5px;font-weight:800;cursor:pointer}
+.prs-detail{margin-top:8px}
+.prs-bars{display:flex;align-items:flex-end;gap:10px;height:96px;border-bottom:1px solid #d5dde5;padding:0 4px}
+.prs-bars div{flex:1;text-align:center;font-size:11px;color:#52606d}.prs-bars i{display:block;margin:0 auto 2px;width:70%;background:#f3a5a5;border-radius:4px 4px 0 0}.prs-bars .cur i{background:#c00000}.prs-bars b{display:block;font-size:12px;color:#1f2933}
+.prs-wl{display:flex;gap:10px;padding:3px 4px 0;font-size:11px;color:#52606d}.prs-wl div{flex:1;text-align:center}
+.prs-tbl{width:100%;min-width:0!important;table-layout:fixed;border-collapse:collapse;font-size:12.5px;margin-top:8px}.prs-tbl th,.prs-tbl td{padding:5px 4px;border:0;border-bottom:1px solid #eef2f6;text-align:center;background:none;white-space:nowrap}.prs-tbl th{color:#52606d;font-weight:700}.prs-tbl td:first-child{text-align:left;font-weight:800}.prs-tbl .r{color:#c00000;font-weight:900}
+.prs-note{font-size:11.5px;color:#7b8794;margin-top:6px;line-height:1.4}
 .pr-grades button{width:auto;margin:0;padding:7px 11px;border-radius:999px;border:1px solid #cfd8df;background:#fff;color:#16324f;font-size:13px;font-weight:800}
 .pr-grades button.on{background:#16324f;color:#fff;border-color:#16324f}
 .pr-card{margin-top:10px;border:1px solid #dde4ea;border-left:6px solid #c0c7d0;border-radius:10px;background:#fff;padding:10px 12px}
@@ -843,6 +861,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
     <div class="card">
       <div class="pr-title"><h2>우선작업순위</h2><button id="priorityRefreshBtn" class="secondary pr-refresh" type="button">새로고침</button></div>
             <div id="prioritySetupNotice" class="schedule-setup-notice hidden"></div>
+      <div id="prioritySummary" class="prs hidden"></div>
       <div class="pr-filter">
         <select id="priorityShip" aria-label="호선"></select>
         <div id="priorityGrades" class="pr-grades"></div>
@@ -3229,6 +3248,9 @@ const PR_WINDOW=40;   /* 앱은 D-40 이내만 보임(엑셀은 전체) */
 const PR_LEAD=7;   /* 11-12: D-day 는 실제 날짜보다 7일 앞(목표일) 기준 — 놓쳤을 때를 대비한 여유(처음 3일 → 16:06 7일). 목표일이 지나면 D+N */
 const prInWindow=r=>r.finished||r.grade.key==="gl"||(r.days!==null&&r.days<=PR_WINDOW);   /* 목록 순서: 최긴급 → 긴급 → 보통 → 인도지연 → 여유 → 미정 */
 let prRows=[],prMsDone=[],prShip="",prGradeSel="",prShowDone=false,prEditId=null,prLoadSeq=0;
+/* 11-13 현황표: DB priority_summary() 결과 · 펼침 상태 */
+let prSum=null,prSumOpen=false;
+const PR_SUM_KEY={"최긴급":"g1","긴급":"g2","보통":"g3","여유":"g4","인도지연":"gl","미정":"gx"};
 function prDays(v){const d=productionDateOnly(v);if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return null;const [y,m,dd]=d.split("-").map(Number),[ty,tm,td]=localToday().split("-").map(Number);return Math.round((Date.UTC(y,m-1,dd)-Date.UTC(ty,tm-1,td))/86400000)}
 function prScore(days){return days<=3?100:days<=7?80:days<=14?60:days<=30?40:20}
 function prGrade(days){
@@ -3257,9 +3279,12 @@ async function showPriority(tab="pe",push=true){
 async function loadPriority(){
   const seq=++prLoadSeq;$("priorityStatus").textContent="불러오는 중...";
   try{await supabase.rpc("priority_cleanup")}catch(e){}   /* 날짜 지난 블록 · 절점 작업완료 표시는 DB 에서 지움 */
+  const sumP=supabase.rpc("priority_summary").then(r=>r&&!r.error&&r.data&&Array.isArray(r.data.now)?r.data:null).catch(()=>null);
   const [res,msRes]=await Promise.all([fetchAllRows(()=>supabase.from(PRIORITY_TABLE).select("id,ship_type,ship_no,block,pe_start,pe_finish,note,author_name,done_at,done_by,updated_at").order("ship_no",{ascending:true}).order("pe_finish",{ascending:true}).order("id",{ascending:true})),
     fetchAllRows(()=>supabase.from(PRIORITY_MS_TABLE).select("id,ship_no,milestone,ms_date,done_at,done_by").order("done_at",{ascending:true}).order("id",{ascending:true})),loadScheduleData()]);
+  const sum=await sumP;
   if(seq!==prLoadSeq)return;
+  prSum=sum;
   prMsDone=msRes.error?[]:(msRes.data||[]).map(r=>({...r,ship_no:normalizeName(r.ship_no)}));
   const notice=$("prioritySetupNotice");
   if(res.error){prRows=[];const msg=prSchemaMessage(res.error)||("불러오지 못했습니다: "+res.error.message);notice.textContent=msg;notice.classList.remove("hidden");$("priorityStatus").textContent=""}
@@ -3269,6 +3294,39 @@ async function loadPriority(){
 function prRowInfo(r){const actual=prDays(r.pe_finish),days=prLeadDays(actual);const doneDay=r.done_at?productionDateOnly(new Date(r.done_at).toLocaleDateString("sv-SE",{timeZone:"Asia/Seoul"})):"";
   const grade=r.done_at?{key:"gd",label:"작업 완료",score:null}:prLeadGrade(actual);
   return {...r,days,actual,grade,finished:grade.key==="gd"||grade.key==="g0",endDay:doneDay||productionDateOnly(r.pe_finish)}}
+/* 11-13: 우선작업순위 현황표 — 등급 칸(누르면 그 등급만) · 최긴급 지난주 대비 · 4주 추이 · 선종별 */
+function renderPrioritySummary(gcShip){
+  const box=$("prioritySummary");
+  const tiles=[["g1","최긴급"],["g2","긴급"],["g3","보통"],["g4","여유"]];
+  const sumBy=(list,key,type)=>(list||[]).filter(x=>PR_SUM_KEY[x.grade]===key&&(!type||x.type===type)).reduce((a,x)=>a+Number(x.n||0),0);
+  const fleet=!prShip&&prSum;   /* 전체 호선일 때만 DB 숫자 · 지난주 비교 */
+  const hasPrev=fleet&&prSum.prev_date&&(prSum.prev||[]).length>0;
+  const cnt=k=>fleet?sumBy(prSum.now,k):(gcShip[k]||0);
+  const diffTxt=k=>{if(!hasPrev)return "";const d=cnt(k)-sumBy(prSum.prev,k);return d>0?`▲${d}`:d<0?`▼${-d}`:"변동 없음"};
+  let html=`<div class="prs-tiles${prGradeSel&&tiles.some(t=>t[0]===prGradeSel)?" sel":""}">`+tiles.map(([k,l])=>`<button type="button" class="prs-tile ${k}${prGradeSel===k?" on":""}" data-prs="${k}"><span class="l">${l}</span><span class="n">${cnt(k)}</span><span class="d">${k==="g1"&&hasPrev?diffTxt(k)+" 지난주보다":diffTxt(k)}</span></button>`).join("")+`</div>`;
+  if(fleet){
+    const now1=cnt("g1");
+    if(hasPrev){const p1=sumBy(prSum.prev,"g1"),d=now1-p1;
+      html+=`<div class="prs-cmp"><div class="prs-row"><div class="t">최긴급<br>지난주 대비</div><div class="v ${d>0?"up":d<0?"dn":"eq"}">${d>0?"▲"+d:d<0?"▼"+(-d):"변동 없음"}</div><div class="s">지난주(${prMD(prSum.prev_date)}) ${p1}건 → 오늘 ${now1}건${d?` · ${d>0?"증가":"감소"}`:""}<br><button type="button" class="prs-more" data-prs-more>${prSumOpen?"4주 추이 · 선종별 접기 ▴":"4주 추이 · 선종별 보기 ▾"}</button></div></div>`;
+    }else{
+      html+=`<div class="prs-cmp"><div class="prs-row"><div class="t">최긴급<br>지난주 대비</div><div class="s">지난주 기록이 아직 없습니다. 매일 아침 개수를 기록해 <b>${prMD(wkAdd(prSum.today||localToday(),7))}</b>부터 비교합니다.<br><button type="button" class="prs-more" data-prs-more>${prSumOpen?"선종별 접기 ▴":"선종별 보기 ▾"}</button></div></div>`;
+    }
+    if(prSumOpen){
+      const weeks=[...(prSum.weeks||[])].map(w=>({d:w.date,n:Number(w.n||0)}));weeks.push({d:prSum.today||localToday(),n:now1,cur:true});
+      const mx=Math.max(1,...weeks.map(w=>w.n));
+      html+=`<div class="prs-detail">`;
+      if(weeks.length>1)html+=`<div class="prs-bars">${weeks.map(w=>`<div class="${w.cur?"cur":""}"><i style="height:${Math.max(4,Math.round(w.n/mx*72))}px"></i><b>${w.n}</b></div>`).join("")}</div><div class="prs-wl">${weeks.map(w=>`<div>${w.cur?"<b>오늘</b>":prMD(w.d)}</div>`).join("")}</div>`;
+      const types=["LPG","LNG","VLCC","CONT"].filter(t=>(prSum.now||[]).some(x=>x.type===t));
+      html+=`<table class="prs-tbl"><tr><th></th>${tiles.map(t=>`<th>${t[1]}</th>`).join("")}</tr>`+types.map(t=>`<tr><td>${t}</td>${tiles.map(([k])=>`<td class="${k==="g1"?"r":""}">${sumBy(prSum.now,k,t)}</td>`).join("")}</tr>`).join("")+`</table>`;
+      const gl=sumBy(prSum.now,"gl"),gx=sumBy(prSum.now,"gx");
+      html+=`<div class="prs-note">전체 호선 · 전체 기간 개수(엑셀 우선작업순위와 같음)${gl||gx?` · 따로: ${gl?`인도지연 ${gl}`:""}${gl&&gx?" · ":""}${gx?`날짜 미정 ${gx}`:""}`:""}</div></div>`;
+    }
+    html+=`</div>`;
+  }
+  box.innerHTML=html;box.classList.remove("hidden");
+  box.querySelectorAll("[data-prs]").forEach(b=>b.onclick=()=>{prGradeSel=prGradeSel===b.dataset.prs?"":b.dataset.prs;renderPriority()});
+  const more=box.querySelector("[data-prs-more]");if(more)more.onclick=()=>{prSumOpen=!prSumOpen;renderPrioritySummary(gcShip)};
+}
 function renderPriority(){
   const ships=prShips(),order=new Map(ships.map((s,i)=>[normalizeName(s.ship_no),i]));
   const allRows=[...prRows.map(r=>({...prRowInfo(r),kind:"pe"})),...prMilestoneItems()];
@@ -3277,12 +3335,13 @@ function renderPriority(){
   const typeRank=t=>{const i=SHIP_TYPES.indexOf(t);return i<0?99:i};
   const list=[...byShip.values()].sort((a,b)=>typeRank(a.ship_type)-typeRank(b.ship_type)||(order.get(a.ship_no)??999)-(order.get(b.ship_no)??999)||String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true}));
   /* 호선 고르기 · 등급 */
-  $("priorityWindowNote").textContent=`D-day 는 실제 날짜 ${PR_LEAD}일 전(목표일) 기준 · D-${PR_WINDOW} 이내만 표시${farN?` · 그 밖 ${farN}건(${PR_WINDOW+1}일 이상 · 날짜 없음)은 엑셀에서 확인`:""}`;
+  $("priorityWindowNote").textContent=`위 칸을 누르면 그 등급만 보입니다 · D-day 는 실제 날짜 ${PR_LEAD}일 전(목표일) 기준 · 목록은 D-${PR_WINDOW} 이내만${farN?` · 그 밖 ${farN}건(${PR_WINDOW+1}일 이상 · 날짜 없음)은 엑셀에서 확인`:""}`;
   const sel=$("priorityShip");sel.innerHTML=`<option value="">전체 호선</option>`+list.map(s=>`<option value="${escapeHtml(s.ship_no)}">${escapeHtml(s.ship_type||"")} ${escapeHtml(s.ship_no)}</option>`).join("");
   if(prShip&&!list.some(s=>s.ship_no===prShip))prShip="";sel.value=prShip;sel.onchange=()=>{prShip=sel.value;renderPriority()};
   const shown=rows.filter(r=>!prShip||r.ship_no===prShip);
   const gc={};shown.forEach(r=>gc[r.grade.key]=(gc[r.grade.key]||0)+1);
-  $("priorityGrades").innerHTML=`<button type="button" data-g="" class="${prGradeSel?"":"on"}">전체 ${shown.filter(r=>!r.finished).length}</button>`+PR_GRADES.filter(g=>g.key!=="g0").map(g=>`<button type="button" data-g="${g.key}" class="${prGradeSel===g.key?"on":""}">${g.label} ${gc[g.key]||0}</button>`).join("");
+  $("priorityGrades").innerHTML=`<button type="button" data-g="" class="${prGradeSel?"":"on"}">전체 보기 ${shown.filter(r=>!r.finished).length}</button>`+[{key:"gl",label:"인도지연"},{key:"gx",label:"미정"}].filter(g=>gc[g.key]).map(g=>`<button type="button" data-g="${g.key}" class="${prGradeSel===g.key?"on":""}">${g.label} ${gc[g.key]}</button>`).join("");
+  renderPrioritySummary(gc);
   $("priorityGrades").querySelectorAll("button").forEach(b=>b.onclick=()=>{prGradeSel=b.dataset.g;renderPriority()});
   /* 카드: PE 블록 · 호선 절점을 나누지 않고 날짜 빠른 순(미정은 뒤, 같은 날은 절점 먼저), 완료(작업 완료 · 탑재 완료)는 접어 둠 */
   const active=shown.filter(r=>!r.finished&&(!prGradeSel||r.grade.key===prGradeSel)).sort((a,b)=>(PR_RANK[a.grade.key]??9)-(PR_RANK[b.grade.key]??9)||(a.days??99999)-(b.days??99999)||(a.kind===b.kind?0:a.kind==="ms"?-1:1)||typeRank(a.ship_type)-typeRank(b.ship_type)||String(a.ship_no).localeCompare(String(b.ship_no),"ko",{numeric:true})||String(a.block||"").localeCompare(String(b.block||""),"ko",{numeric:true}));
