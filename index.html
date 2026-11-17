@@ -87,6 +87,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .people-leader-row:first-child{border-top:0}
 .people-leader-row.open{background:#e3eefa}
 .people-leader-name{flex:1 1 auto;min-width:0}
+.people-leader-team{font-weight:700;color:#64748b}
 .people-leader-count{flex:0 0 auto;padding:2px 8px;border-radius:999px;background:#16324f;color:#fff;font-size:11px;font-weight:800}
 .people-leader-caret{flex:0 0 auto;width:14px;color:#52606d;font-size:13px;text-align:center}
 .people-person{padding-left:24px}
@@ -2381,10 +2382,11 @@ function createPeopleField(initialNames=[],initialCount=null,options={}){
       crewList.innerHTML=`<div class="people-crew-empty">${scheduleCrewsLoaded?"조직도 명단이 비어 있습니다.":"조직도 명단을 불러오는 중이거나 아직 없습니다."} 아래에 이름을 직접 적어 주세요.</div>`;
       return;
     }
+    const leaderN=new Map();scheduleCrews.forEach(c=>{const k=personKey(c.leader);leaderN.set(k,(leaderN.get(k)||0)+1)});   /* 11-17: 반장 한 사람이 반 두 개 */
     scheduleCrews.forEach(crew=>{
-      const picked=crew.people.filter(has).length,isOpen=openCrew===crew.key;
+      const picked=crew.people.filter(has).length,isOpen=openCrew===crew.key,dupLeader=(leaderN.get(personKey(crew.leader))||0)>1&&crew.team;
       const head=document.createElement("button");head.type="button";head.className="people-leader-row"+(isOpen?" open":"");head.dataset.crew=crew.key;
-      head.innerHTML=`<span class="people-leader-name">${escapeHtml(crew.leader)}</span>${picked?`<span class="people-leader-count">${picked}명</span>`:""}<span class="people-leader-caret">${isOpen?"▾":"▸"}</span>`;
+      head.innerHTML=`<span class="people-leader-name">${escapeHtml(crew.leader)}${dupLeader?`<span class="people-leader-team"> · ${escapeHtml(crew.team)}</span>`:""}</span>${picked?`<span class="people-leader-count">${picked}명</span>`:""}<span class="people-leader-caret">${isOpen?"▾":"▸"}</span>`;
       head.setAttribute("aria-expanded",isOpen?"true":"false");
       crewList.appendChild(head);
       if(!isOpen)return;
