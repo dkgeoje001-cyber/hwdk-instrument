@@ -767,6 +767,8 @@ body.guest-mode [data-mat-photo-del]{display:none!important}
 .ai-ans-q{flex:1 1 auto;min-width:0;font-size:13px;font-weight:700;color:#3b4e66;overflow-wrap:anywhere}
 .ai-copy{flex:0 0 auto;width:auto;margin:0;padding:6px 10px;font-size:13px;font-weight:800;border-radius:8px;border:1px solid #b9c7d6;background:#fff;color:#1b3a5c;display:inline-flex;align-items:center;gap:4px}
 .ai-copy.done{background:#e7f6ec;border-color:#8fcca3;color:#1d6b38}
+.ai-close{flex:0 0 auto;width:auto;margin:0;padding:6px 10px;font-size:13px;font-weight:800;border-radius:8px;border:1px solid #b9c7d6;background:#fff;color:#5b6b7b;display:inline-flex;align-items:center;gap:4px}
+.ai-close:hover,.ai-close:active{background:#f1f4f8;color:#1b3a5c}
 .ai-ans-body{margin:0;padding:10px 12px;max-height:420px;overflow:auto;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;font-family:inherit;font-size:14px;line-height:1.55;color:#222}
 .ai-ans-body.loading{color:#6b7785}
 /* 11-27: AI 미비작업 줄 → 일일실적기입 바로 가기 */
@@ -855,7 +857,7 @@ body.guest-mode [data-mat-photo-del]{display:none!important}
         <button type="button" data-ai-q="도움말">무엇을 물어볼 수 있나요?</button>
       </div>
       <div id="aiAskAnswer" class="ai-ask-answer hidden">
-        <div class="ai-ans-top"><span id="aiAnsQ" class="ai-ans-q"></span><button id="aiCopyBtn" class="ai-copy" type="button" title="답변 전체 복사">📋 복사</button></div>
+        <div class="ai-ans-top"><span id="aiAnsQ" class="ai-ans-q"></span><button id="aiCopyBtn" class="ai-copy" type="button" title="답변 전체 복사">📋 복사</button><button id="aiCloseBtn" class="ai-close" type="button" title="답변 닫기">✕ 닫기</button></div>
         <pre id="aiAnsBody" class="ai-ans-body"></pre>
       </div>
     </div>
@@ -7155,6 +7157,8 @@ $("aiAskBtn").onclick=()=>aiAsk($("aiAskInput").value);
 $("aiAskInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();aiAsk($("aiAskInput").value)}});
 document.querySelectorAll("[data-ai-q]").forEach(b=>b.onclick=()=>aiAsk(b.dataset.aiQ));
 $("aiCopyBtn").onclick=aiCopy;
+/* 11-27: 답변 닫기 — 닫으면 질문 칸만 남음(조회 중이면 그 결과도 안 띄움) */
+$("aiCloseBtn").onclick=()=>{aiSeq++;$("aiAskAnswer").classList.add("hidden");$("aiAnsBody").innerHTML="";aiLastText="";$("aiAsk").scrollIntoView({block:"nearest"})};
 
 initialize();
 </script>
