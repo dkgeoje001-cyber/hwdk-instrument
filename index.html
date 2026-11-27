@@ -769,6 +769,12 @@ body.guest-mode [data-mat-photo-del]{display:none!important}
 .ai-copy.done{background:#e7f6ec;border-color:#8fcca3;color:#1d6b38}
 .ai-ans-body{margin:0;padding:10px 12px;max-height:420px;overflow:auto;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;font-family:inherit;font-size:14px;line-height:1.55;color:#222}
 .ai-ans-body.loading{color:#6b7785}
+/* 11-27: AI 미비작업 줄 → 일일실적기입 바로 가기 */
+.ai-ans-body .ai-go{display:flex;align-items:center;gap:8px;width:100%;margin:3px 0;padding:7px 9px;border:1px solid #c9d8ea;border-radius:8px;background:#f6f9fd;color:#1f2d3d;font:inherit;font-size:14px;line-height:1.45;text-align:left;white-space:normal;cursor:pointer}
+.ai-ans-body .ai-go:hover,.ai-ans-body .ai-go:active{background:#e8f1fb;border-color:#8fb3d9}
+.ai-ans-body .ai-go-t{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+.ai-ans-body .ai-go-tag{flex:0 0 auto;padding:3px 8px;border-radius:999px;background:#1b3a5c;color:#fff;font-size:12px;font-weight:800;white-space:nowrap}
+.ai-ans-tip{display:block;margin:6px 0 2px;color:#5b6b7b;font-size:12px}
 </style>
 </head>
 <body>
@@ -2179,7 +2185,8 @@ async function fieldAfterSave(cont){
 let scheduleSetupError="";
 /* 작업(호선 · STAGE · 구역 · 작업구분 · 작업방식)별로 지금까지 입력된 공정률 중 가장 높은 값 */
 let scheduleProgressMap=new Map();
-let scheduleEditRec=null;   /* 11-27: [수정]으로 연 기록 {rec, batch} — 있으면 일일작업등록 화면이 수정 모드 */
+let scheduleEditRec=null;
+var aiFromQ=null;   /* AI 질문하기에서 일일실적기입을 열었을 때 그 질문 */   /* 11-27: [수정]으로 연 기록 {rec, batch} — 있으면 일일작업등록 화면이 수정 모드 */
 /* SYSTEM 항목별 지금까지 가장 높은 공정률: 작업 열쇠 → {system, items} */
 let scheduleItemProgress=new Map();
 /* 비고가 적힌 기록: 선종|STAGE|구역|작업구분|작업방식 → [{ship_no, work_date, author_name, note}] (최근 순) */
@@ -3482,6 +3489,7 @@ function scheduleEditOff(){
   scheduleEditRec=null;
   $("scheduleApp")?.classList.remove("edit-mode");
   const banner=$("scheduleFromDash");if(banner){banner.classList.remove("edit");const l=banner.querySelector(".schedule-from-dash-label");if(l)l.textContent="생산통합지표에서 고른 작업"}
+  aiFromQ=null;const bb=$("scheduleBackDashBtn");if(bb)bb.textContent="← 생산통합지표";
   const btn=$("saveScheduleBtn");if(btn){btn.disabled=false;btn.textContent="일일작업 등록"}
 }
 function scheduleEditOverall(card,m){const items=new Map();systemItems(m.system).forEach(x=>{const v=scheduleItemNow(card,m,x);if(v!==null&&v!==undefined)items.set(x,v)});return systemOverall(m.system,items)}
@@ -3861,7 +3869,7 @@ async function loadProductionDashboard(){
 
 function showProductionDashboard(push=true){hideAllMain();showHeader();$("productionDashboardApp").classList.remove("hidden");loadProductionDashboard();if(push)pushState({screen:"production-dashboard",admin:isAdmin})}
 $("openProductionDashboardBtn").onclick=()=>{productionDashboardReopen=null;productionDashboardShipSel="";showProductionDashboard(true)};
-$("scheduleBackDashBtn").onclick=()=>showProductionDashboard(true);
+$("scheduleBackDashBtn").onclick=()=>{if(aiFromQ!==null)return aiBackToAnswer();showProductionDashboard(true)};
 $("refreshProductionDashboardBtn").onclick=loadProductionDashboard;
 $("productionDashboardSearchBtn").onclick=loadProductionDashboard;
 $("productionDashboardShip").addEventListener("keydown",e=>{if(e.key==="Enter")loadProductionDashboard()});
@@ -6963,9 +6971,10 @@ async function aiAnsMissing(q){
   stages.forEach(st=>{
     const its=aiLive([...st.items.values()]).filter(it=>(it.progress||0)<100);if(!its.length)return;
     out.push("",`■ ${st.name} (미비 ${its.length}건)`);
-    its.forEach(it=>{n++;if(n>AI_LIMIT)return;const p=it.progress||0;out.push(`· ${aiWorkName(it)} — ${p>0?aiPct(p)+(it.last_work_date?` (최근 ${aiMD(it.last_work_date)})`:""):"미착수"}`)});
+    its.forEach(it=>{n++;if(n>AI_LIMIT)return;const p=it.progress||0;out.push({t:`· ${aiWorkName(it)} — ${p>0?aiPct(p)+(it.last_work_date?` (최근 ${aiMD(it.last_work_date)})`:""):"미착수"}`,go:{ship,stage:st,it}})});
   });
-  return aiCut(out,n,"생산통합지표").join("\n");
+  if(!isGuest)out.push({tip:"작업 줄을 누르면 그 작업의 일일실적기입 화면이 바로 열립니다."});
+  return aiCut(out,n,"생산통합지표");
 }
 /* ② 공정현황 */
 async function aiAnsProgress(q){
@@ -7093,7 +7102,34 @@ async function aiAnswer(raw){
   if(/^\D*\d{4}\D*$/.test(q)&&/\d{4}/.test(q))return aiAnsProgress(q);   /* "2581호선" 만 적으면 공정현황 */
   return "앱 DATA 와 관계없는 질문에는 답할 수 없습니다.\n\n"+AI_HELP;
 }
-let aiSeq=0;
+let aiSeq=0,aiLastText="";
+function aiRender(body,ans){
+  body.innerHTML="";
+  if(!Array.isArray(ans)){body.textContent=String(ans);aiLastText=String(ans);return}
+  const plain=[];
+  ans.forEach(l=>{
+    if(typeof l==="string"){body.appendChild(document.createTextNode(l+"\n"));plain.push(l);return}
+    if(l.tip){const d=document.createElement("span");d.className="ai-ans-tip";d.textContent="👉 "+l.tip;body.appendChild(d);return}
+    plain.push(l.t);
+    if(!l.go||isGuest){body.appendChild(document.createTextNode(l.t+"\n"));return}
+    const b=document.createElement("button");b.type="button";b.className="ai-go";
+    const t=document.createElement("span");t.className="ai-go-t";t.textContent=l.t;
+    const g=document.createElement("span");g.className="ai-go-tag";g.textContent="실적기입 ›";
+    b.append(t,g);b.onclick=()=>aiOpenSchedule(l.go);body.appendChild(b);
+  });
+  aiLastText=plain.join("\n");
+}
+function aiOpenSchedule(go){
+  const q=$("aiAskInput").value.trim();
+  openScheduleFromDashboard(go.ship,go.stage,go.it);
+  aiFromQ=q;
+  const banner=$("scheduleFromDash");banner.querySelector(".schedule-from-dash-label").textContent="AI 질문하기에서 고른 작업";
+  $("scheduleBackDashBtn").textContent="← AI 답변";
+}
+function aiBackToAnswer(){
+  const q=aiFromQ;aiFromQ=null;aiCache.ships=null;
+  showHome();if(q){aiAsk(q);setTimeout(()=>$("aiAsk")?.scrollIntoView({block:"start"}),50)}
+}
 async function aiAsk(q){
   const box=$("aiAskAnswer"),body=$("aiAnsBody"),seq=++aiSeq;
   q=String(q||"").trim();$("aiAskInput").value=q;
@@ -7103,10 +7139,10 @@ async function aiAsk(q){
   let ans;
   try{ans=await aiAnswer(q)}catch(e){ans="조회 중 오류가 났습니다. 잠시 뒤 다시 질문해 주세요.\n("+(e?.message||e)+")"}
   if(seq!==aiSeq)return;
-  body.classList.remove("loading");body.textContent=ans;
+  body.classList.remove("loading");aiRender(body,ans);
 }
 async function aiCopy(){
-  const text=[$("aiAnsQ").textContent,$("aiAnsBody").textContent].filter(Boolean).join("\n\n"),btn=$("aiCopyBtn");
+  const text=[$("aiAnsQ").textContent,aiLastText||$("aiAnsBody").textContent].filter(Boolean).join("\n\n"),btn=$("aiCopyBtn");
   let ok=false;
   try{await navigator.clipboard.writeText(text);ok=true}catch(e){
     const ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="fixed";ta.style.top="-1000px";document.body.appendChild(ta);ta.select();
