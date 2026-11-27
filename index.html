@@ -695,6 +695,62 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .production-work-sys{display:block;margin-top:2px;color:#5b6b7b;font-size:12px;font-weight:700}
 /* 로그인: 비밀번호 칸 안내(사번)는 회색 작은 글씨 */
 #loginPassword::placeholder{color:#9aa3ad;font-size:13px;font-weight:400}
+/* 게스트(읽기 전용) 모드 — 쓰기 버튼 숨김 */
+body.guest-mode #openMissingHomeBtn,
+body.guest-mode #scheduleRegisterTab,
+body.guest-mode #openMissingBtn,
+body.guest-mode #missingSaveBtn,
+body.guest-mode #addScheduleRowBtn,
+body.guest-mode #saveScheduleBtn,
+body.guest-mode #priorityAddBtn,
+body.guest-mode #prSaveBtn,
+body.guest-mode #weeklyInputTab,
+body.guest-mode #weeklyAddRowBtn,
+body.guest-mode #weeklyOpenMissingBtn,
+body.guest-mode #weeklyMissSaveBtn,
+body.guest-mode #weeklySaveBtn,
+body.guest-mode #boardWriteBtn,
+body.guest-mode #boardSaveBtn,
+body.guest-mode #matCheckoutBtn,
+body.guest-mode #matReturnBtn,
+body.guest-mode #matCancelLoanBtn,
+body.guest-mode #ecRegisterBtn,
+body.guest-mode #ecInspectBtn,
+body.guest-mode #ecIssueBtn,
+body.guest-mode #ecEditBtn,
+body.guest-mode #ecRepairBtn,
+body.guest-mode #ecDisposeBtn,
+body.guest-mode #ecRestoreBtn,
+body.guest-mode #ecEventSave,
+body.guest-mode #ecEditSave,
+body.guest-mode #ecRSave,
+body.guest-mode #bhdRegisterTab,
+body.guest-mode #cancelEditBtn,
+body.guest-mode #analyzeBtn,
+body.guest-mode #saveBtn,
+body.guest-mode #completeBtn,
+body.guest-mode #requestRegisterTab,
+body.guest-mode #saveRequestBtn,
+body.guest-mode #transferBtn,
+body.guest-mode #confirmRequestBtn,
+body.guest-mode #reconfirmBtn,
+body.guest-mode #adminDeleteRequestBtn,
+body.guest-mode [data-pr-done],
+body.guest-mode [data-pr-undo],
+body.guest-mode [data-pr-del],
+body.guest-mode [data-ms-done],
+body.guest-mode [data-ms-undo],
+body.guest-mode [data-ex],
+body.guest-mode [data-fa-id],
+body.guest-mode [data-missing-delete],
+body.guest-mode [data-wk-del],
+body.guest-mode [data-wk-miss-del],
+body.guest-mode [data-ec-ev-edit],
+body.guest-mode [data-ec-ev-del],
+body.guest-mode [data-ec-photo-del],
+body.guest-mode [data-mat-photo-del]{display:none!important}
+.user-badge.guest{background:#fff4e0;color:#8a5a00;border:1px solid #f0c674}
+#guestToast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:99999;max-width:90vw;padding:12px 18px;border-radius:10px;background:#333;color:#fff;font-size:15px;font-weight:700;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.25);display:none}
 </style>
 </head>
 <body>
@@ -1608,8 +1664,8 @@ async function nameToSyntheticEmail(name){
 
 function hideAllMain(){authScreen.classList.add("hidden");moduleHome.classList.add("hidden");scheduleApp.classList.add("hidden");$("productionDashboardApp")?.classList.add("hidden");$("boardApp")?.classList.add("hidden");$("materialApp")?.classList.add("hidden");$("equipCardApp")?.classList.add("hidden");$("weeklyApp")?.classList.add("hidden");$("priorityApp")?.classList.add("hidden");if($("matSheet")&&!$("matSheet").classList.contains("hidden"))closeMaterialSheet();bhdApp.classList.add("hidden");requestApp.classList.add("hidden");myWorkApp.classList.add("hidden")}
 function updateHeader(){
-  $("userBadge").textContent=isAdmin?`관리자 · ${currentUserName||"관리자"}`:currentUserName;
-  $("userBadge").className=isAdmin?"user-badge admin":"user-badge";
+  $("userBadge").textContent=isAdmin?`관리자 · ${currentUserName||"관리자"}`:isGuest?`게스트 · 조회 전용`:currentUserName;
+  $("userBadge").className=isAdmin?"user-badge admin":isGuest?"user-badge guest":"user-badge";
 }
 function setAuthMode(mode){
   const signup=mode==="signup";
@@ -1789,7 +1845,7 @@ async function loadMyProfile(userId){
   if(error||!data)return null;return data.name;
 }
 async function enterWorkerSession(user){
-  currentUserId=user.id;isAdmin=false;
+  currentUserId=user.id;isAdmin=false;await applyGuestMode();
   const name=await loadMyProfile(user.id);
   if(!name)throw new Error("사용자 이름 정보를 찾지 못했습니다.");
   currentUserName=name;startNotificationPolling();showHome(true);
@@ -1856,13 +1912,13 @@ $("adminLoginBtn").onclick=async()=>{
     const {data,error}=await supabase.auth.signInWithPassword({email,password});if(error)throw error;
     currentUserId=data.user.id;
     if(!await checkCurrentUserAdmin()){await supabase.auth.signOut();throw new Error("관리자 권한이 없는 계정입니다.")}
-    isAdmin=true;currentUserName="관리자";$("adminPassword").value="";startNotificationPolling();showHome(true);
+    isAdmin=true;setGuestMode(false);currentUserName="관리자";$("adminPassword").value="";startNotificationPolling();showHome(true);
   }catch(e){status.textContent="관리자 로그인 실패: "+(e?.message||"오류")}
 };
 $("adminPassword").addEventListener("keydown",e=>{if(e.key==="Enter")$("adminLoginBtn").click()});
 
 $("homeBtn").onclick=()=>showHome(true);
-$("logoutBtn").onclick=async()=>{stopNotificationPolling();await supabase.auth.signOut();isAdmin=false;currentUserName="";currentUserId=null;showAuth();replaceState({screen:"auth"})};
+$("logoutBtn").onclick=async()=>{stopNotificationPolling();await supabase.auth.signOut();isAdmin=false;setGuestMode(false);currentUserName="";currentUserId=null;showAuth();replaceState({screen:"auth"})};
 
 /* ---------- 일일작업등록 모듈 ---------- */
 let scheduleRowSeq=0;
@@ -6664,7 +6720,45 @@ async function renderHistoryState(state){const t=state||{screen:"auth"};if(t.scr
 addEventListener("popstate",e=>{updateAppBackButton();renderHistoryState(e.state)});
 
 /* ---------- 초기 실행 ---------- */
-async function initialize(){replaceState({screen:"auth"});$("workDate").value=localToday();setRows([],1);showAuth();const {data}=await supabase.auth.getSession();const session=data.session;if(!session)return;currentUserId=session.user.id;if(await checkCurrentUserAdmin()){isAdmin=true;currentUserName="관리자";startNotificationPolling();replaceState({screen:"home",admin:true});showHome(false);return}const name=await loadMyProfile(session.user.id);if(name){isAdmin=false;currentUserName=name;startNotificationPolling();replaceState({screen:"home",admin:false});showHome(false)}}
+async function initialize(){replaceState({screen:"auth"});$("workDate").value=localToday();setRows([],1);showAuth();const {data}=await supabase.auth.getSession();const session=data.session;if(!session)return;currentUserId=session.user.id;if(await checkCurrentUserAdmin()){isAdmin=true;currentUserName="관리자";startNotificationPolling();replaceState({screen:"home",admin:true});showHome(false);return}const name=await loadMyProfile(session.user.id);if(name){isAdmin=false;await applyGuestMode();currentUserName=name;startNotificationPolling();replaceState({screen:"home",admin:false});showHome(false)}}
+
+/* ===== 게스트(읽기 전용) 모드 (2026-11-27) =====
+   · 게스트 계정(HW3700)은 DB 에서 모든 쓰기가 막혀 있다(트리거 zz_block_guest_write · 스토리지 정책).
+   · 화면에서는 쓰기 버튼을 숨기고, 등록 화면 대신 목록 화면을 연다. 혹시 남은 쓰기 요청은 여기서 한 번 더 막는다. */
+var isGuest=false;
+const GUEST_MSG="게스트 계정은 조회만 가능합니다.";
+function setGuestMode(on){isGuest=!!on;document.body.classList.toggle("guest-mode",isGuest);try{updateHeader()}catch(e){}}
+async function applyGuestMode(){
+  let g=false;
+  try{const {data,error}=await _guestRawRpc("is_guest_user");g=!error&&data===true}catch(e){g=false}
+  setGuestMode(g);
+}
+function guestToast(){
+  let t=document.getElementById("guestToast");
+  if(!t){t=document.createElement("div");t.id="guestToast";document.body.appendChild(t)}
+  t.textContent=GUEST_MSG;t.style.display="block";clearTimeout(t._h);t._h=setTimeout(()=>{t.style.display="none"},2500);
+}
+function guestBlocked(){
+  guestToast();
+  const res={data:null,error:{message:GUEST_MSG,code:"42501"},count:null,status:403,statusText:GUEST_MSG};
+  const p=new Proxy(function(){},{get(_,k){if(k==="then")return (ok,ng)=>Promise.resolve(res).then(ok,ng);if(k==="catch")return f=>Promise.resolve(res);if(k==="finally")return f=>Promise.resolve(res).finally(f);return ()=>p},apply(){return p}});
+  return p;
+}
+const _guestRawRpc=supabase.rpc.bind(supabase);
+const _guestRawFrom=supabase.from.bind(supabase);
+const GUEST_WRITE_RPC=new Set(["hwdk_field_add_system","hwdk_field_add_work","hwdk_field_log_cont","hwdk_field_set_status","set_work_excluded","transfer_check_request"]);
+supabase.rpc=(fn,...a)=>{if(isGuest&&fn==="priority_cleanup")return Promise.resolve({data:0,error:null});if(isGuest&&GUEST_WRITE_RPC.has(fn))return guestBlocked();return _guestRawRpc(fn,...a)};
+supabase.from=(t)=>{const q=_guestRawFrom(t);if(!isGuest)return q;return new Proxy(q,{get(o,k){if(["insert","update","upsert","delete"].includes(k))return ()=>guestBlocked();const v=o[k];return typeof v==="function"?v.bind(o):v}})};
+{const _sf=supabase.storage.from.bind(supabase.storage);
+ supabase.storage.from=(b)=>{const x=_sf(b);if(!isGuest)return x;return new Proxy(x,{get(o,k){if(["upload","update","remove","move","copy"].includes(k))return ()=>guestBlocked();const v=o[k];return typeof v==="function"?v.bind(o):v}})};}
+/* 등록 화면 → 목록 화면 */
+{const o=showScheduleTab;showScheduleTab=function(m){return o(isGuest?"list":m)}}
+{const o=showWeekly;showWeekly=function(tab="input",push=true){return o(isGuest?"list":tab,push)}}
+{const o=showBhdTab;showBhdTab=function(m){return o(isGuest&&m==="register"?"list":m)}}
+{const o=showRequestTab;showRequestTab=function(m){return o(isGuest&&m==="register"?"list":m)}}
+{const o=showHome;showHome=function(push=true){const r=o(push);if(isGuest)$("homeUser").textContent=`현재 사용자: ${currentUserName||"-"} (게스트 · 조회 전용)`;return r}}
+{const o=showEquipRegister;showEquipRegister=function(push=true){if(isGuest){guestToast();return showEquipCards("cards",push)}return o(push)}}
+
 initialize();
 </script>
 </body>
