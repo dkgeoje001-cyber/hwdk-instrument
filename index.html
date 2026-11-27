@@ -39,7 +39,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}*{box-sizing:border-box
 .production-work-item.pw-off{background:#f1f5f9;border-style:dashed}
 .production-work-item.pw-off .production-work-name{color:#94a3b8}
 .production-work-item.pw-off .production-work-sys{color:#94a3b8}
-.pw-off-badge{display:inline-block;padding:3px 9px;border-radius:999px;background:#e2e8f0;color:#475569;font-size:12px;font-weight:800;white-space:nowrap}
+.pw-area{display:inline-block;margin-right:6px;padding:1px 8px;border-radius:999px;background:#e2e8f0;color:#334155;font-size:12px;font-weight:800;vertical-align:2px;white-space:nowrap}.production-area.pa-bottom{margin-top:16px;border-top:2px dashed #cbd5e1;padding-top:10px}.pw-hidden-ex{margin:10px 0 2px}.pw-hidden-ex>summary{cursor:pointer;color:#64748b;font-size:13px;font-weight:800;padding:6px 2px;list-style:none}.pw-hidden-ex>summary::-webkit-details-marker{display:none}.pw-hidden-ex>summary:before{content:"▸ "}.pw-hidden-ex[open]>summary:before{content:"▾ "}.pw-off-badge{display:inline-block;padding:3px 9px;border-radius:999px;background:#e2e8f0;color:#475569;font-size:12px;font-weight:800;white-space:nowrap}
 .production-progress-track{width:100%;height:12px;margin-top:9px;overflow:hidden;border-radius:999px;background:#e2e8f0}
 .production-progress-fill{height:100%;background:#278159;border-radius:999px}.prod-hull-chip.lag1{background:#fff6ec;border-color:#efb27a}.prod-hull-chip.lag1 .prod-hull-pct{color:#C55A11}.prod-hull-chip.lag1 .production-progress-fill{background:#e2843a}.prod-hull-chip.lag2{background:#fdeeee;border-color:#e99b9b}.prod-hull-chip.lag2 .prod-hull-pct{color:#C00000}.prod-hull-chip.lag2 .production-progress-fill{background:#d64545}.prod-hull-std{display:flex;justify-content:space-between;gap:4px;margin-top:3px;font-size:11px;font-weight:800;color:#64748b}.prod-hull-std b{font-weight:900}.lag1 .prod-hull-std b{color:#C55A11}.lag2 .prod-hull-std b{color:#C00000}.prod-lag-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0 2px;font-size:12px;font-weight:800;color:#475569}.prod-lag-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px}.prod-lag-legend .mut{color:#94a3b8}@media(max-width:720px){.prod-hull-std{font-size:10px}.prod-lag-legend{font-size:11px}}
 .production-work-meta{margin-top:7px;color:#64748b;font-size:12px;line-height:1.65}
@@ -2035,7 +2035,7 @@ function fieldAddRowHtml(kind,placeholder,attrs="",listId=""){return `<div class
 function fieldDatalist(id,values){return `<datalist id="${id}">${[...new Set(values)].slice(0,300).map(v=>`<option value="${escapeHtml(v)}"></option>`).join("")}</datalist>`}
 /* 같은 STAGE 에서 쓰는 이름(같은 선종 → 없으면 모든 선종). 공통 '지원' 줄 · 자리 표시 줄은 뺌 */
 function fieldStageNames(card,field,filter=()=>true){
-  const sel=readScheduleSelection(card),ok=m=>m.stage===sel.stage&&m.work_type!==PROD_PLACEHOLDER&&!productionNoRate(m.area)&&filter(m);
+  const sel=readScheduleSelection(card),ok=m=>m.stage===sel.stage&&m.work_type!==PROD_PLACEHOLDER&&!productionNoRate(m.area,m.work_type)&&filter(m);
   let list=scheduleMaster.filter(m=>ok(m)&&m.ship_type===sel.ship_type);
   if(!list.length)list=scheduleMaster.filter(ok);
   const out=[];list.forEach(m=>{const v=m[field];if(v&&!out.includes(v))out.push(v)});return out;
@@ -2489,7 +2489,7 @@ function renderScheduleWorkBoxes(card){
   const withSys=selectedWorks.filter(m=>systemItems(m.system).length);
   const sysSummary=withSys.map(m=>{const c=scheduleSysChecked(card,m);return c.length?`${scheduleWorkLabel(card,m,works)}: ${c.join("·")}`:""}).filter(Boolean).join(" / ");
   const sysCount=withSys.reduce((n,m)=>n+scheduleSysChecked(card,m).length,0);
-  paint(card.querySelector(".schedule-sys-box"),!selectedWorks.length?"작업방식 먼저 선택":(!withSys.length?"SYSTEM 없음 · 필요하면 + 추가":(sysSummary||"SYSTEM 체크")),!sysSummary,sysCount,!selectedWorks.some(m=>!productionNoRate(m.area)),card._open==="system");
+  paint(card.querySelector(".schedule-sys-box"),!selectedWorks.length?"작업방식 먼저 선택":(!withSys.length?"SYSTEM 없음 · 필요하면 + 추가":(sysSummary||"SYSTEM 체크")),!sysSummary,sysCount,!selectedWorks.some(m=>!productionNoRate(m.area,m.work_type)),card._open==="system");
   if(sysSummary){
     const label=card.querySelector(".schedule-sys-box .multi-text");
     label.innerHTML=withSys.map(m=>{const c=scheduleSysChecked(card,m);return c.length?`${escapeHtml(scheduleWorkLabel(card,m,works))}: ${c.map(x=>(scheduleItemNow(card,m,x)??0)>=100?`<span class="sys-ok">${escapeHtml(x)}✓</span>`:escapeHtml(x)).join("·")}`:""}).filter(Boolean).join(" / ");
@@ -2502,7 +2502,7 @@ function renderScheduleWorkBoxes(card){
 function renderScheduleSysPanel(card){
   const panel=card.querySelector(".sys-panel");
   if(card._open!=="system"){panel.classList.add("hidden");panel.innerHTML="";return}
-  const area=scheduleAreaWorks(card),works=scheduleSelectedWorks(card).filter(m=>!productionNoRate(m.area));   /* 11-20: SYSTEM 없는 작업도(직접 추가 칸) */
+  const area=scheduleAreaWorks(card),works=scheduleSelectedWorks(card).filter(m=>!productionNoRate(m.area,m.work_type));   /* 11-20: SYSTEM 없는 작업도(직접 추가 칸) */
   let rows="";
   works.forEach(m=>{
     const k=scheduleCardKey(m),items=systemItems(m.system),nNew=items.filter(x=>fieldIsNewSys(m,x)).length;
@@ -2571,9 +2571,9 @@ function renderScheduleSystem(card){syncScheduleSystems(card);renderScheduleWork
 function renderScheduleNoteRef(card){
   const box=card.querySelector(".note-ref");if(!box)return;
   const sel=readScheduleSelection(card),works=scheduleSelectedWorks(card),seen=new Set(),groups=[];
-  {const sub=card.querySelector(".schedule-note-field label .rate-sub"),nrAll=works.length&&works.every(m=>productionNoRate(m.area));   /* 11-17 */
+  {const sub=card.querySelector(".schedule-note-field label .rate-sub"),nrAll=works.length&&works.every(m=>productionNoRate(m.area,m.work_type));   /* 11-17 */
    if(sub)sub.textContent=nrAll?"· 지원 내용 — 엑셀에만 기록(후속 호선 비고에는 안 나옴), 비워도 됩니다":"· 후속 호선 참고(설계 · 자재 · 간섭 등), 비워도 됩니다";}
-  works.forEach(m=>{if(productionNoRate(m.area))return;const k=scheduleNoteKey(sel.ship_type,sel.stage,m.area,m.work_type,m.work_method);if(seen.has(k))return;seen.add(k);const list=scheduleNoteIndex.get(k)||[];if(list.length)groups.push({m,list})});
+  works.forEach(m=>{if(productionNoRate(m.area,m.work_type))return;const k=scheduleNoteKey(sel.ship_type,sel.stage,m.area,m.work_type,m.work_method);if(seen.has(k))return;seen.add(k);const list=scheduleNoteIndex.get(k)||[];if(list.length)groups.push({m,list})});
   if(!groups.length){box.classList.add("hidden");box.innerHTML="";return}
   const total=groups.reduce((n,g)=>n+g.list.length,0),me=productionNormalize(sel.ship_no);
   const sameN=groups.reduce((n,g)=>n+g.list.filter(x=>productionNormalize(x.ship_no)===me).length,0);
@@ -2593,7 +2593,7 @@ function renderScheduleRates(card){
   if(!works.length){wrap.innerHTML='<div class="rate-empty">작업방식을 고르면 작업별 공정률 입력칸이 나옵니다.</div>';return}
   works.forEach(m=>{
     const key=scheduleCardKey(m);
-    if(productionNoRate(m.area)){   /* 11-17: 공통 '지원' 구역 — 공정률 입력 없음 */
+    if(productionNoRate(m.area,m.work_type)){   /* 11-17: 공통 '지원' 구역 — 공정률 입력 없음 */
       const nr=document.createElement("div");nr.className="rate-row rate-row-norate";nr.dataset.key=key;
       nr.innerHTML=`<div><div class="rate-name">${escapeHtml(m.area)} · ${escapeHtml(m.work_type)} · ${escapeHtml(m.work_method)}</div><div class="rate-prev">공정률 입력 없음 · 인원 · 비고만 기록됩니다</div></div><span class="rate-norate-tag">공정률 제외</span>`;
       wrap.appendChild(nr);return;
@@ -2970,7 +2970,7 @@ async function refreshScheduleDayPeople(force=false){
 function readScheduleCard(card){
   const people=card._people.read();
   return {...readScheduleSelection(card),types:[...card._types],manpower:people.manpower,worker_names:people.names,peoplePending:people.pending,note:scheduleNoteText(card.querySelector(".schedule-note")?.value),
-    works:scheduleSelectedWorks(card).map(m=>({_key:scheduleCardKey(m),_fm:fieldFm(m),norate:productionNoRate(m.area),area:m.area,work_type:m.work_type,work_method:m.work_method,system:m.system||"",system_items:scheduleSysChecked(card,m),sys_total:systemItems(m.system).length,item_rates:Object.fromEntries(scheduleSysChecked(card,m).map(x=>[x,productionNumber(card._rates.get(scheduleCardKey(m)+"::"+x))])),progress_rate:productionNumber(card._rates.get(scheduleCardKey(m)))}))};
+    works:scheduleSelectedWorks(card).map(m=>({_key:scheduleCardKey(m),_fm:fieldFm(m),norate:productionNoRate(m.area,m.work_type),area:m.area,work_type:m.work_type,work_method:m.work_method,system:m.system||"",system_items:scheduleSysChecked(card,m),sys_total:systemItems(m.system).length,item_rates:Object.fromEntries(scheduleSysChecked(card,m).map(x=>[x,productionNumber(card._rates.get(scheduleCardKey(m)+"::"+x))])),progress_rate:productionNumber(card._rates.get(scheduleCardKey(m)))}))};
 }
 
 function refreshScheduleRowHeads(){
@@ -3149,7 +3149,7 @@ function toggleScheduleEdit(card,record,batchSize=1){
   const names=Array.isArray(record.worker_names)?record.worker_names.filter(Boolean):[];
   const box=document.createElement("div");box.className="schedule-edit-box";
   const sysAll=systemItems(record.system),sysOn=new Set(Array.isArray(record.system_items)?record.system_items:[]);
-  box.innerHTML=`<div class="schedule-edit-title">기록 수정</div><div class="schedule-edit-grid"><div><label>작업일</label><input class="schedule-edit-date" type="date"></div>${isStageRecord&&!sysAll.length&&!productionNoRate(record.area)?`<div><label>공정률(%)</label><input class="schedule-edit-rate" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100"></div>`:""}</div>${sysAll.length?`<label>SYSTEM · 공정률(%) <span class="rate-sub">· 체크한 항목만</span></label><div class="edit-sys-rows">${sysAll.map(x=>{const n=productionNumber(record.system_rates?.[x]);return `<div class="edit-sys-row${n!==null&&n>=100&&sysOn.has(x)?" done":""}"><button type="button" class="${sysOn.has(x)?"on":""}" data-sys="${escapeHtml(x)}">${escapeHtml(x)}</button><input type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100" value="${n===null?"":escapeHtml(String(n))}"${sysOn.has(x)?"":" disabled"} aria-label="${escapeHtml(x)} 공정률"></div>`}).join("")}</div>`:""}<label>투입 인원</label><div class="schedule-edit-people"></div><label>비고 <span class="rate-sub">· 후속 호선 참고, 이 작업만</span></label><textarea class="schedule-edit-memo" rows="2" maxlength="500" placeholder="설계 · 자재 · 간섭 등 후속 호선에서 참고할 내용"></textarea><div class="schedule-edit-note"></div><div class="schedule-edit-actions"><button type="button" class="secondary schedule-edit-cancel">취소</button><button type="button" class="primary schedule-edit-save" style="margin-top:0">수정 저장</button></div><div class="status schedule-edit-status"></div>`;
+  box.innerHTML=`<div class="schedule-edit-title">기록 수정</div><div class="schedule-edit-grid"><div><label>작업일</label><input class="schedule-edit-date" type="date"></div>${isStageRecord&&!sysAll.length&&!productionNoRate(record.area,record.work_type)?`<div><label>공정률(%)</label><input class="schedule-edit-rate" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100"></div>`:""}</div>${sysAll.length?`<label>SYSTEM · 공정률(%) <span class="rate-sub">· 체크한 항목만</span></label><div class="edit-sys-rows">${sysAll.map(x=>{const n=productionNumber(record.system_rates?.[x]);return `<div class="edit-sys-row${n!==null&&n>=100&&sysOn.has(x)?" done":""}"><button type="button" class="${sysOn.has(x)?"on":""}" data-sys="${escapeHtml(x)}">${escapeHtml(x)}</button><input type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="0 ~ 100" value="${n===null?"":escapeHtml(String(n))}"${sysOn.has(x)?"":" disabled"} aria-label="${escapeHtml(x)} 공정률"></div>`}).join("")}</div>`:""}<label>투입 인원</label><div class="schedule-edit-people"></div><label>비고 <span class="rate-sub">· 후속 호선 참고, 이 작업만</span></label><textarea class="schedule-edit-memo" rows="2" maxlength="500" placeholder="설계 · 자재 · 간섭 등 후속 호선에서 참고할 내용"></textarea><div class="schedule-edit-note"></div><div class="schedule-edit-actions"><button type="button" class="secondary schedule-edit-cancel">취소</button><button type="button" class="primary schedule-edit-save" style="margin-top:0">수정 저장</button></div><div class="status schedule-edit-status"></div>`;
   box.querySelector(".schedule-edit-date").value=record.work_date||"";
   box.querySelector(".schedule-edit-memo").value=scheduleNoteText(record.note)||"";
   box.querySelectorAll(".edit-sys-row").forEach(row=>{
@@ -3543,7 +3543,7 @@ async function openScheduleCorrection(ship,stage,row){
   if(all.length){
     card._sys.set(key,new Set((Array.isArray(rec.system_items)?rec.system_items:[]).map(normalizeName).filter(x=>all.includes(x))));
     if(rec.system_rates&&typeof rec.system_rates==="object")Object.entries(rec.system_rates).forEach(([x,v])=>{const n=productionNumber(v),k=normalizeName(x);if(n!==null&&all.includes(k))card._rates.set(key+"::"+k,String(n))});
-  }else if(!productionNoRate(m.area)){const n=productionNumber(rec.progress_rate);card._rates.set(key,n===null?"":String(n))}
+  }else if(!productionNoRate(m.area,m.work_type)){const n=productionNumber(rec.progress_rate);card._rates.set(key,n===null?"":String(n))}
   const names=Array.isArray(rec.worker_names)?rec.worker_names.filter(Boolean):[];
   const old=card._people;card._people=createPeopleField(names,rec.manpower??null,{blockedReason:()=>"",onChange:()=>recheckSchedulePeople()});
   old.parentNode.replaceChild(card._people,old);
@@ -3640,7 +3640,13 @@ function productionDateOnly(v){
 }
 /* 11-17: 공통 구역 '지원' — 모든 호선 P.E · DOCK 에 있음. 인원 · 비고만 기록하고 공정률 계산에는 넣지 않음 */
 const PROD_NORATE_AREAS=["지원"];
-function productionNoRate(area){const a=productionNormalize(area);return PROD_NORATE_AREAS.some(x=>productionNormalize(x)===a)}
+/* 11-28: 안벽 '기타' 구역의 A/S(화기 및 기타 사항) · 시운전(시운전 업무 요청)도 '지원'과 같이 공정률 제외(모든 호선, DB 제외 표시와 같음) */
+const PROD_NORATE_WORKS=["A/S","시운전"];
+function productionNoRate(area,workType){
+  const a=productionNormalize(area);
+  if(PROD_NORATE_AREAS.some(x=>productionNormalize(x)===a))return true;
+  return workType!==undefined&&a===productionNormalize("기타")&&PROD_NORATE_WORKS.some(x=>productionNormalize(x)===productionNormalize(workType));
+}
 const PROD_ZONE_SRC={"LPG": "DOCK|CASING|기장;DOCK|E/R 20존|기장;DOCK|E/R 30~40존|기장;DOCK|M/D|선장;DOCK|M/F|선장;DOCK|NO.1 C/HOLD|선장;DOCK|NO.1 DOME|선장;DOCK|NO.2 C/HOLD|선장;DOCK|NO.2 DOME|선장;DOCK|NO.3 C/HOLD|선장;DOCK|NO.3 DOME|선장;DOCK|NO.3 W.B TK|선장;DOCK|NO.4 C/HOLD|선장;DOCK|NO.4 DOME|선장;DOCK|P/D|P/D;DOCK|RELI RM|선장;P.E|11A|기장;P.E|11D|기장;P.E|50J|선장;P.E|81A|선수;안벽|M/D|선장;안벽|M/F|선장;안벽|NO.1 DOME|선장;안벽|NO.2 DOME|선장;안벽|NO.3 DOME|선장;안벽|NO.4 DOME|선장;안벽|RELI RM|선장;안벽|기타|제외;안벽|선실|기장", "VLCC": "DOCK|E/R & P/R|기장;DOCK|FORE SHIP|선수;DOCK|M/F|선장;DOCK|NO.1 C.O TK|선장;DOCK|NO.1 M/D|선장;DOCK|NO.1 W.B TK|선장;DOCK|NO.1~5 M/D|선장;DOCK|NO.2 C.O TK|선장;DOCK|NO.2 M/D|선장;DOCK|NO.2 W.B TK|선장;DOCK|NO.3 C.O TK|선장;DOCK|NO.3 M/D|선장;DOCK|NO.3 W.B TK|선장;DOCK|NO.4 C.O TK|선장;DOCK|NO.4 M/D|선장;DOCK|NO.4 W.B TK|선장;DOCK|NO.5 C.O TK|선장;DOCK|NO.5 M/D|선장;DOCK|NO.5 W.B TK|선장;DOCK|선실|기장;P.E|11A|기장;P.E|11D|기장;P.E|80A/81B|선수;안벽|기타|제외", "LNG": "DOCK|B/S|선수;DOCK|CMR|선장;DOCK|E/R 20존|기장;DOCK|E/R 30존|기장;DOCK|E/R 40존|기장;DOCK|E/R 50존|기장;DOCK|E/R U/D|기장;DOCK|EMR|선장;DOCK|M/F (P)|선장;DOCK|M/F (S)|선장;DOCK|NO.1 C/D|선장;DOCK|NO.1 I/D|선장;DOCK|NO.1 T/D|선장;DOCK|NO.2 C/D|선장;DOCK|NO.2 I/D|선장;DOCK|NO.2 T/D|선장;DOCK|NO.3 C/D|선장;DOCK|NO.3 I/D|선장;DOCK|NO.3 T/D|선장;DOCK|NO.4 C/D|선장;DOCK|NO.4 I/D|선장;DOCK|NO.4 T/D|선장;DOCK|NO.5 C/D|선장;DOCK|P/D|P/D;DOCK|P/R|선수;DOCK|P/W(P)|선장;DOCK|P/W(S)|선장;DOCK|S.G.R|기장;P.E|10C|기장;P.E|10D|기장;P.E|10E|기장;P.E|10F|기장;P.E|10G|기장;P.E|10J|기장;P.E|11A|기장;P.E|20D|P/D;P.E|405(NO1 CD)|선장;P.E|40A|선장;P.E|40C|선장;P.E|51A|선장;P.E|80A|선수;P.E|80B|선수;P.E|80E|선수;안벽|CMR|선장;안벽|NO.1 T/D|선장;안벽|NO.2 T/D|선장;안벽|NO.3 T/D|선장;안벽|NO.4 T/D|선장;안벽|기타|제외"};
 /* 11-12: 엑셀 '공정률 지표'와 같은 기준 — 현재 공정률(대분류 가중) · 표준 공정률 · 늦음 음영 · 다음 절점 */
 let PROD_ZONE=null;
@@ -3686,11 +3692,9 @@ function productionItemsStats(items){
 function productionStageDetailHtml(stage){
   const areas=new Map();
   stage.items.forEach(item=>{const key=productionNormalize(item.area);if(!areas.has(key))areas.set(key,{area:item.area,rows:[]});areas.get(key).rows.push(item)});
-  let html=`<div class="production-detail-title">${escapeHtml(stage.name)} 세부 현황 <span class="production-detail-sub">구역 · 작업별 공정률</span></div><div class="production-detail-hint">작업을 누르면 일일작업등록으로 이어집니다. 이 호선에 없는 작업은 [제외]를 누르면 공정률에서 빠집니다.</div>`;
-  areas.forEach(group=>{
-    const stats=productionItemsStats(group.rows),nrArea=group.rows.every(r=>r.norate);
-    html+=`<div class="production-area${nrArea?" pa-norate":""}"><div class="production-area-title"><span>${escapeHtml(group.area||"-")}</span><span>${nrArea?`공정률 계산 안 함 · 등록 ${group.rows.reduce((n,r)=>n+(r.record_count||0),0)}건`:`${productionPercentLabel(stats.avg)} · 완료 ${stats.done} / ${stats.total}${stats.excluded?` · 제외 ${stats.excluded}`:""}`}</span></div>`;
-    group.rows.forEach(row=>{
+  let html=`<div class="production-detail-title">${escapeHtml(stage.name)} 세부 현황 <span class="production-detail-sub">구역 · 작업별 공정률</span></div><div class="production-detail-hint">작업을 누르면 일일작업등록으로 이어집니다. 이 호선에 없는 작업은 [제외]를 누르면 공정률에서 빠집니다. 공정률 제외 작업(지원 · A/S · 시운전)과 기록이 있는 제외 작업은 맨 아래에 모입니다.</div>`;
+  /* 11-28: 줄 긋는 [제외] 작업은 목록에서 숨김 — 기록이 있는 것만 맨 아래 '공정률 제외 작업'에(지원 · A/S · 시운전과 함께), 기록 없는 것은 접힌 줄에서 [되돌리기] */
+  const rowHtml=row=>{let html="";
       const registered=row.record_count>0,progress=row.progress||0;
       const badge=progress>=100?'<span class="badge badge-completed">완료</span>':(registered||progress>0?`<strong>${productionPercentLabel(progress)}</strong>`:'<span class="production-no-target">미등록</span>');   /* 11-12: 공정률이 있으면 미등록 아님 */
       const due=row.due_date||row.milestone?`완료 일정 ${escapeHtml([row.due_date,row.milestone?`(${row.milestone})`:""].filter(Boolean).join(" "))}`:"";
@@ -3700,16 +3704,37 @@ function productionStageDetailHtml(stage){
       if(row.norate&&!ph){   /* 11-17: 공통 '지원' 구역 — 공정률 없이 등록 건수 · 인원만, 누르면 작업등록 */
         const nm=[registered?`등록 ${row.record_count}건`:"아직 등록 없음",row.last_work_date?`최근작업 ${escapeHtml(row.last_work_date)}${row.last_author?` · <span class="pw-who">${escapeHtml(row.last_author)}</span>`:""}`:"",registered?`투입 ${row.manpower}명`:""].filter(Boolean).map(x=>`<span class="pw-part">${x}</span>`).join(" · ");
         html+=`<div class="production-work-item go pw-norate" role="button" tabindex="0" data-work-key="${escapeHtml(workKey)}" aria-label="${escapeHtml(`${row.area} ${row.work_type} ${row.work_method} 일일작업등록`)}"><div class="production-work-head"><div class="production-work-name">${escapeHtml([row.work_type,row.work_method].filter(Boolean).join(" · ")||"-")}</div><div><span class="pw-norate-badge">공정률 제외</span></div></div><div class="production-work-foot"><div class="production-work-meta">${nm}</div>${row.last_rec?'<span class="pw-acts"><button type="button" class="pw-fix" data-fix="1">수정</button></span>':""}</div></div>`;
-        return;
+        return html;
       }
       if(row.excluded&&!ph){   /* 11-13: 제외된 작업 — 흐리게 · [되돌리기] */
         html+=`<div class="production-work-item pw-off" data-work-key="${escapeHtml(workKey)}"><div class="production-work-head"><div class="production-work-name"><s>${escapeHtml([row.work_type,row.work_method].filter(Boolean).join(" · ")||"-")}</s>${row.system?`<span class="production-work-sys">SYSTEM ${escapeHtml(systemItems(row.system).join(" · "))}</span>`:""}</div><div><span class="pw-off-badge">제외됨</span></div></div><div class="production-work-foot"><div class="production-work-meta"><span class="pw-part">이 호선 공정률에 넣지 않음</span>${row.excluded_by?` · <span class="pw-part">${escapeHtml(row.excluded_by)}</span>`:""}</div><button type="button" class="pw-back" data-ex="0" aria-label="${escapeHtml(`${row.area} ${row.work_type} ${row.work_method} 되돌리기`)}">되돌리기</button></div></div>`;
-        return;
+        return html;
       }
       html+=`<div class="production-work-item${ph?"":" go"}"${ph?"":' role="button" tabindex="0"'} data-work-key="${escapeHtml(workKey)}" aria-label="${escapeHtml(`${row.area} ${row.work_type} ${row.work_method} 일일작업등록`)}"><div class="production-work-head"><div class="production-work-name">${escapeHtml((ph?[row.work_type]:[row.work_type,row.work_method]).filter(Boolean).join(" · ")||"-")}${ph?"":`<button type="button" class="pw-ex" data-ex="1" aria-label="${escapeHtml(`${row.area} ${row.work_type} ${row.work_method} 제외`)}">제외</button>`}${row.system?`<span class="production-work-sys">SYSTEM ${systemItems(row.system).map(x=>{const t=escapeHtml(x).replace(/ /g,"&nbsp;"),n=row.sys_rates?.get(x);if(n!==undefined)return n>=100?`<span class="sys-done">${t}&nbsp;100%&nbsp;✓</span>`:`<span>${t}&nbsp;${Number(n.toFixed(1))}%</span>`;return row.sys_done&&row.sys_done.has(x)?`<span class="sys-done">${t}&nbsp;✓</span>`:`<span class="sys-todo">${t}</span>`}).join(" · ")}${row.sys_rates&&row.sys_rates.size?` <span class="sys-todo sys-basis">(${systemItems(row.system).length}개 기준)</span>`:""}</span>`:""}</div><div>${badge}</div></div>${registered?productionBarHtml(progress):""}<div class="production-work-foot"><div class="production-work-meta">${meta}</div>${ph?"":`<span class="pw-acts">${row.last_rec||row.last_base?'<button type="button" class="pw-fix" data-fix="1">수정</button>':""}<span class="production-work-go">작업등록 ›</span></span>`}</div></div>`;
-    });
+    return html;};
+  const isPh=r=>r.work_type===PROD_PLACEHOLDER,isSide=r=>!isPh(r)&&(r.norate||r.excluded);
+  const bottom=[],hiddenEx=[];
+  areas.forEach(group=>{
+    group.rows.forEach(r=>{if(!isSide(r))return;if(r.norate||r.record_count>0)bottom.push(r);else hiddenEx.push(r)});
+    const main=group.rows.filter(r=>!isSide(r));
+    if(!main.length)return;
+    const stats=productionItemsStats(group.rows);
+    html+=`<div class="production-area"><div class="production-area-title"><span>${escapeHtml(group.area||"-")}</span><span>${productionPercentLabel(stats.avg)} · 완료 ${stats.done} / ${stats.total}${stats.excluded?` · 제외 ${stats.excluded}`:""}</span></div>`;
+    main.forEach(row=>{html+=rowHtml(row)});
     html+="</div>";
   });
+  const tag=r=>`<span class="pw-area">${escapeHtml(r.area||"-")}</span>`;
+  const exCard=r=>{
+    const name=escapeHtml([r.work_type,r.work_method].filter(Boolean).join(" · ")||"-")+(r.system?`<span class="production-work-sys">SYSTEM ${escapeHtml(systemItems(r.system).join(" · "))}</span>`:"");
+    const meta=[r.record_count>0?`등록 ${r.record_count}건`:"기록 없음",r.last_work_date?`최근작업 ${escapeHtml(r.last_work_date)}${r.last_author?` · <span class="pw-who">${escapeHtml(r.last_author)}</span>`:""}`:"",r.record_count>0?`투입 ${r.manpower}명`:"",r.excluded_by?`제외 ${escapeHtml(r.excluded_by)}`:""].filter(Boolean).map(x=>`<span class="pw-part">${x}</span>`).join(" · ");
+    return `<div class="production-work-item pw-norate" data-work-key="${escapeHtml(productionWorkKey("","",r.area,r.work_type,r.work_method,r.system))}"><div class="production-work-head"><div class="production-work-name">${tag(r)}${name}</div><div><span class="pw-norate-badge">제외한 작업</span></div></div><div class="production-work-foot"><div class="production-work-meta">${meta}</div><button type="button" class="pw-back" data-ex="0" aria-label="${escapeHtml(`${r.area} ${r.work_type} ${r.work_method} 되돌리기`)}">되돌리기</button></div></div>`;
+  };
+  if(bottom.length){
+    html+=`<div class="production-area pa-norate pa-bottom"><div class="production-area-title"><span>공정률 제외 작업</span><span>공정률 계산 안 함 · 등록 ${bottom.reduce((n,r)=>n+(r.record_count||0),0)}건</span></div>`;
+    bottom.forEach(r=>{html+=r.norate?rowHtml(r).replace('<div class="production-work-name">',`<div class="production-work-name">${tag(r)}`):exCard(r)});
+    html+="</div>";
+  }
+  if(hiddenEx.length)html+=`<details class="pw-hidden-ex"><summary>기록 없는 제외 작업 ${hiddenEx.length}건 (공정률에 안 들어감) · 눌러서 보기 · 되돌리기</summary>${hiddenEx.map(exCard).join("")}</details>`;
   return html;
 }
 
@@ -3822,7 +3847,7 @@ async function productionBuildShips(shipFilter=""){
     const stageKey=productionNormalize(m.stage);
     if(!ship.stages.has(stageKey))ship.stages.set(stageKey,{name:m.stage,record_count:0,manpower:0,last_work_date:"",batches:new Set(),items:new Map()});
     const stage=ship.stages.get(stageKey),itemKey=productionWorkKey("","",m.area,m.work_type,m.work_method,m.system);
-    if(!stage.items.has(itemKey))stage.items.set(itemKey,{area:m.area,work_type:m.work_type,work_method:m.work_method,system:m.system||"",sys_done:new Set(),sys_rates:new Map(),milestone:m.milestone||"",due_date:m.due_date?productionDateOnly(m.due_date):"",progress:null,record_count:0,manpower:0,last_work_date:"",ids:[],excluded:false,excluded_by:"",norate:productionNoRate(m.area),last_author:"",last_created:"",last_rec:"",last_base:""});
+    if(!stage.items.has(itemKey))stage.items.set(itemKey,{area:m.area,work_type:m.work_type,work_method:m.work_method,system:m.system||"",sys_done:new Set(),sys_rates:new Map(),milestone:m.milestone||"",due_date:m.due_date?productionDateOnly(m.due_date):"",progress:null,record_count:0,manpower:0,last_work_date:"",ids:[],excluded:false,excluded_by:"",norate:productionNoRate(m.area,m.work_type),last_author:"",last_created:"",last_rec:"",last_base:""});
     {const it=stage.items.get(itemKey);if(m.id)it.ids.push(m.id);if(m.excluded){it.excluded=true;if(!it.excluded_by)it.excluded_by=m.excluded_by||""}}   /* 11-13 [제외] */
   });
   /* ② 일일작업 등록을 얹습니다. 같은 작업의 공정률은 입력된 값 중 가장 높은 값(축적식). */
