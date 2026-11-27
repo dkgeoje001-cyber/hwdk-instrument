@@ -227,7 +227,7 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .prod-hull-meta .rec{color:#315f8c}
 .prod-hull-meta .nw{white-space:nowrap}
 .prod-hull-detail .production-ship-card{margin-top:12px}
-.prod-hull-empty{margin-top:12px;padding:12px;border:1px dashed #cfd8df;border-radius:10px;color:#64748b;font-size:13px;text-align:center}
+.prod-own-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px;margin:16px 0 0;padding:7px 12px;border-left:6px solid var(--oc,#475569);border-radius:6px;background:#f3f6f9}.prod-own-head b{font-size:15px;font-weight:900;color:var(--oc,#475569)}.prod-own-head span{font-size:13px;font-weight:800;color:#334155}.prod-own-head span i{font-style:normal;color:#C55A11}.prod-own-head span i.r{color:#C00000}.prod-own-head em{margin-left:auto;font-style:normal;font-size:12px;font-weight:700;color:#94a3b8}@media(max-width:720px){.prod-own-head{margin-top:12px;padding:6px 9px}.prod-own-head b{font-size:14px}.prod-own-head span{font-size:12px}.prod-own-head em{display:none}}.prod-hull-empty{margin-top:12px;padding:12px;border:1px dashed #cfd8df;border-radius:10px;color:#64748b;font-size:13px;text-align:center}
 @media(max-width:720px){.prod-type-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.prod-type-tab{padding:10px}.prod-type-name{font-size:16px}.prod-type-sub{font-size:11px}.prod-hull-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.prod-hull-chip{padding:8px}.prod-hull-no{font-size:15px}.prod-hull-pct{font-size:12px}.prod-hull-meta{font-size:10px}}
 .module-weekly{background:#2f6e73;color:#fff}
 .module-priority{background:#8a4b14;color:#fff}
@@ -3427,6 +3427,13 @@ let productionDashboardReopen=null;
 let productionDashboardType=(()=>{try{return localStorage.getItem("hwdk.dashType")||""}catch(e){return ""}})();
 let productionDashboardShipSel="";
 let productionDashboardShips=[];
+/* 11-27: 호선 선사(선주) — 표 production_ship_owners(관리자가 DB 에 넣음). 못 읽으면 예전처럼 한 줄(진수 순) */
+let productionShipOwners=new Map();
+const PROD_OWNER_COLOR={"QATARENERGY":"#7a1f3d","MARAN":"#1f4e8c","MOL":"#b3541e","HANWHA SHIPPING":"#e0701a","ARCTIC":"#2b7a8c","VENTURE GLOBAL":"#4b6b2a"};
+async function productionLoadOwners(){
+  try{const {data,error}=await supabase.from("production_ship_owners").select("ship_no,owner");if(error)return;
+    productionShipOwners=new Map((data||[]).filter(r=>r.owner).map(r=>[productionNormalize(r.ship_no),String(r.owner).trim()]))}catch(e){}
+}
 function productionShipItems(ship){return [...ship.stages.values()].flatMap(stage=>[...stage.items.values()])}
 function productionShortDate(v){const d=productionDateOnly(v);return d?d.slice(2):""}
 /* 선종 버튼 → 그 선종 호선 칸(진수 L/C 순) → 고른 호선 카드 */
@@ -3443,13 +3450,26 @@ function renderProductionTypes(content){
     const list=shipList.filter(ship=>typeOf(ship)===t),stats=productionItemsStats(list.flatMap(productionShipItems));
     return `<button type="button" class="prod-type-tab${t===productionDashboardType?" active":""}" data-type="${escapeHtml(t)}" aria-pressed="${t===productionDashboardType}"><span class="prod-type-name">${escapeHtml(t)}</span><span class="prod-type-sub">${list.length}척 · 공정률 ${stats.total?productionPercentLabel(stats.avg):"-"}</span></button>`;
   }).join("");
-  const chips=ships.map(ship=>{
+  const chipOf=ship=>{
     const key=productionNormalize(ship.ship_no),stats=productionItemsStats(productionShipItems(ship)),ix=productionShipIndex(ship);
     const cur=ix.cur!==null?ix.cur:(stats.total?stats.avg:null),std=ix.std,lag=productionLagLevel(cur,std),ms=productionNextMilestone(ship);   /* 11-12: 엑셀 기준 */
     const meta=[ship.record_count?`<span class="rec nw">등록 ${ship.record_count}건</span>`:"",`<span class="nw">${ms[0]} ${ms[1]?escapeHtml(productionShortDate(ms[1])):"미정"}</span>`].filter(Boolean).join(" · ");
-    return `<button type="button" class="prod-hull-chip${lag?` lag${lag}`:""}${key===productionDashboardShipSel?" active":""}" data-ship="${escapeHtml(key)}" aria-pressed="${key===productionDashboardShipSel}"><div class="prod-hull-top"><span class="prod-hull-no">${escapeHtml(ship.ship_no||"-")}</span><span class="prod-hull-pct">${cur===null?"-":productionPercentLabel(cur)}</span></div>${productionBarHtml(cur)}${std===null?"":`<div class="prod-hull-std"><span>표준 ${productionPercentLabel(std)}</span>${lag?`<b>−${Math.round(std-cur)}%p</b>`:""}</div>`}<div class="prod-hull-meta">${meta||"&nbsp;"}</div></button>`;
-  }).join("");
-  content.innerHTML=`<div class="prod-type-tabs">${tabs}</div><div class="prod-hull-head">${escapeHtml(productionDashboardType)} 호선 ${ships.length}척 <span>진수(L/C) 순 · 호선을 누르면 STAGE별 공정률이 열립니다</span></div>${PROD_STD_RULE[String(productionDashboardType).toUpperCase()]?'<div class="prod-lag-legend"><span><i style="background:#fff6ec;border:1px solid #efb27a"></i>주의 · 표준보다 10%p 넘게 늦음</span><span><i style="background:#fdeeee;border:1px solid #e99b9b"></i>위험 · 표준보다 30%p 넘게 늦음</span><span class="mut">엑셀 공정률 지표와 같은 기준</span></div>':""}<div class="prod-hull-grid">${chips}</div><div class="prod-hull-detail"></div>`;
+    return {lag,html:`<button type="button" class="prod-hull-chip${lag?` lag${lag}`:""}${key===productionDashboardShipSel?" active":""}" data-ship="${escapeHtml(key)}" aria-pressed="${key===productionDashboardShipSel}"><div class="prod-hull-top"><span class="prod-hull-no">${escapeHtml(ship.ship_no||"-")}</span><span class="prod-hull-pct">${cur===null?"-":productionPercentLabel(cur)}</span></div>${productionBarHtml(cur)}${std===null?"":`<div class="prod-hull-std"><span>표준 ${productionPercentLabel(std)}</span>${lag?`<b>−${Math.round(std-cur)}%p</b>`:""}</div>`}<div class="prod-hull-meta">${meta||"&nbsp;"}</div></button>`};
+  };
+  /* 11-27: 선사가 정해진 호선이 있으면 선사별 묶음(묶음 순서 = 묶음 안 첫 진수, 선사 미정은 맨 아래), 묶음 안은 진수(L/C) 순 */
+  const ownerOf=ship=>productionShipOwners.get(productionNormalize(ship.ship_no))||"";
+  const byOwner=ships.some(ownerOf);
+  const groups=[];
+  ships.forEach(ship=>{const o=byOwner?(ownerOf(ship)||"선사 미정"):"";let g=groups.find(x=>x.owner===o);if(!g){g={owner:o,ships:[]};groups.push(g)}g.ships.push(ship)});
+  if(byOwner){const i=groups.findIndex(g=>g.owner==="선사 미정");if(i>=0)groups.push(groups.splice(i,1)[0])}
+  const selGroup=groups.find(g=>g.ships.some(ship=>productionNormalize(ship.ship_no)===productionDashboardShipSel));
+  const DETAIL='<div class="prod-hull-detail"></div>';
+  const chips=groups.map(g=>{
+    const cs=g.ships.map(chipOf),l1=cs.filter(c=>c.lag===1).length,l2=cs.filter(c=>c.lag===2).length;
+    const head=byOwner?`<div class="prod-own-head" style="--oc:${PROD_OWNER_COLOR[g.owner]||"#475569"}"><b>${escapeHtml(g.owner)}</b><span>${g.ships.length}척${l1?` · <i>주의 ${l1}</i>`:""}${l2?` · <i class="r">위험 ${l2}</i>`:""}</span><em>진수(L/C) 순</em></div>`:"";
+    return head+`<div class="prod-hull-grid">${cs.map(c=>c.html).join("")}</div>`+(g===selGroup?DETAIL:"");
+  }).join("")+(selGroup?"":DETAIL);
+  content.innerHTML=`<div class="prod-type-tabs">${tabs}</div><div class="prod-hull-head">${escapeHtml(productionDashboardType)} 호선 ${ships.length}척 <span>${byOwner?"선사별 · 선사 안은 진수(L/C) 순":"진수(L/C) 순"} · 호선을 누르면 STAGE별 공정률이 열립니다</span></div>${PROD_STD_RULE[String(productionDashboardType).toUpperCase()]?'<div class="prod-lag-legend"><span><i style="background:#fff6ec;border:1px solid #efb27a"></i>주의 · 표준보다 10%p 넘게 늦음</span><span><i style="background:#fdeeee;border:1px solid #e99b9b"></i>위험 · 표준보다 30%p 넘게 늦음</span><span class="mut">엑셀 공정률 지표와 같은 기준</span></div>':""}${chips}`;
   const detail=content.querySelector(".prod-hull-detail"),sel=ships.find(ship=>productionNormalize(ship.ship_no)===productionDashboardShipSel);
   if(sel)detail.appendChild(productionShipCard(sel));
   else detail.innerHTML='<div class="prod-hull-empty">호선을 누르면 STAGE별 공정률이 여기에 열립니다.</div>';
@@ -3851,7 +3871,7 @@ async function loadProductionDashboard(){
   const status=$("productionDashboardStatus"),summary=$("productionDashboardSummary"),content=$("productionDashboardContent"),shipFilter=$("productionDashboardShip").value.trim();
   const seq=++productionDashboardSeq;
   status.textContent="생산 데이터 집계 중...";summary.innerHTML="";content.innerHTML="";
-  const built=await productionBuildShips(shipFilter);
+  const [built]=await Promise.all([productionBuildShips(shipFilter),productionLoadOwners()]);
   if(seq!==productionDashboardSeq)return;
   if(built.error){status.textContent="생산 데이터 조회 실패: "+(productionSchemaMessage(built.error)||built.error.message);return}
   const {shipList,recordCount,manpowerTotal}=built;
