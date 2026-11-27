@@ -695,6 +695,80 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
 .production-work-sys{display:block;margin-top:2px;color:#5b6b7b;font-size:12px;font-weight:700}
 /* 로그인: 비밀번호 칸 안내(사번)는 회색 작은 글씨 */
 #loginPassword::placeholder{color:#9aa3ad;font-size:13px;font-weight:400}
+/* 게스트(읽기 전용) 모드 — 쓰기 버튼 숨김 */
+body.guest-mode #openMissingHomeBtn,
+body.guest-mode #scheduleRegisterTab,
+body.guest-mode #openMissingBtn,
+body.guest-mode #missingSaveBtn,
+body.guest-mode #addScheduleRowBtn,
+body.guest-mode #saveScheduleBtn,
+body.guest-mode #priorityAddBtn,
+body.guest-mode #prSaveBtn,
+body.guest-mode #weeklyInputTab,
+body.guest-mode #weeklyAddRowBtn,
+body.guest-mode #weeklyOpenMissingBtn,
+body.guest-mode #weeklyMissSaveBtn,
+body.guest-mode #weeklySaveBtn,
+body.guest-mode #boardWriteBtn,
+body.guest-mode #boardSaveBtn,
+body.guest-mode #matCheckoutBtn,
+body.guest-mode #matReturnBtn,
+body.guest-mode #matCancelLoanBtn,
+body.guest-mode #ecRegisterBtn,
+body.guest-mode #ecInspectBtn,
+body.guest-mode #ecIssueBtn,
+body.guest-mode #ecEditBtn,
+body.guest-mode #ecRepairBtn,
+body.guest-mode #ecDisposeBtn,
+body.guest-mode #ecRestoreBtn,
+body.guest-mode #ecEventSave,
+body.guest-mode #ecEditSave,
+body.guest-mode #ecRSave,
+body.guest-mode #bhdRegisterTab,
+body.guest-mode #cancelEditBtn,
+body.guest-mode #analyzeBtn,
+body.guest-mode #saveBtn,
+body.guest-mode #completeBtn,
+body.guest-mode #requestRegisterTab,
+body.guest-mode #saveRequestBtn,
+body.guest-mode #transferBtn,
+body.guest-mode #confirmRequestBtn,
+body.guest-mode #reconfirmBtn,
+body.guest-mode #adminDeleteRequestBtn,
+body.guest-mode [data-fix],
+body.guest-mode [data-pr-done],
+body.guest-mode [data-pr-undo],
+body.guest-mode [data-pr-del],
+body.guest-mode [data-ms-done],
+body.guest-mode [data-ms-undo],
+body.guest-mode [data-ex],
+body.guest-mode [data-fa-id],
+body.guest-mode [data-missing-delete],
+body.guest-mode [data-wk-del],
+body.guest-mode [data-wk-miss-del],
+body.guest-mode [data-ec-ev-edit],
+body.guest-mode [data-ec-ev-del],
+body.guest-mode [data-ec-photo-del],
+body.guest-mode [data-mat-photo-del]{display:none!important}
+.user-badge.guest{background:#fff4e0;color:#8a5a00;border:1px solid #f0c674}
+#guestToast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:99999;max-width:90vw;padding:12px 18px;border-radius:10px;background:#333;color:#fff;font-size:15px;font-weight:700;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.25);display:none}
+/* AI 질문하기 */
+.ai-ask{margin:12px 0 4px;padding:12px;border:1px solid #c9d8ea;border-radius:12px;background:#f4f8fd;text-align:left}
+.ai-ask-head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.ai-ask-title{font-size:16px;font-weight:800;color:#16324f}
+.ai-ask-sub{font-size:12px;color:#5b6b7b}
+.ai-ask-row{display:flex;gap:6px}
+.ai-ask-row input{flex:1 1 auto;min-width:0;margin:0;padding:10px 12px;font-size:15px;border:1px solid #b9c7d6;border-radius:8px;background:#fff}
+.ai-ask-row button{flex:0 0 auto;width:auto;margin:0;padding:10px 16px;font-size:15px;font-weight:800;border-radius:8px;background:#1b3a5c;color:#fff;border:0}
+.ai-ask-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ai-ask-chips button{width:auto;margin:0;padding:5px 10px;font-size:12px;font-weight:700;border-radius:999px;border:1px solid #c9d8ea;background:#fff;color:#2b4a6b}
+.ai-ask-answer{margin-top:10px;border:1px solid #d5dee8;border-radius:10px;background:#fff;overflow:hidden}
+.ai-ans-top{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #e6ecf2;background:#f8fafc}
+.ai-ans-q{flex:1 1 auto;min-width:0;font-size:13px;font-weight:700;color:#3b4e66;overflow-wrap:anywhere}
+.ai-copy{flex:0 0 auto;width:auto;margin:0;padding:6px 10px;font-size:13px;font-weight:800;border-radius:8px;border:1px solid #b9c7d6;background:#fff;color:#1b3a5c;display:inline-flex;align-items:center;gap:4px}
+.ai-copy.done{background:#e7f6ec;border-color:#8fcca3;color:#1d6b38}
+.ai-ans-body{margin:0;padding:10px 12px;max-height:420px;overflow:auto;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;font-family:inherit;font-size:14px;line-height:1.55;color:#222}
+.ai-ans-body.loading{color:#6b7785}
 </style>
 </head>
 <body>
@@ -761,6 +835,24 @@ header{padding:9px 10px}.header-inner{display:grid;grid-template-columns:minmax(
     <div class="home-title">HWDK 작업관리 시스템</div>
     <div class="home-subtitle">업무 메뉴</div>
     <div id="homeUser" class="home-user"></div>
+    <div id="aiAsk" class="ai-ask">
+      <div class="ai-ask-head"><span class="ai-ask-title">🤖 AI 질문하기</span><span class="ai-ask-sub">앱에 등록된 DATA로만 답합니다</span></div>
+      <div class="ai-ask-row"><input id="aiAskInput" type="text" placeholder="예: 2581호선 미비작업 알려줘" autocomplete="off" enterkeyhint="send"><button id="aiAskBtn" type="button">질문</button></div>
+      <div class="ai-ask-chips">
+        <button type="button" data-ai-q="2581호선 미비작업 알려줘">2581호선 미비작업</button>
+        <button type="button" data-ai-q="공정현황 알려줘">공정현황</button>
+        <button type="button" data-ai-q="우선순위작업 알려줘">우선순위작업</button>
+        <button type="button" data-ai-q="2581호선 일정 알려줘">호선 일정</button>
+        <button type="button" data-ai-q="이번주 주간계획 알려줘">이번주 계획</button>
+        <button type="button" data-ai-q="오늘 일일작업 알려줘">오늘 작업</button>
+        <button type="button" data-ai-q="불출중 자재 알려줘">불출중 자재</button>
+        <button type="button" data-ai-q="도움말">무엇을 물어볼 수 있나요?</button>
+      </div>
+      <div id="aiAskAnswer" class="ai-ask-answer hidden">
+        <div class="ai-ans-top"><span id="aiAnsQ" class="ai-ans-q"></span><button id="aiCopyBtn" class="ai-copy" type="button" title="답변 전체 복사">📋 복사</button></div>
+        <pre id="aiAnsBody" class="ai-ans-body"></pre>
+      </div>
+    </div>
 
     <div class="dashboard-stack">
       <div id="homeBoard" class="home-board">
@@ -1608,8 +1700,8 @@ async function nameToSyntheticEmail(name){
 
 function hideAllMain(){authScreen.classList.add("hidden");moduleHome.classList.add("hidden");scheduleApp.classList.add("hidden");$("productionDashboardApp")?.classList.add("hidden");$("boardApp")?.classList.add("hidden");$("materialApp")?.classList.add("hidden");$("equipCardApp")?.classList.add("hidden");$("weeklyApp")?.classList.add("hidden");$("priorityApp")?.classList.add("hidden");if($("matSheet")&&!$("matSheet").classList.contains("hidden"))closeMaterialSheet();bhdApp.classList.add("hidden");requestApp.classList.add("hidden");myWorkApp.classList.add("hidden")}
 function updateHeader(){
-  $("userBadge").textContent=isAdmin?`관리자 · ${currentUserName||"관리자"}`:currentUserName;
-  $("userBadge").className=isAdmin?"user-badge admin":"user-badge";
+  $("userBadge").textContent=isAdmin?`관리자 · ${currentUserName||"관리자"}`:isGuest?`게스트 · 조회 전용`:currentUserName;
+  $("userBadge").className=isAdmin?"user-badge admin":isGuest?"user-badge guest":"user-badge";
 }
 function setAuthMode(mode){
   const signup=mode==="signup";
@@ -1789,7 +1881,7 @@ async function loadMyProfile(userId){
   if(error||!data)return null;return data.name;
 }
 async function enterWorkerSession(user){
-  currentUserId=user.id;isAdmin=false;
+  currentUserId=user.id;isAdmin=false;await applyGuestMode();
   const name=await loadMyProfile(user.id);
   if(!name)throw new Error("사용자 이름 정보를 찾지 못했습니다.");
   currentUserName=name;startNotificationPolling();showHome(true);
@@ -1856,13 +1948,13 @@ $("adminLoginBtn").onclick=async()=>{
     const {data,error}=await supabase.auth.signInWithPassword({email,password});if(error)throw error;
     currentUserId=data.user.id;
     if(!await checkCurrentUserAdmin()){await supabase.auth.signOut();throw new Error("관리자 권한이 없는 계정입니다.")}
-    isAdmin=true;currentUserName="관리자";$("adminPassword").value="";startNotificationPolling();showHome(true);
+    isAdmin=true;setGuestMode(false);currentUserName="관리자";$("adminPassword").value="";startNotificationPolling();showHome(true);
   }catch(e){status.textContent="관리자 로그인 실패: "+(e?.message||"오류")}
 };
 $("adminPassword").addEventListener("keydown",e=>{if(e.key==="Enter")$("adminLoginBtn").click()});
 
 $("homeBtn").onclick=()=>showHome(true);
-$("logoutBtn").onclick=async()=>{stopNotificationPolling();await supabase.auth.signOut();isAdmin=false;currentUserName="";currentUserId=null;showAuth();replaceState({screen:"auth"})};
+$("logoutBtn").onclick=async()=>{stopNotificationPolling();await supabase.auth.signOut();isAdmin=false;setGuestMode(false);currentUserName="";currentUserId=null;showAuth();replaceState({screen:"auth"})};
 
 /* ---------- 일일작업등록 모듈 ---------- */
 let scheduleRowSeq=0;
@@ -3673,17 +3765,14 @@ async function setProductionWorkExcluded(ship,stage,row,on,btn){
   const st=$("productionDashboardStatus");if(st&&st.textContent)st.textContent=`${on?"제외함":"되돌림"} · ${ship.ship_no} ${name} — `+st.textContent;
 }
 
-async function loadProductionDashboard(){
-  const status=$("productionDashboardStatus"),summary=$("productionDashboardSummary"),content=$("productionDashboardContent"),shipFilter=$("productionDashboardShip").value.trim();
-  const seq=++productionDashboardSeq;
-  status.textContent="생산 데이터 집계 중...";summary.innerHTML="";content.innerHTML="";
+/* 생산 데이터 집계(마스터 + 일일작업) — 생산통합지표 · AI 질문하기 공통 */
+async function productionBuildShips(shipFilter=""){
   const [scheduleResult,masterResult]=await Promise.all([
     fetchAllRows(()=>{let q=supabase.from("production_schedules").select("id,work_date,ship_type,ship_no,stage,area,work_type,work_method,system,system_items,system_rates,manpower,progress_rate,batch_id,created_at,is_baseline,author_name,corrected_at").order("created_at",{ascending:true}).order("id",{ascending:true});if(shipFilter)q=q.ilike("ship_no",`%${shipFilter}%`);return q}),
     fetchAllRows(productionMasterQuery)
   ]);
-  if(seq!==productionDashboardSeq)return;
   const error=scheduleResult.error||masterResult.error;
-  if(error){status.textContent="생산 데이터 조회 실패: "+(productionSchemaMessage(error)||error.message);return}
+  if(error)return {error};
   const schedules=scheduleResult.data||[];
   const recordCount=schedules.filter(r=>!r.is_baseline).length;   /* 기초 공정률(10/30 지표) 기록은 건수에서 뺌 */
   let masters=productionCleanMaster(masterResult.data);
@@ -3745,6 +3834,17 @@ async function loadProductionDashboard(){
     if(b.first_created)return 1;
     return a.order-b.order;
   });
+  return {shipList,recordCount,manpowerTotal};
+}
+
+async function loadProductionDashboard(){
+  const status=$("productionDashboardStatus"),summary=$("productionDashboardSummary"),content=$("productionDashboardContent"),shipFilter=$("productionDashboardShip").value.trim();
+  const seq=++productionDashboardSeq;
+  status.textContent="생산 데이터 집계 중...";summary.innerHTML="";content.innerHTML="";
+  const built=await productionBuildShips(shipFilter);
+  if(seq!==productionDashboardSeq)return;
+  if(built.error){status.textContent="생산 데이터 조회 실패: "+(productionSchemaMessage(built.error)||built.error.message);return}
+  const {shipList,recordCount,manpowerTotal}=built;
 
   const allItems=shipList.flatMap(ship=>[...ship.stages.values()].flatMap(stage=>[...stage.items.values()])),overall=productionItemsStats(allItems);
   summary.innerHTML=`<div class="production-summary-card"><div class="production-summary-label">누적 작업등록</div><div class="production-summary-value">${recordCount}건</div></div><div class="production-summary-card"><div class="production-summary-label">호선</div><div class="production-summary-value">${shipList.length}척</div></div><div class="production-summary-card"><div class="production-summary-label">누적 투입 인원</div><div class="production-summary-value">${manpowerTotal}명</div></div><div class="production-summary-card"><div class="production-summary-label">전체 공정률</div><div class="production-summary-value">${overall.total?productionPercentLabel(overall.avg):"-"}</div></div>`;
@@ -6768,7 +6868,258 @@ async function renderHistoryState(state){const t=state||{screen:"auth"};if(t.scr
 addEventListener("popstate",e=>{updateAppBackButton();renderHistoryState(e.state)});
 
 /* ---------- 초기 실행 ---------- */
-async function initialize(){replaceState({screen:"auth"});$("workDate").value=localToday();setRows([],1);showAuth();const {data}=await supabase.auth.getSession();const session=data.session;if(!session)return;currentUserId=session.user.id;if(await checkCurrentUserAdmin()){isAdmin=true;currentUserName="관리자";startNotificationPolling();replaceState({screen:"home",admin:true});showHome(false);return}const name=await loadMyProfile(session.user.id);if(name){isAdmin=false;currentUserName=name;startNotificationPolling();replaceState({screen:"home",admin:false});showHome(false)}}
+async function initialize(){replaceState({screen:"auth"});$("workDate").value=localToday();setRows([],1);showAuth();const {data}=await supabase.auth.getSession();const session=data.session;if(!session)return;currentUserId=session.user.id;if(await checkCurrentUserAdmin()){isAdmin=true;currentUserName="관리자";startNotificationPolling();replaceState({screen:"home",admin:true});showHome(false);return}const name=await loadMyProfile(session.user.id);if(name){isAdmin=false;await applyGuestMode();currentUserName=name;startNotificationPolling();replaceState({screen:"home",admin:false});showHome(false)}}
+
+/* ===== 게스트(읽기 전용) 모드 (2026-11-27) =====
+   · 게스트 계정(HW3700)은 DB 에서 모든 쓰기가 막혀 있다(트리거 zz_block_guest_write · 스토리지 정책).
+   · 화면에서는 쓰기 버튼을 숨기고, 등록 화면 대신 목록 화면을 연다. 혹시 남은 쓰기 요청은 여기서 한 번 더 막는다. */
+var isGuest=false;
+const GUEST_MSG="게스트 계정은 조회만 가능합니다.";
+function setGuestMode(on){isGuest=!!on;document.body.classList.toggle("guest-mode",isGuest);try{updateHeader()}catch(e){}}
+async function applyGuestMode(){
+  let g=false;
+  try{const {data,error}=await _guestRawRpc("is_guest_user");g=!error&&data===true}catch(e){g=false}
+  setGuestMode(g);
+}
+function guestToast(){
+  let t=document.getElementById("guestToast");
+  if(!t){t=document.createElement("div");t.id="guestToast";document.body.appendChild(t)}
+  t.textContent=GUEST_MSG;t.style.display="block";clearTimeout(t._h);t._h=setTimeout(()=>{t.style.display="none"},2500);
+}
+function guestBlocked(){
+  guestToast();
+  const res={data:null,error:{message:GUEST_MSG,code:"42501"},count:null,status:403,statusText:GUEST_MSG};
+  const p=new Proxy(function(){},{get(_,k){if(k==="then")return (ok,ng)=>Promise.resolve(res).then(ok,ng);if(k==="catch")return f=>Promise.resolve(res);if(k==="finally")return f=>Promise.resolve(res).finally(f);return ()=>p},apply(){return p}});
+  return p;
+}
+const _guestRawRpc=supabase.rpc.bind(supabase);
+const _guestRawFrom=supabase.from.bind(supabase);
+const GUEST_WRITE_RPC=new Set(["hwdk_field_add_system","hwdk_field_add_work","hwdk_field_log_cont","hwdk_field_set_status","set_work_excluded","transfer_check_request","hwdk_schedule_correct"]);
+supabase.rpc=(fn,...a)=>{if(isGuest&&fn==="priority_cleanup")return Promise.resolve({data:0,error:null});if(isGuest&&GUEST_WRITE_RPC.has(fn))return guestBlocked();return _guestRawRpc(fn,...a)};
+supabase.from=(t)=>{const q=_guestRawFrom(t);if(!isGuest)return q;return new Proxy(q,{get(o,k){if(["insert","update","upsert","delete"].includes(k))return ()=>guestBlocked();const v=o[k];return typeof v==="function"?v.bind(o):v}})};
+{const _sf=supabase.storage.from.bind(supabase.storage);
+ supabase.storage.from=(b)=>{const x=_sf(b);if(!isGuest)return x;return new Proxy(x,{get(o,k){if(["upload","update","remove","move","copy"].includes(k))return ()=>guestBlocked();const v=o[k];return typeof v==="function"?v.bind(o):v}})};}
+/* 등록 화면 → 목록 화면 */
+{const o=showScheduleTab;showScheduleTab=function(m){return o(isGuest?"list":m)}}
+{const o=showWeekly;showWeekly=function(tab="input",push=true){return o(isGuest?"list":tab,push)}}
+{const o=showBhdTab;showBhdTab=function(m){return o(isGuest&&m==="register"?"list":m)}}
+{const o=showRequestTab;showRequestTab=function(m){return o(isGuest&&m==="register"?"list":m)}}
+{const o=showHome;showHome=function(push=true){const r=o(push);if(isGuest)$("homeUser").textContent=`현재 사용자: ${currentUserName||"-"} (게스트 · 조회 전용)`;return r}}
+{const o=showEquipRegister;showEquipRegister=function(push=true){if(isGuest){guestToast();return showEquipCards("cards",push)}return o(push)}}
+
+
+/* ===== AI 질문하기 (2026-11-27) =====
+   · 외부 AI(크레딧) 를 쓰지 않고, 질문의 낱말(호선 번호 · 미비작업 · 공정 · 우선순위 …)을 보고 앱 DATA 를 바로 조회해서 답한다.
+   · 앱 DATA 밖의 질문에는 답하지 않는다. 읽기만 한다(게스트도 사용 가능). */
+const AI_LIMIT=60;
+let aiCache={ships:null,shipsAt:0,pr:null,prAt:0};
+const aiMD=v=>{const d=productionDateOnly(v);return /^\d{4}-\d{2}-\d{2}$/.test(d)?`${Number(d.slice(5,7))}/${Number(d.slice(8,10))}`:"-"};
+const aiYMD=v=>{const d=productionDateOnly(v);return /^\d{4}-\d{2}-\d{2}$/.test(d)?d.slice(2).replaceAll("-","."):"-"};
+const aiPct=v=>v===null||v===undefined?"0%":Number(Number(v).toFixed(1))+"%";
+function aiDday(v){const n=prDays(v);return n===null?"":n===0?"D-DAY":n>0?`D-${n}`:`D+${-n}`}
+function aiMonday(off=0){const d=new Date();const w=(d.getDay()+6)%7;d.setDate(d.getDate()-w+off*7);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+async function aiShips(){
+  if(aiCache.ships&&Date.now()-aiCache.shipsAt<120000)return aiCache.ships;
+  const r=await productionBuildShips("");if(r.error)throw r.error;
+  aiCache.ships=r.shipList;aiCache.shipsAt=Date.now();return r.shipList;
+}
+async function aiPriority(){
+  if(aiCache.pr&&Date.now()-aiCache.prAt<120000)return aiCache.pr;
+  const {data,error}=await supabase.rpc("ai_priority_list");if(error)throw error;
+  aiCache.pr=data||[];aiCache.prAt=Date.now();return aiCache.pr;
+}
+function aiFindShip(q,ships){
+  const nums=[...q.matchAll(/(\d{4})/g)].map(m=>m[1]);
+  for(const n of nums){const s=ships.find(x=>productionNormalize(x.ship_no)===n);if(s)return {ship:s,asked:n}}
+  return {ship:null,asked:nums[0]||""};
+}
+function aiFindType(q){const m=q.toUpperCase().match(/\b(LNG|LPG|VLCC|CONT)\b|(LNG|LPG|VLCC|CONT)/);return m?(m[1]||m[2]):""}
+function aiFindStage(q,ship){
+  if(!ship)return null;const nq=productionNormalize(q).replace(/\s/g,"");
+  return [...ship.stages.values()].find(st=>{const k=productionNormalize(st.name).replace(/\s/g,"");return k&&(nq.includes(k)||(k==="p.e"&&/pe(?!블록)/.test(nq)))})||null;
+}
+const aiLive=items=>items.filter(it=>!it.norate&&!it.excluded);
+function aiWorkName(it){return [it.area,it.work_type,it.work_method].filter(Boolean).join(" · ")+(it.system?` [${it.system}]`:"")}
+function aiCut(lines,total,where){if(total>AI_LIMIT)lines.push(`… 외 ${total-AI_LIMIT}건은 ${where}에서 확인하세요.`);return lines}
+
+/* ① 미비작업 */
+async function aiAnsMissing(q){
+  const ships=await aiShips(),{ship,asked}=aiFindShip(q,ships);
+  if(!ship){
+    if(asked)return `${asked}호선은 앱에 등록된 호선이 아닙니다.`;
+    const type=aiFindType(q);
+    const rows=ships.filter(x=>!type||x.ship_type===type).map(x=>{const all=aiLive([...x.stages.values()].flatMap(st=>[...st.items.values()]));return {x,left:all.filter(it=>(it.progress||0)<100).length,total:all.length}}).filter(r=>r.total);
+    if(!rows.length)return "조회할 호선이 없습니다.";
+    rows.sort((a,b)=>b.left-a.left);
+    return [`[호선별 미비작업 건수]${type?" "+type:""} · ${aiMD(localToday())} 기준`,...rows.map(r=>`· ${r.x.ship_no}(${r.x.ship_type||"-"}) 미비 ${r.left}건 / 전체 ${r.total}건`),"",'호선 번호를 넣어 물어보면 작업 목록을 알려 드립니다. 예: "2581호선 미비작업"'].join("\n");
+  }
+  const stageOnly=aiFindStage(q,ship);
+  const stages=[...ship.stages.values()].filter(st=>!stageOnly||st===stageOnly);
+  const all=aiLive(stages.flatMap(st=>[...st.items.values()])),left=all.filter(it=>(it.progress||0)<100);
+  const stats=productionItemsStats(stages.flatMap(st=>[...st.items.values()]));
+  const out=[`[${ship.ship_no}호선 미비작업]${stageOnly?" "+stageOnly.name:""} ${ship.ship_type||""} · ${aiMD(localToday())} 기준`,`전체 ${all.length}건 중 완료 ${all.length-left.length}건 · 미비 ${left.length}건 · 공정률 ${aiPct(stats.avg)}`];
+  if(!left.length){out.push("","미비작업이 없습니다.");return out.join("\n")}
+  let n=0;
+  stages.forEach(st=>{
+    const its=aiLive([...st.items.values()]).filter(it=>(it.progress||0)<100);if(!its.length)return;
+    out.push("",`■ ${st.name} (미비 ${its.length}건)`);
+    its.forEach(it=>{n++;if(n>AI_LIMIT)return;const p=it.progress||0;out.push(`· ${aiWorkName(it)} — ${p>0?aiPct(p)+(it.last_work_date?` (최근 ${aiMD(it.last_work_date)})`:""):"미착수"}`)});
+  });
+  return aiCut(out,n,"생산통합지표").join("\n");
+}
+/* ② 공정현황 */
+async function aiAnsProgress(q){
+  const ships=await aiShips(),{ship,asked}=aiFindShip(q,ships);
+  if(asked&&!ship)return `${asked}호선은 앱에 등록된 호선이 아닙니다.`;
+  if(ship){
+    const st=productionItemsStats([...ship.stages.values()].flatMap(x=>[...x.items.values()]));
+    const out=[`[${ship.ship_no}호선 공정현황] ${ship.ship_type||""} · ${aiMD(localToday())} 기준`,`전체 공정률 ${aiPct(st.avg)} · 완료 ${st.done}/${st.total}건 · 진행 중 ${st.started}건${st.excluded?` · 제외 ${st.excluded}건`:""}`];
+    const ds=[["K/L",ship.kl_date],["L/C",ship.lc_date],["S/T",ship.st_date],["D/L",ship.dl_date]].filter(x=>x[1]).map(x=>`${x[0]} ${aiYMD(x[1])}`);
+    if(ds.length)out.push(`일정: ${ds.join(" · ")}`);
+    out.push("");
+    [...ship.stages.values()].forEach(sg=>{const s2=productionItemsStats([...sg.items.values()]);if(!s2.total)return;out.push(`■ ${sg.name}: ${aiPct(s2.avg)} (완료 ${s2.done}/${s2.total}건 · 진행 중 ${s2.started}건${sg.last_work_date?` · 최근 작업 ${aiMD(sg.last_work_date)}`:""})`)});
+    return out.join("\n");
+  }
+  const type=aiFindType(q),list=ships.filter(x=>!type||x.ship_type===type);
+  if(!list.length)return "조회할 호선이 없습니다.";
+  const all=productionItemsStats(list.flatMap(x=>[...x.stages.values()].flatMap(sg=>[...sg.items.values()])));
+  const out=[`[공정현황]${type?" "+type:""} · ${aiMD(localToday())} 기준`,`호선 ${list.length}척 · 전체 공정률 ${aiPct(all.avg)} · 완료 ${all.done}/${all.total}건`];
+  const groups=new Map();list.forEach(x=>{const t=x.ship_type||"기타";if(!groups.has(t))groups.set(t,[]);groups.get(t).push(x)});
+  groups.forEach((arr,t)=>{out.push("",`■ ${t}`);arr.forEach(x=>{const s2=productionItemsStats([...x.stages.values()].flatMap(sg=>[...sg.items.values()]));if(s2.total)out.push(`· ${x.ship_no}: ${aiPct(s2.avg)} (완료 ${s2.done}/${s2.total}건)`)})});
+  out.push("",'호선별 STAGE 공정률은 "2581호선 공정현황"처럼 물어보세요.');
+  return out.join("\n");
+}
+/* ③ 우선순위작업 */
+async function aiAnsPriority(q){
+  const rows=await aiPriority(),ships=await aiShips(),{ship,asked}=aiFindShip(q,ships);
+  if(asked&&!ship&&!rows.some(r=>String(r["호선"])===asked))return `${asked}호선은 앱에 등록된 호선이 아닙니다.`;
+  const type=aiFindType(q),no=ship?ship.ship_no:asked;
+  let list=rows.filter(r=>(!no||String(r["호선"])===String(no))&&(!type||r["선종"]===type));
+  const pe=/pe|블록/i.test(q)&&!/절점/.test(q),ms=/절점|k\/l|l\/c|s\/t|d\/l/i.test(q);
+  if(pe&&!ms)list=list.filter(r=>r["구분"]==="PE 블록");else if(ms&&!pe)list=list.filter(r=>r["구분"]!=="PE 블록");
+  const cnt={};list.forEach(r=>{cnt[r["등급"]]=(cnt[r["등급"]]||0)+1});
+  const main=no?list:list.filter(r=>["최긴급","긴급","보통","인도지연"].includes(r["등급"]));
+  const out=[`[우선순위작업]${no?" "+no+"호선":""}${type?" "+type:""} · ${aiMD(localToday())} 기준`,["최긴급","긴급","보통","인도지연","여유","미정"].filter(g=>cnt[g]).map(g=>`${g} ${cnt[g]}`).join(" · ")||"해당 작업이 없습니다."];
+  if(!no&&list.length>main.length)out.push("(여유 · 미정은 건수만 표시 — 호선 번호를 넣으면 전체를 보여 드립니다)");
+  if(main.length)out.push("");
+  main.slice(0,AI_LIMIT).forEach(r=>out.push(`· [${r["등급"]}] ${r["D-day"]} ${r["호선"]} ${r["구분"]} ${r["항목"]}${r["날짜"]?` (${aiMD(r["날짜"])})`:""}${r["비고"]?` — ${r["비고"]}`:""}`));
+  return aiCut(out,main.length,"우선작업순위 화면").join("\n");
+}
+/* ④ 호선 일정(절점) */
+async function aiAnsDates(q){
+  const ships=await aiShips(),{ship,asked}=aiFindShip(q,ships);
+  if(asked&&!ship)return `${asked}호선은 앱에 등록된 호선이 아닙니다.`;
+  const fmt=x=>[["K/L",x.kl_date],["L/C",x.lc_date],["S/T",x.st_date],["D/L",x.dl_date]].map(([k,v])=>`${k} ${v?aiYMD(v)+(prDays(v)>=0?` (${aiDday(v)})`:""):"-"}`).join(" · ");
+  if(ship)return [`[${ship.ship_no}호선 일정] ${ship.ship_type||""}`,fmt(ship)].join("\n");
+  const type=aiFindType(q),list=ships.filter(x=>!type||x.ship_type===type);
+  return [`[호선 일정]${type?" "+type:""}`,...list.map(x=>`· ${x.ship_no}(${x.ship_type||"-"}) ${fmt(x)}`)].join("\n");
+}
+/* ⑤ 주간계획 */
+async function aiAnsWeekly(q){
+  const ships=await aiShips(),{ship,asked}=aiFindShip(q,ships);
+  const off=/다음\s*주|차주/.test(q)?1:/지난\s*주|전주/.test(q)?-1:0,wk=aiMonday(off);
+  let qq=supabase.from("production_weekly_plans").select("ship_type,ship_no,stage,area,work_type,work_method,system,work_days,manpower,main_manpower,support_manpower,author_name,is_missing").eq("week_start",wk).order("ship_no",{ascending:true}).order("stage",{ascending:true});
+  const no=ship?ship.ship_no:asked;if(no)qq=qq.eq("ship_no",no);
+  const {data,error}=await fetchAllRows(()=>qq);if(error)throw error;
+  const rows=data||[],label=off===1?"다음 주":off===-1?"지난 주":"이번 주";
+  const out=[`[${label} 주간계획]${no?" "+no+"호선":""} ${aiMD(wk)}~${aiMD(wkAdd(wk,6))}`,`계획 ${rows.length}건 · 총원 합계 ${rows.reduce((a,r)=>a+(Number(r.manpower)||0),0)}명`];
+  if(!rows.length)return out.join("\n")+"\n\n등록된 계획이 없습니다.";
+  out.push("");
+  rows.slice(0,AI_LIMIT).forEach(r=>out.push(`· ${r.ship_no} ${r.stage||""} · ${[r.area,r.work_type,r.work_method].filter(Boolean).join(" · ")}${r.system?` [${r.system}]`:""} — ${(r.work_days||[]).join("")||"-"} · ${Number(r.manpower)||0}명${r.author_name?` (${r.author_name})`:""}${r.is_missing?" · 누락":""}`));
+  return aiCut(out,rows.length,"주간계획 → 계획 목록").join("\n");
+}
+/* ⑥ 일일작업 */
+async function aiAnsDaily(q){
+  const ships=await aiShips(),{ship,asked}=aiFindShip(q,ships),no=ship?ship.ship_no:asked;
+  let d=/어제/.test(q)?wkAdd(localToday(),-1):/그저께|그제/.test(q)?wkAdd(localToday(),-2):localToday();
+  const m=q.match(/(\d{1,2})\s*[\/월.]\s*(\d{1,2})\s*일?/);if(m){const y=localToday().slice(0,4);d=`${y}-${String(m[1]).padStart(2,"0")}-${String(m[2]).padStart(2,"0")}`}
+  const base=()=>{let x=supabase.from("production_schedules").select("work_date,ship_no,stage,area,work_type,work_method,system,progress_rate,manpower,batch_id,author_name,is_baseline");if(no)x=x.eq("ship_no",no);return x};
+  let {data,error}=await fetchAllRows(()=>base().eq("work_date",d).order("ship_no",{ascending:true}));if(error)throw error;
+  let rows=(data||[]).filter(r=>!r.is_baseline),note="";
+  if(!rows.length&&!m&&!/어제|그저께|그제/.test(q)){
+    const last=await base().lt("work_date",d).order("work_date",{ascending:false}).limit(1);
+    const ld=last.data?.[0]?.work_date;
+    if(ld){note=`(${aiMD(d)} 등록이 없어 가장 최근 작업일 ${aiMD(ld)} 기준)`;d=productionDateOnly(ld);const r2=await fetchAllRows(()=>base().eq("work_date",d).order("ship_no",{ascending:true}));rows=(r2.data||[]).filter(r=>!r.is_baseline)}
+  }
+  const seen=new Set();let mp=0;rows.forEach(r=>{if(!r.batch_id||!seen.has(r.batch_id)){mp+=Number(r.manpower)||0;if(r.batch_id)seen.add(r.batch_id)}});
+  const out=[`[${aiMD(d)} 일일작업]${no?" "+no+"호선":""} ${note}`.trim(),`등록 ${rows.length}건 · 투입 인원 ${mp}명`];
+  if(!rows.length)return out.join("\n")+"\n\n등록된 일일작업이 없습니다.";
+  out.push("");
+  rows.slice(0,AI_LIMIT).forEach(r=>out.push(`· ${r.ship_no} ${r.stage||""} · ${[r.area,r.work_type,r.work_method].filter(Boolean).join(" · ")}${r.system?` [${r.system}]`:""} — 공정률 ${aiPct(productionNumber(r.progress_rate))} · ${Number(r.manpower)||0}명${r.author_name?` (${r.author_name})`:""}`));
+  return aiCut(out,rows.length,"일일작업 → 등록 목록").join("\n");
+}
+/* ⑦ 자재 불출 */
+async function aiAnsLoans(q){
+  const [l,i]=await Promise.all([fetchAllRows(()=>supabase.from("equipment_loans").select("item_id,borrower_name,out_at").is("returned_at",null).order("out_at",{ascending:true})),fetchAllRows(()=>supabase.from("equipment_items").select("id,code,category,spec"))]);
+  if(l.error||i.error)throw (l.error||i.error);
+  const items=new Map((i.data||[]).map(x=>[x.id,x]));
+  let rows=(l.data||[]).map(r=>({...r,it:items.get(r.item_id)||{}}));
+  const who=(q.match(/([가-힣]{2,4})\s*(?:가|이|님|씨)?\s*(?:불출|빌린|가져간)/)||[])[1];
+  if(who&&!/자재|장비|현재|지금/.test(who))rows=rows.filter(r=>String(r.borrower_name||"").includes(who));
+  const cat={};rows.forEach(r=>{const c=r.it.category||"기타";cat[c]=(cat[c]||0)+1});
+  const out=[`[불출중 자재]${who&&!/자재|장비|현재|지금/.test(who)?" "+who:""} · ${aiMD(localToday())} 기준`,`불출중 ${rows.length}건${Object.keys(cat).length?" · "+Object.entries(cat).map(([k,v])=>`${k} ${v}`).join(" · "):""}`];
+  if(!rows.length)return out.join("\n");
+  out.push("");
+  rows.slice(0,AI_LIMIT).forEach(r=>out.push(`· ${r.it.code||"-"} ${[r.it.category,r.it.spec].filter(Boolean).join(" ")} — ${r.borrower_name||"-"} (불출 ${aiMD(r.out_at)})`));
+  return aiCut(out,rows.length,"자재관리대장").join("\n");
+}
+/* ⑧ 앱 사용 안내(앱 내용 정리) */
+const AI_GUIDE=[
+  {k:/로그인|비밀번호|사번|회원가입/,t:"로그인",a:"이름 칸에 내 이름, 비밀번호 칸에 사번(출입번호)을 적고 [로그인]을 누릅니다.\n계장공종 인원은 이미 등록되어 있어 회원가입이 필요 없습니다. 로그인이 안 되면 관리자에게 문의하세요."},
+  {k:/일일\s*작업|실적/,t:"일일작업 등록",a:"[생산통합지표]에서 호선 → STAGE → 작업을 누르면 등록 화면이 채워진 채로 열립니다.\n작업 인원(반장 이름 체크 또는 인원 수)과 공정률(%)을 적고 [일일작업 등록]을 누릅니다.\nSYSTEM 이 있는 작업은 SYSTEM 항목별로 공정률을 적습니다(100% 는 초록).\n본인이 등록한 기록은 [등록 목록]에서 수정 · 삭제할 수 있습니다."},
+  {k:/주간\s*계획/,t:"주간계획 입력",a:"[주간계획입력] → [계획 입력]에서 다음 주 계획을 선종 → 호선 → STAGE → 구역 → 작업 순으로 고르고, 작업 요일 · 본 인원 · 지원 인원 · 비고를 적어 [주간계획 등록]을 누릅니다.\n[계획 목록]에서 주별 · 작성자별로 볼 수 있습니다."},
+  {k:/생산\s*통합|지표|공정률\s*보는|공정률\s*확인/,t:"생산통합지표",a:"호선별 · STAGE별 공정률을 봅니다. 선종 → 호선을 고르면 STAGE 카드가 나오고, 카드를 누르면 작업별 공정률이 펼쳐집니다.\n작업을 누르면 그 작업의 일일작업 등록 화면으로 넘어갑니다."},
+  {k:/우선\s*작업|우선\s*순위|pe\s*블록|절점/i,t:"우선작업순위",a:"PE 블록과 절점(K/L · L/C · S/T · D/L)을 남은 날 기준으로 최긴급 · 긴급 · 보통 · 여유로 나눠 보여 줍니다.\nD-day 는 실제 날짜 7일 전(목표일) 기준이며, 앱에는 D-40 이내만 나옵니다."},
+  {k:/자재|불출|반납|이력\s*카드/,t:"자재관리",a:"[자재관리대장]에서 자재를 골라 [불출 등록] · [반납 등록]을 합니다(반납 때 사진 필수).\n[자재이력카드]에서 점검 주기 · 고장 · 폐기 이력을 봅니다."},
+  {k:/업무\s*요청|확인\s*요청|나의\s*업무/,t:"업무요청",a:"[업무요청등록]에서 담당자를 정해 현장 확인이나 작업을 요청합니다. 받은 요청과 처리 결과는 [나의 업무]와 🔔 알림에서 확인합니다."},
+  {k:/게시판|공지/,t:"게시판",a:"첫 화면 위 [게시판(공지사항)]에서 공지를 보고, [전체보기]에서 전체 글을 봅니다."},
+  {k:/결선|bhd/i,t:"결선작업관리",a:"[결선작업관리]에서 선결선 등록 · 후결선 작업조회 · 결선작업목록을 봅니다."},
+  {k:/사용\s*설명서|매뉴얼/,t:"사용설명서",a:"첫 화면 게시판 오른쪽 [사용설명서] 버튼을 누르면 사용설명서가 열립니다."},
+  {k:/ai|질문/i,t:"AI 질문하기",a:"앱에 등록된 DATA만 조회해서 답합니다(외부 AI 를 쓰지 않아 사용료가 들지 않습니다).\n예: 2581호선 미비작업 · 공정현황 · LNG 공정현황 · 우선순위작업 · 2581호선 우선순위 · 2581호선 일정 · 이번주(다음주) 주간계획 · 오늘(어제) 일일작업 · 불출중 자재"}
+];
+const AI_HELP=["앱에 등록된 DATA에 대해서만 답할 수 있습니다. 이렇게 물어보세요.","","· 2581호선 미비작업 알려줘  (STAGE 도 가능: 2581호선 DOCK 미비작업)","· 공정현황 알려줘 / LNG 공정현황 / 2581호선 공정현황","· 우선순위작업 알려줘 / 2581호선 우선순위 / PE 블록 우선순위","· 2581호선 일정 (K/L · L/C · S/T · D/L)","· 이번주 주간계획 / 다음주 2581호선 주간계획","· 오늘 일일작업 / 어제 2581호선 일일작업 / 11/25 일일작업","· 불출중 자재 / 홍길동 불출 자재","· 사용 방법: 일일작업 등록 방법 · 주간계획 입력 방법 · 자재 반납 방법"].join("\n");
+async function aiAnswer(raw){
+  const q=String(raw||"").trim();
+  if(!q)return AI_HELP;
+  if(/도움말|뭘\s*물어|무엇을\s*물어|사용\s*가능|기능/.test(q))return AI_HELP;
+  if(/방법|어떻게|사용법|하는\s*법|설명|안내|매뉴얼/.test(q)){const g=AI_GUIDE.find(x=>x.k.test(q));if(g)return `[${g.t}]\n${g.a}`}
+  if(/미비|미완료|미결|남은\s*작업|잔여|안\s*된\s*작업|미착수|못\s*한/.test(q))return aiAnsMissing(q);
+  if(/우선|긴급|순위|pe\s*블록|블록/i.test(q))return aiAnsPriority(q);
+  if(/주간|계획/.test(q))return aiAnsWeekly(q);
+  if(/일일|실적|작업\s*내역|등록\s*내역/.test(q)||(/오늘|어제|그제|그저께|\d{1,2}\s*[\/월]\s*\d{1,2}/.test(q)&&/작업|등록|투입|인원|한\s*일|했/.test(q)))return aiAnsDaily(q);
+  if(/자재|불출|반납|장비|공구/.test(q))return aiAnsLoans(q);
+  if(/일정|절점|k\/l|l\/c|s\/t|d\/l|인도|진수|착공|탑재/i.test(q))return aiAnsDates(q);
+  if(/공정|진행|진척|현황|퍼센트|%/.test(q))return aiAnsProgress(q);
+  if(/^\D*\d{4}\D*$/.test(q)&&/\d{4}/.test(q))return aiAnsProgress(q);   /* "2581호선" 만 적으면 공정현황 */
+  return "앱 DATA 와 관계없는 질문에는 답할 수 없습니다.\n\n"+AI_HELP;
+}
+let aiSeq=0;
+async function aiAsk(q){
+  const box=$("aiAskAnswer"),body=$("aiAnsBody"),seq=++aiSeq;
+  q=String(q||"").trim();$("aiAskInput").value=q;
+  $("aiAnsQ").textContent=q?`Q. ${q}`:"도움말";
+  box.classList.remove("hidden");body.classList.add("loading");body.textContent="앱 DATA 조회 중…";
+  $("aiCopyBtn").classList.remove("done");$("aiCopyBtn").textContent="📋 복사";
+  let ans;
+  try{ans=await aiAnswer(q)}catch(e){ans="조회 중 오류가 났습니다. 잠시 뒤 다시 질문해 주세요.\n("+(e?.message||e)+")"}
+  if(seq!==aiSeq)return;
+  body.classList.remove("loading");body.textContent=ans;
+}
+async function aiCopy(){
+  const text=[$("aiAnsQ").textContent,$("aiAnsBody").textContent].filter(Boolean).join("\n\n"),btn=$("aiCopyBtn");
+  let ok=false;
+  try{await navigator.clipboard.writeText(text);ok=true}catch(e){
+    const ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="fixed";ta.style.top="-1000px";document.body.appendChild(ta);ta.select();
+    try{ok=document.execCommand("copy")}catch(_){}ta.remove();
+  }
+  btn.textContent=ok?"✅ 복사됨":"복사 실패";btn.classList.toggle("done",ok);
+  setTimeout(()=>{btn.textContent="📋 복사";btn.classList.remove("done")},2000);
+}
+$("aiAskBtn").onclick=()=>aiAsk($("aiAskInput").value);
+$("aiAskInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();aiAsk($("aiAskInput").value)}});
+document.querySelectorAll("[data-ai-q]").forEach(b=>b.onclick=()=>aiAsk(b.dataset.aiQ));
+$("aiCopyBtn").onclick=aiCopy;
+
 initialize();
 </script>
 </body>
